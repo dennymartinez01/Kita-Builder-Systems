@@ -56,7 +56,9 @@ export async function POST(req: NextRequest) {
       .single()
 
     // 3. Send notification email via Resend
-    const ownerEmail = site?.owner_email || process.env.NOTIFICATION_EMAIL
+    // During testing with resend.dev domain, can only send to your own account email.
+    // Once you add a verified domain in Resend, remove the fallback override below.
+    const ownerEmail = process.env.NOTIFICATION_EMAIL || site?.owner_email
     if (ownerEmail && process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY)
 

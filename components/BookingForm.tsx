@@ -128,7 +128,7 @@ export default function BookingForm({
           </select>
         </div>
 
-        {/* Name + Phone */}
+        {/* Name + Phone — stack on mobile */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
@@ -159,7 +159,7 @@ export default function BookingForm({
           </div>
         </div>
 
-        {/* Date + Time */}
+        {/* Date + Time — full width on mobile, side by side on sm+ */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
@@ -171,7 +171,7 @@ export default function BookingForm({
                 value={form.booking_date}
                 min={new Date().toISOString().split('T')[0]}
                 onChange={e => setField('booking_date', e.target.value)}
-                className="w-full border border-gray-200 rounded-xl pl-9 pr-4 py-3 text-sm focus:outline-none focus:ring-2"
+                className="w-full border border-gray-200 rounded-xl pl-9 pr-3 py-3 text-sm focus:outline-none focus:ring-2"
               />
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function BookingForm({
                 type="time"
                 value={form.booking_time}
                 onChange={e => setField('booking_time', e.target.value)}
-                className="w-full border border-gray-200 rounded-xl pl-9 pr-4 py-3 text-sm focus:outline-none focus:ring-2"
+                className="w-full border border-gray-200 rounded-xl pl-9 pr-3 py-3 text-sm focus:outline-none focus:ring-2"
               />
             </div>
           </div>
@@ -248,7 +248,7 @@ export default function BookingForm({
         <button
           type="submit"
           disabled={loading}
-          className="w-full text-white font-bold rounded-xl py-4 flex items-center justify-center gap-2 transition disabled:opacity-60"
+          className="w-full text-white font-bold rounded-xl py-4 text-base flex items-center justify-center gap-2 transition disabled:opacity-60 active:scale-95"
           style={{ backgroundColor: primaryColor }}
         >
           {loading ? (
