@@ -62,7 +62,7 @@ export default function DocsPage() {
             { layer: 'Framework', tech: 'Next.js 16 (App Router + TypeScript)', note: 'Full-stack React, server components, API routes' },
             { layer: 'Styling', tech: 'Tailwind CSS v4', note: 'Utility-first, no extra config needed' },
             { layer: 'Database', tech: 'Supabase (Postgres + RLS)', note: 'Cloud hosted, free tier sufficient for MVP' },
-            { layer: 'AI Generation', tech: 'Claude claude-haiku-3-5 (Anthropic)', note: 'Fast + cheap JSON generation, ~$0.01/site' },
+            { layer: 'AI Generation', tech: 'Gemini 3.6 Flash (Google AI)', note: 'Free tier, AQ. auth key format, ~500 generations/day' },
             { layer: 'Email', tech: 'Resend', note: 'Booking notification emails, free 100/day' },
             { layer: 'Hosting', tech: 'Vercel (when ready)', note: 'Free tier, auto-deploys from GitHub' },
             { layer: 'Icons', tech: 'Lucide React', note: 'Consistent icon set throughout admin' },
@@ -348,7 +348,7 @@ export default function DocsPage() {
           <p className="text-gray-400 text-sm">All accounts needed to run KITA Builder Systems end-to-end.</p>
           {[
             { service: 'Supabase', url: 'https://supabase.com', phase: 'MVP', purpose: 'Database, Auth, Storage', envKey: 'NEXT_PUBLIC_SUPABASE_URL + ANON_KEY + SERVICE_ROLE_KEY', free: 'Free tier — 500MB DB, enough for 1000+ sites' },
-            { service: 'Anthropic (Claude)', url: 'https://console.anthropic.com', phase: 'MVP', purpose: 'AI site generation', envKey: 'CLAUDE_API_KEY', free: '~$0.01 per site generated. Requires $5 min top-up.' },
+            { service: 'Google AI (Gemini)', url: 'https://aistudio.google.com/app/apikey', phase: 'MVP', purpose: 'AI site generation — gemini-3.6-flash', envKey: 'GEMINI_API_KEY', free: 'Free tier — ~500 generations/day, no billing required' },
             { service: 'Resend', url: 'https://resend.com', phase: 'MVP', purpose: 'Booking email notifications', envKey: 'RESEND_API_KEY', free: 'Free — 100 emails/day, 3000/month' },
             { service: 'Vercel', url: 'https://vercel.com', phase: 'MVP', purpose: 'Hosting + deployments', envKey: 'None (CLI only)', free: 'Free tier for personal projects' },
             { service: 'GitHub', url: 'https://github.com', phase: 'MVP', purpose: 'Code repository + Vercel integration', envKey: 'None', free: 'Free' },
@@ -381,62 +381,78 @@ export default function DocsPage() {
             {
               week: 'Week 1 — Foundation (Days 1–7)',
               color: 'border-blue-800',
+              badge: '✅ COMPLETE',
+              badgeColor: 'bg-green-900/50 text-green-400',
               tasks: [
-                'Project scaffolded ✅',
-                'Supabase schema deployed ✅',
-                'All 5 templates built ✅',
-                'Admin CMS with generate, sites, templates, credentials ✅',
+                'Project scaffolded with Next.js 16 + TypeScript + Tailwind ✅',
+                'Supabase cloud schema deployed (sites, services, staff, bookings) ✅',
+                'All 5 templates built: Salon, Clinic, Pet, Cafe, Mechanic ✅',
+                'Admin CMS: dashboard, credentials, generate, sites, templates, docs, settings ✅',
+                'Logo uploader via Supabase Storage ✅',
+                'Documentation page (this page) ✅',
                 'Public site renderer + booking form ✅',
-                'Owner dashboard with services + bookings tabs ✅',
-                'Claude AI generation working',
-                'First demo site generated + booking tested',
+                'Owner dashboard: services editor + bookings manager ✅',
+                'AI generation working via Gemini 3.6 Flash (free tier) ✅',
+                'First demo site generated: Edison Barber Shop, Portland ✅',
+                'Pushed to GitHub: github.com/dennymartinez01/Kita-Builder-Systems ✅',
               ],
             },
             {
               week: 'Week 2 — Polish + First Client (Days 8–14)',
-              color: 'border-green-800',
+              color: 'border-yellow-800',
+              badge: '🔄 CURRENT',
+              badgeColor: 'bg-yellow-900/50 text-yellow-400',
               tasks: [
                 'Mobile responsive check on all pages',
-                'Resend email confirmed working end-to-end',
-                'Logo uploader in admin CMS',
-                'Owner dashboard — staff tab + about text editor',
-                'Start outreach: 10 DMs/day to local businesses',
-                'Goal: 1 free beta client for testimonial',
+                'Test Resend email notification end-to-end with real booking',
+                'Owner dashboard — Staff tab + About text editor',
+                'Agentic edit — "change my price to $150" chat command',
+                'Start outreach: 10 DMs/day to local AU/US businesses on Facebook/Instagram',
+                'Goal: 1 free beta client in exchange for testimonial',
               ],
             },
             {
               week: 'Week 3 — Revenue (Days 15–21)',
-              color: 'border-yellow-800',
+              color: 'border-orange-800',
+              badge: 'UPCOMING',
+              badgeColor: 'bg-gray-800 text-gray-500',
               tasks: [
-                'Stripe integration — $150 setup + $29/mo',
-                'Payment page for new site onboarding',
+                'Stripe integration — $150 setup + $29/mo per site',
+                'Payment page for new client onboarding',
                 'Get 2 paying clients',
-                'Collect feedback and fix real issues',
-                'Add anything clients actually asked for',
+                'Collect real feedback and fix actual issues',
+                'Add only what paying clients ask for',
               ],
             },
             {
               week: 'Week 4 — Scale (Days 22–30)',
               color: 'border-purple-800',
+              badge: 'UPCOMING',
+              badgeColor: 'bg-gray-800 text-gray-500',
               tasks: [
                 'Deploy to Vercel production',
-                'Custom domain setup (kita.build or kitasystems.com)',
-                'Twilio SMS reminders',
-                'Record 60-sec Loom demo video',
+                'Custom domain (kita.build or kitasystems.com)',
+                'Twilio SMS reminders for owners + customers',
+                'Record 60-sec Loom demo video of site generation',
                 'Post demo to AU/US small business Facebook groups',
-                'Agentic edit — chat to modify site content',
+                'Image upload for business logos + gallery',
               ],
             },
           ].map(week => (
             <div key={week.week} className={`border rounded-xl p-5 ${week.color} bg-gray-950/50`}>
-              <p className="text-white font-semibold text-sm mb-3">{week.week}</p>
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-white font-semibold text-sm">{week.week}</p>
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${week.badgeColor}`}>
+                  {week.badge}
+                </span>
+              </div>
               <div className="space-y-1.5">
                 {week.tasks.map((task, i) => (
                   <div key={i} className="flex items-start gap-2 text-sm">
                     <span className={task.includes('✅') ? 'text-green-400' : 'text-gray-600'}>
                       {task.includes('✅') ? '✅' : '○'}
                     </span>
-                    <span className={task.includes('✅') ? 'text-gray-400 line-through' : 'text-gray-300'}>
+                    <span className={task.includes('✅') ? 'text-gray-500 line-through' : 'text-gray-300'}>
                       {task.replace(' ✅', '')}
                     </span>
                   </div>

@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { BUSINESS_TYPE_LABELS, BUSINESS_TYPE_ICONS } from '@/lib/templates'
 import type { BusinessType } from '@/types/database'
@@ -14,17 +15,24 @@ interface GenerateResult {
 
 const BUSINESS_TYPES: BusinessType[] = ['salon', 'clinic', 'pet', 'cafe', 'mechanic']
 
-export default function GeneratePage() {
+function GenerateForm() {
+  const searchParams = useSearchParams()
+  const presetType = searchParams.get('type') as BusinessType | null
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState<GenerateResult | null>(null)
+  const [error, setError] = useState('')
   const [form, setForm] = useState({
     business_name: '',
-    business_type: 'salon' as BusinessType,
+    business_type: (presetType || 'salon') as BusinessType,
     location: '',
     owner_email: '',
     extra_notes: '',
   })
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<GenerateResult | null>(null)
-  const [error, setError] = useState('')
+
+  // Update type if coming from template page
+  useEffect(() => {
+    if (presetType) setForm(f => ({ ...f, business_type: presetType }))
+  }, [presetType])
 
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault()
@@ -50,7 +58,7 @@ export default function GeneratePage() {
 
   function reset() {
     setResult(null)
-    setForm({ business_name: '', business_type: 'salon', location: '', owner_email: '', extra_notes: '' })
+    setForm({ business_name: '', business_type: presetType || 'salon', location: '', owner_email: '', extra_notes: '' })
   }
 
   return (
@@ -232,5 +240,13 @@ export default function GeneratePage() {
         </form>
       )}
     </div>
+  )
+}
+
+export default function GeneratePage() {
+  return (
+    <Suspense fallback={<div className="p-6 text-gray-500 text-sm">Loading...</div>}>
+      <GenerateForm />
+    </Suspense>
   )
 }

@@ -22,28 +22,26 @@ export default function SettingsPage() {
   }, [])
 
   async function loadExistingLogo() {
-    // Try to get the logo from Supabase Storage
     try {
-      const { data } = supabase.storage
+      // List files in brand/ folder — reliable way to check what's actually stored
+      const { data: files, error } = await supabase.storage
         .from('kita-assets')
-        .getPublicUrl('brand/kita-logo.png')
+        .list('brand', { limit: 10 })
 
-      // Check if it actually exists by trying to fetch headers
-      const res = await fetch(data.publicUrl, { method: 'HEAD' }).catch(() => null)
-      if (res?.ok) {
-        setLogoUrl(data.publicUrl + '?t=' + Date.now())
-        return
-      }
-      // Try webp
-      const { data: webpData } = supabase.storage
+      if (error || !files || files.length === 0) return
+
+      // Pick the first logo file found (kita-logo.*)
+      const logoFile = files.find(f => f.name.startsWith('kita-logo'))
+      if (!logoFile) return
+
+      const { data: urlData } = supabase.storage
         .from('kita-assets')
-        .getPublicUrl('brand/kita-logo.webp')
-      const res2 = await fetch(webpData.publicUrl, { method: 'HEAD' }).catch(() => null)
-      if (res2?.ok) {
-        setLogoUrl(webpData.publicUrl + '?t=' + Date.now())
-      }
+        .getPublicUrl(`brand/${logoFile.name}`)
+
+      // Cache-bust so browser always shows the latest version
+      setLogoUrl(urlData.publicUrl + '?t=' + Date.now())
     } catch {
-      // Storage not set up yet — that's fine
+      // Storage not set up yet — fine for first run
     }
   }
 

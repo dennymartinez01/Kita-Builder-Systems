@@ -1,22 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+import { GoogleGenAI } from '@google/genai'
 import { createServerClient } from '@/lib/supabase'
 import { getTemplate } from '@/lib/templates'
-import {
-  salonDefaultServices, salonDefaultStaff,
-} from '@/lib/templates/salon'
-import {
-  clinicDefaultServices, clinicDefaultStaff,
-} from '@/lib/templates/clinic'
-import {
-  petDefaultServices, petDefaultStaff,
-} from '@/lib/templates/pet'
-import {
-  cafeDefaultServices, cafeDefaultStaff,
-} from '@/lib/templates/cafe'
-import {
-  mechanicDefaultServices, mechanicDefaultStaff,
-} from '@/lib/templates/mechanic'
+import { salonDefaultServices, salonDefaultStaff } from '@/lib/templates/salon'
+import { clinicDefaultServices, clinicDefaultStaff } from '@/lib/templates/clinic'
+import { petDefaultServices, petDefaultStaff } from '@/lib/templates/pet'
+import { cafeDefaultServices, cafeDefaultStaff } from '@/lib/templates/cafe'
+import { mechanicDefaultServices, mechanicDefaultStaff } from '@/lib/templates/mechanic'
 import type { BusinessType } from '@/types/database'
 
 const DEFAULT_SERVICES = {
@@ -46,9 +36,9 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const anthropic = new Anthropic({ apiKey: process.env.CLAUDE_API_KEY })
+    // Init Gemini with new @google/genai SDK (supports AQ. auth keys)
+    const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
 
-    // Get the base template structure
     const baseTemplate = getTemplate(business_type as BusinessType)
 
     const prompt = `You are a professional website copywriter for local service businesses.
@@ -58,13 +48,13 @@ Type: ${business_type}
 Location: ${location}
 ${extra_notes ? `Additional context: ${extra_notes}` : ''}
 
-Generate website copy and business details. Use realistic local pricing for ${location}.
-Return ONLY a valid JSON object with this exact structure — no explanation, no markdown, just JSON:
+Generate website copy and business details with realistic local pricing for ${location}.
+Return ONLY a valid JSON object with this exact structure:
 {
-  "headline": "compelling hero headline, max 8 words",
-  "sub": "supporting subtitle, max 15 words",
+  "headline": "compelling hero headline max 8 words",
+  "sub": "supporting subtitle max 15 words",
   "about_title": "About ${business_name}",
-  "about_body": "2-3 sentence about paragraph for this specific business type and location",
+  "about_body": "2-3 sentences about this business type in ${location}",
   "services": [
     {"name": "service name", "price": 95, "duration_minutes": 45}
   ],
@@ -76,31 +66,49 @@ Return ONLY a valid JSON object with this exact structure — no explanation, no
   ]
 }
 
-Rules:
+Requirements:
 - 3-5 services with realistic ${location} pricing for ${business_type}
-- 2-3 staff with appropriate titles for ${business_type}
-- 3 testimonials with realistic local names
+- 2-3 staff with appropriate titles for a ${business_type}
+- 3 testimonials with realistic local names for ${location}
 - Headline must be punchy and specific to ${business_type}
-- For mechanic: include oil change, brakes, tyres
-- For salon: include haircut, color, styling
-- For clinic: include consultation, checkup, treatment
-- For pet: include vet visit, grooming, vaccination
-- For cafe: include table reservations by group size`
+- For mechanic: oil change, brakes, full service
+- For salon: haircut, color, styling services
+- For clinic: consultation, checkup, treatment
+- For pet: vet visit, grooming, vaccination  
+- For cafe: table sizes (2, 4, 6 people)`
 
-    const message = await anthropic.messages.create({
-      model: 'claude-haiku-3-5',
-      max_tokens: 1024,
-      messages: [{ role: 'user', content: prompt }],
-    })
+    // Try primary model, fall back if unavailable
+    const MODELS = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-2.5-flash-lite']
+    let response = null
+    let lastError = ''
 
-    // Extract text content from Claude response
-    const rawContent = message.content[0]
-    if (rawContent.type !== 'text') {
-      throw new Error('Unexpected response type from Claude')
+    for (const modelName of MODELS) {
+      try {
+        response = await genAI.models.generateContent({
+          model: modelName,
+          contents: prompt,
+          config: {
+            responseMimeType: 'application/json',
+            temperature: 0.7,
+          },
+        })
+        break // success — stop trying
+      } catch (err: any) {
+        lastError = err.message || ''
+        // Only retry on 503 (overloaded) or 404 (model not found) — not on auth errors
+        if (!lastError.includes('503') && !lastError.includes('NOT_FOUND') && !lastError.includes('unavailable')) {
+          throw err
+        }
+        console.warn(`[generate] Model ${modelName} unavailable, trying next...`)
+      }
     }
 
-    // Parse JSON — Claude sometimes wraps in ```json blocks, strip if so
-    const jsonText = rawContent.text
+    if (!response) throw new Error(`All Gemini models unavailable. Last error: ${lastError}`)
+
+    const rawText = response.text ?? ''
+
+    // Strip any accidental markdown fences
+    const jsonText = rawText
       .replace(/^```json\s*/i, '')
       .replace(/^```\s*/i, '')
       .replace(/\s*```$/i, '')
@@ -108,7 +116,7 @@ Rules:
 
     const aiData = JSON.parse(jsonText)
 
-    // Merge AI copy into the base template structure
+    // Merge AI copy into base template structure
     const themeJson = {
       ...baseTemplate,
       business_name,
@@ -133,10 +141,7 @@ Rules:
           }
         }
         if (section.type === 'testimonials' && aiData.testimonials?.length) {
-          return {
-            ...section,
-            data: { items: aiData.testimonials },
-          }
+          return { ...section, data: { items: aiData.testimonials } }
         }
         return section
       }),
@@ -170,7 +175,6 @@ Rules:
 
     if (siteError) throw new Error(`Supabase insert error: ${siteError.message}`)
 
-    // Use AI services/staff if valid, else fall back to template defaults
     const servicesData = aiData.services?.length
       ? aiData.services
       : DEFAULT_SERVICES[business_type as BusinessType]
@@ -196,12 +200,8 @@ Rules:
       }))
     )
 
-    return NextResponse.json({
-      slug,
-      business_name,
-      business_type,
-      site_id: site.id,
-    })
+    return NextResponse.json({ slug, business_name, business_type, site_id: site.id })
+
   } catch (err: any) {
     console.error('[/api/generate]', err)
     return NextResponse.json(

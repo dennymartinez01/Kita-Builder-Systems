@@ -46,17 +46,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   async function loadLogo() {
     try {
-      // Try to resolve logo from Supabase — dynamic import to avoid SSR issues
       const { createClient } = await import('@supabase/supabase-js')
       const client = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
       )
-      const { data } = client.storage.from('kita-assets').getPublicUrl('brand/kita-logo.png')
-      const res = await fetch(data.publicUrl, { method: 'HEAD' }).catch(() => null)
-      if (res?.ok) setLogoUrl(data.publicUrl + '?t=' + Date.now())
+      // List files — reliable check vs HEAD fetch
+      const { data: files } = await client.storage
+        .from('kita-assets')
+        .list('brand', { limit: 10 })
+
+      const logoFile = files?.find(f => f.name.startsWith('kita-logo'))
+      if (!logoFile) return
+
+      const { data: urlData } = client.storage
+        .from('kita-assets')
+        .getPublicUrl(`brand/${logoFile.name}`)
+
+      setLogoUrl(urlData.publicUrl + '?t=' + Date.now())
     } catch {
-      // Storage not set up or no logo yet — use default
+      // No logo yet — use default
     }
   }
 
