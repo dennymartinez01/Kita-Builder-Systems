@@ -171,11 +171,17 @@ git push origin main
 
 **KITA Systems** — *From Struggle to Booked.*
 
-Born in Caloocan. Built for the world.
+Born in Quezon City. Built for the world.
 
-Target: Local service businesses in AU, US, UK, CAN that need an online booking presence.
+This project was created out of curiosity — a freedom project to build something of my own using Generative AI + Agentic AI.
+
+The mission: Help small and medium businesses launch their site in 10 seconds and start getting booked online.
+
+Target: Local service businesses in AU, US, UK, PH, CAN that need an online booking presence.
 
 Revenue model: $150 setup + $29/month per client site.
+
+Built with curiosity, hustle, and AI.
 
 ---
 
