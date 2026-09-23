@@ -403,13 +403,12 @@ export default function DocsPage() {
               badge: '🔄 CURRENT',
               badgeColor: 'bg-yellow-900/50 text-yellow-400',
               tasks: [
-                'Mobile responsive check — sticky nav, responsive grids, touch buttons ✅',
+                'Mobile responsive — sticky nav, responsive grids, touch buttons ✅',
                 'Resend email notification confirmed end-to-end ✅',
-                'Owner dashboard — Staff, Hours, About tabs added ✅',
-                'Agentic AI assistant — chat-based site editor (9 tools) ✅',
-                'Build outreach demo / pitch page',
-                'Start outreach: 10 DMs/day to local AU/US businesses on Facebook/Instagram',
-                'Goal: 1 free beta client in exchange for testimonial',
+                'Owner dashboard — Staff, Hours, About, AI Assistant tabs ✅',
+                'Agentic AI editor — chat-based site editing (9 tools) ✅',
+                'Pitch / outreach page built at /pitch',
+                'Deploy to Vercel — get a live URL for outreach',
               ],
             },
             {
