@@ -23,6 +23,7 @@ const NAV_ITEMS = [
   { href: '/admin/templates', label: 'Templates', icon: Layers },
   { href: '/admin/docs', label: 'Documentation', icon: BookOpen },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
+  { href: '/pitch', label: 'Pitch Page ↗', icon: Globe },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

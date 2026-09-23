@@ -33,6 +33,12 @@ export default function HomePage() {
           >
             Generate a Site
           </Link>
+          <Link
+            href="/pitch"
+            className="bg-gray-800 hover:bg-gray-700 text-white font-bold px-8 py-4 rounded-xl transition"
+          >
+            View Pitch Page
+          </Link>
         </div>
 
         <p className="text-gray-700 text-xs mt-12">
