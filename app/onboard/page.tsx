@@ -3,7 +3,7 @@
 import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { BUSINESS_TYPE_LABELS, BUSINESS_TYPE_ICONS } from '@/lib/templates'
-import { KITA_PRICING, formatAmount } from '@/lib/stripe'
+import { KITA_PRICING, formatAmount } from '@/lib/pricing'
 import type { BusinessType } from '@/types/database'
 import { Zap, CheckCircle, Loader2, CreditCard, Shield, ArrowRight } from 'lucide-react'
 

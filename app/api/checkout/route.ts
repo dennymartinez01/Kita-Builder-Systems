@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { stripe, KITA_PRICING } from '@/lib/stripe'
+import { stripe } from '@/lib/stripe'
+import { KITA_PRICING } from '@/lib/pricing'
 import { createServerClient } from '@/lib/supabase'
 
 export async function POST(req: NextRequest) {
