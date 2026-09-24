@@ -13,6 +13,11 @@ export interface Site {
   owner_pin: string
   theme_json: ThemeJson
   published: boolean
+  payment_status: 'unpaid' | 'paid' | 'free'
+  stripe_customer_id: string | null
+  stripe_session_id: string | null
+  stripe_payment_intent: string | null
+  paid_at: string | null
   created_at: string
 }
 
@@ -126,7 +131,7 @@ export interface Database {
     Tables: {
       sites: {
         Row: Site
-        Insert: Omit<Site, 'id' | 'created_at'>
+        Insert: Omit<Site, 'id' | 'created_at' | 'payment_status' | 'stripe_customer_id' | 'stripe_session_id' | 'stripe_payment_intent' | 'paid_at'>
         Update: Partial<Omit<Site, 'id' | 'created_at'>>
       }
       services: {

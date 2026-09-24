@@ -115,6 +115,7 @@ export default function SitesPage() {
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden sm:table-cell">Type</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden md:table-cell">Slug</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden lg:table-cell">Owner Email</th>
+                <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden md:table-cell">Payment</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden md:table-cell">Created</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs">Actions</th>
               </tr>
@@ -135,6 +136,17 @@ export default function SitesPage() {
                   </td>
                   <td className="px-4 py-3 hidden lg:table-cell">
                     <span className="text-gray-600 text-xs">{site.owner_email || '—'}</span>
+                  </td>
+                  <td className="px-4 py-3 hidden md:table-cell">
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                      (site as any).payment_status === 'paid'
+                        ? 'bg-green-900/50 text-green-400'
+                        : (site as any).payment_status === 'free'
+                          ? 'bg-blue-900/50 text-blue-400'
+                          : 'bg-yellow-900/50 text-yellow-400'
+                    }`}>
+                      {(site as any).payment_status || 'free'}
+                    </span>
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell">
                     <span className="text-gray-600 text-xs">

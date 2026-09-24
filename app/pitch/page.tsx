@@ -185,9 +185,15 @@ export default function PitchPage() {
             <a
               href="https://wa.me/639XXXXXXXXX?text=Hi%20Denny%2C%20I%20want%20a%20website%20for%20my%20business."
               target="_blank"
-              className="inline-block bg-white text-blue-600 font-bold px-8 py-3 rounded-xl text-sm transition hover:opacity-90"
+              className="inline-block bg-white text-blue-600 font-bold px-8 py-3 rounded-xl text-sm transition hover:opacity-90 mb-3"
             >
               Get Started — Message Us on WhatsApp
+            </a>
+            <a
+              href="/onboard"
+              className="inline-block bg-blue-500 hover:bg-blue-400 text-white font-bold px-8 py-3 rounded-xl text-sm transition ml-3"
+            >
+              Pay & Launch Now — $150 →
             </a>
           </div>
         </div>
