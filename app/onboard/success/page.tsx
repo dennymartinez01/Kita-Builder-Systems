@@ -22,8 +22,8 @@ function SuccessContent() {
   }, [sessionId])
 
   async function pollForSite() {
-    // Try for up to 60 seconds (12 attempts × 5s)
-    for (let i = 0; i < 12; i++) {
+    // Try for up to 120 seconds (24 attempts × 5s) — Vercel cold start + Gemini can be slow
+    for (let i = 0; i < 24; i++) {
       setAttempts(i + 1)
       await new Promise(r => setTimeout(r, 5000))
 
@@ -57,12 +57,12 @@ function SuccessContent() {
           </p>
           <div className="flex items-center justify-center gap-2 text-gray-400 text-xs">
             <Loader2 size={14} className="animate-spin" />
-            Checking... (attempt {attempts}/12)
+            Checking... (attempt {attempts}/24)
           </div>
           <div className="mt-6 h-1.5 bg-gray-200 rounded-full overflow-hidden">
             <div
               className="h-full bg-blue-600 rounded-full transition-all duration-500"
-              style={{ width: `${Math.min((attempts / 12) * 100, 90)}%` }}
+              style={{ width: `${Math.min((attempts / 24) * 100, 90)}%` }}
             />
           </div>
         </div>
