@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { createServerClient } from '@/lib/supabase'
-import { GoogleGenAI, Type, type FunctionDeclaration } from '@google/genai'
+import { GoogleGenAI } from '@google/genai'
 import { getTemplate } from '@/lib/templates'
 import { salonDefaultServices, salonDefaultStaff } from '@/lib/templates/salon'
 import { clinicDefaultServices, clinicDefaultStaff } from '@/lib/templates/clinic'
@@ -26,7 +26,6 @@ const DEFAULT_STAFF = {
   mechanic: mechanicDefaultStaff,
 }
 
-// ─── AI SITE GENERATION (reused from /api/generate) ──────────────
 async function generateSite(
   business_name: string,
   business_type: BusinessType,
@@ -36,6 +35,19 @@ async function generateSite(
   stripe_session_id: string,
   stripe_customer_id: string | null,
 ): Promise<string> {
+  const supabase = createServerClient()
+
+  // ── Idempotency check — don't generate twice for the same session ──
+  const { data: existing } = await supabase
+    .from('sites')
+    .select('slug')
+    .eq('stripe_session_id', stripe_session_id)
+    .single()
+  if (existing) {
+    console.log(`[webhook] Site already exists for session ${stripe_session_id}: /${existing.slug}`)
+    return existing.slug
+  }
+
   const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
   const baseTemplate = getTemplate(business_type)
 
@@ -68,6 +80,7 @@ Use realistic ${location} pricing. 3-5 services, 2-3 staff, 3 testimonials.`
     } catch (err: any) {
       const msg = err.message || ''
       if (!msg.includes('503') && !msg.includes('NOT_FOUND') && !msg.includes('unavailable')) throw err
+      console.warn(`[webhook] Model ${modelName} unavailable, trying next...`)
     }
   }
 
@@ -81,22 +94,32 @@ Use realistic ${location} pricing. 3-5 services, 2-3 staff, 3 testimonials.`
     ...baseTemplate,
     business_name,
     sections: baseTemplate.sections.map((section: any) => {
-      if (section.type === 'hero') return { ...section, data: { ...section.data, headline: aiData.headline || section.data.headline, sub: aiData.sub || section.data.sub } }
-      if (section.type === 'about') return { ...section, data: { title: aiData.about_title || `About ${business_name}`, body: aiData.about_body || section.data.body } }
-      if (section.type === 'testimonials' && aiData.testimonials?.length) return { ...section, data: { items: aiData.testimonials } }
+      if (section.type === 'hero') {
+        return { ...section, data: { ...section.data, headline: aiData.headline || section.data.headline, sub: aiData.sub || section.data.sub } }
+      }
+      if (section.type === 'about') {
+        return { ...section, data: { title: aiData.about_title || `About ${business_name}`, body: aiData.about_body || section.data.body } }
+      }
+      if (section.type === 'testimonials' && aiData.testimonials?.length) {
+        return { ...section, data: { items: aiData.testimonials } }
+      }
       return section
     }),
   }
 
-  const slug = business_name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim() + '-' + Date.now().toString(36)
-
-  const supabase = createServerClient()
+  const slug = business_name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim()
+    + '-' + Date.now().toString(36)
 
   const { data: site, error } = await supabase.from('sites').insert({
     slug,
     business_name,
     business_type,
-    owner_email,
+    owner_email: owner_email || null,
     owner_pin: '1234',
     theme_json: themeJson,
     published: true,
@@ -106,17 +129,27 @@ Use realistic ${location} pricing. 3-5 services, 2-3 staff, 3 testimonials.`
     paid_at: new Date().toISOString(),
   } as any).select().single()
 
-  if (error) throw new Error(`Supabase error: ${error.message}`)
+  if (error) throw new Error(`Supabase insert error: ${error.message}`)
 
   const servicesData = aiData.services?.length ? aiData.services : DEFAULT_SERVICES[business_type]
   const staffData = aiData.staff?.length ? aiData.staff : DEFAULT_STAFF[business_type]
 
-  await supabase.from('services').insert(
-    servicesData.map((s: any) => ({ site_id: site.id, name: s.name, price: Number(s.price) || 0, duration_minutes: Number(s.duration_minutes || s.duration) || 60 }))
-  )
-  await supabase.from('staff').insert(
-    staffData.map((s: any) => ({ site_id: site.id, name: s.name, role: s.role }))
-  )
+  const [svcRes, staffRes] = await Promise.all([
+    supabase.from('services').insert(
+      servicesData.map((s: any) => ({
+        site_id: site.id,
+        name: s.name,
+        price: Number(s.price) || 0,
+        duration_minutes: Number(s.duration_minutes || s.duration) || 60,
+      }))
+    ),
+    supabase.from('staff').insert(
+      staffData.map((s: any) => ({ site_id: site.id, name: s.name, role: s.role }))
+    ),
+  ])
+
+  if (svcRes.error) console.error('[webhook] Services insert error:', svcRes.error.message)
+  if (staffRes.error) console.error('[webhook] Staff insert error:', staffRes.error.message)
 
   return slug
 }
@@ -129,7 +162,6 @@ export async function POST(req: NextRequest) {
 
   let event
 
-  // Verify webhook signature if secret is configured
   if (webhookSecret && sig) {
     try {
       event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
@@ -138,7 +170,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
     }
   } else {
-    // No webhook secret yet (local dev) — parse directly
     try {
       event = JSON.parse(body)
     } catch {
@@ -146,7 +177,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Handle checkout.session.completed
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as any
 
@@ -154,19 +184,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ received: true })
     }
 
-    const {
-      business_name,
-      business_type,
-      location,
-      owner_email,
-      extra_notes,
-    } = session.metadata || {}
+    const { business_name, business_type, location, owner_email, extra_notes } = session.metadata || {}
 
     if (!business_name || !business_type || !location) {
       console.error('[webhook] Missing metadata in session:', session.id)
-      return NextResponse.json({ error: 'Missing metadata' }, { status: 400 })
+      // Return 200 so Stripe doesn't retry — bad metadata won't fix itself
+      return NextResponse.json({ received: true })
     }
 
+    // Run site generation — if it fails log it but always return 200
     try {
       const slug = await generateSite(
         business_name,
@@ -177,11 +203,9 @@ export async function POST(req: NextRequest) {
         session.id,
         session.customer || null,
       )
-
-      console.log(`[webhook] Site generated: /${slug} for ${business_name}`)
+      console.log(`[webhook] ✅ Site generated: /${slug} for "${business_name}"`)
     } catch (err: any) {
-      console.error('[webhook] Site generation failed:', err.message)
-      // Don't return error — Stripe would retry. Log and move on.
+      console.error(`[webhook] ❌ Generation failed for session ${session.id}:`, err.message)
     }
   }
 
