@@ -766,7 +766,7 @@ NEXT_PUBLIC_ADMIN_PIN`,
               items: [
                 { for: 'Operator', feature: 'Revenue dashboard — MRR tracker', why: 'See total paid sites × $29 = monthly income. Motivating.' },
                 { for: 'Operator', feature: 'Bulk generate demo sites', why: 'Create 5 demo sites at once for outreach across different niches.' },
-                { for: 'Client', feature: 'Gallery / photo upload section', why: 'Businesses want to show photos of their work.' },
+                { for: 'Client', feature: "Gallery / photo upload section ✅", why: 'DONE — Gallery tab in owner dashboard, grid display on public site' },
                 { for: 'Client', feature: 'Google Calendar integration', why: 'Auto-block time when a booking is confirmed.' },
                 { for: 'Client', feature: 'Booking reminder email 24h before', why: 'Reduces no-shows significantly.' },
                 { for: 'Customer', feature: 'Reschedule / cancel booking self-service', why: 'Customers want to manage their own bookings.' },

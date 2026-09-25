@@ -33,6 +33,8 @@ export default async function PublicSitePage({ params }: PageProps) {
   const about = theme.sections.find(s => s.type === 'about') as AboutSection | undefined
   const booking = theme.sections.find(s => s.type === 'booking_widget') as BookingSection | undefined
   const testimonials = theme.sections.find(s => s.type === 'testimonials') as TestimonialsSection | undefined
+  const gallerySection = theme.sections.find(s => s.type === 'gallery') as any
+  const galleryImages: string[] = gallerySection?.data?.images || []
 
   const primary = theme.theme?.primary || '#1A1A1A'
   const bg = theme.theme?.bg || '#FFFFFF'
@@ -194,9 +196,30 @@ export default async function PublicSitePage({ params }: PageProps) {
         </section>
       )}
 
+      {/* ── GALLERY ── */}
+      {galleryImages.length > 0 && (
+        <section className="py-12 sm:py-16 px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-center mb-8" style={{ color: primary }}>
+              Our Work
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {galleryImages.map((url, i) => (
+                <div key={i} className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100">
+                  <img
+                    src={url}
+                    alt={`Gallery photo ${i + 1}`}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ── BOOKING ── */}
-      {services.length > 0 && (
-        <section id="book" className="py-12 sm:py-16 px-4 sm:px-6 bg-gray-50">
+      {services.length > 0 && (        <section id="book" className="py-12 sm:py-16 px-4 sm:px-6 bg-gray-50">
           <div className="max-w-lg mx-auto bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:p-8">
             <BookingForm
               siteId={site.id}
