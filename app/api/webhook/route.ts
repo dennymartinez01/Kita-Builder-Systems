@@ -10,7 +10,10 @@ import { cafeDefaultServices, cafeDefaultStaff } from '@/lib/templates/cafe'
 import { mechanicDefaultServices, mechanicDefaultStaff } from '@/lib/templates/mechanic'
 import type { BusinessType } from '@/types/database'
 
-const DEFAULT_SERVICES = {
+// Tell Vercel this function can run up to 60 seconds (Hobby plan max)
+export const maxDuration = 60
+
+const DEFAULT_SERVICES: Record<BusinessType, any[]> = {
   salon: salonDefaultServices,
   clinic: clinicDefaultServices,
   pet: petDefaultServices,
@@ -18,7 +21,7 @@ const DEFAULT_SERVICES = {
   mechanic: mechanicDefaultServices,
 }
 
-const DEFAULT_STAFF = {
+const DEFAULT_STAFF: Record<BusinessType, any[]> = {
   salon: salonDefaultStaff,
   clinic: clinicDefaultStaff,
   pet: petDefaultStaff,
@@ -37,14 +40,15 @@ async function generateSite(
 ): Promise<string> {
   const supabase = createServerClient()
 
-  // ── Idempotency check — don't generate twice for the same session ──
+  // Idempotency — don't generate twice for the same session
   const { data: existing } = await supabase
     .from('sites')
     .select('slug')
     .eq('stripe_session_id', stripe_session_id)
     .single()
+
   if (existing) {
-    console.log(`[webhook] Site already exists for session ${stripe_session_id}: /${existing.slug}`)
+    console.log(`[webhook] Already exists for session ${stripe_session_id}: /${existing.slug}`)
     return existing.slug
   }
 
@@ -134,7 +138,7 @@ Use realistic ${location} pricing. 3-5 services, 2-3 staff, 3 testimonials.`
   const servicesData = aiData.services?.length ? aiData.services : DEFAULT_SERVICES[business_type]
   const staffData = aiData.staff?.length ? aiData.staff : DEFAULT_STAFF[business_type]
 
-  const [svcRes, staffRes] = await Promise.all([
+  await Promise.all([
     supabase.from('services').insert(
       servicesData.map((s: any) => ({
         site_id: site.id,
@@ -147,9 +151,6 @@ Use realistic ${location} pricing. 3-5 services, 2-3 staff, 3 testimonials.`
       staffData.map((s: any) => ({ site_id: site.id, name: s.name, role: s.role }))
     ),
   ])
-
-  if (svcRes.error) console.error('[webhook] Services insert error:', svcRes.error.message)
-  if (staffRes.error) console.error('[webhook] Staff insert error:', staffRes.error.message)
 
   return slug
 }
@@ -188,24 +189,34 @@ export async function POST(req: NextRequest) {
 
     if (!business_name || !business_type || !location) {
       console.error('[webhook] Missing metadata in session:', session.id)
-      // Return 200 so Stripe doesn't retry — bad metadata won't fix itself
       return NextResponse.json({ received: true })
     }
 
-    // Run site generation — if it fails log it but always return 200
-    try {
-      const slug = await generateSite(
-        business_name,
-        business_type as BusinessType,
-        location,
-        extra_notes || '',
-        owner_email || '',
-        session.id,
-        session.customer || null,
-      )
+    console.log(`[webhook] Processing payment for "${business_name}" — session ${session.id}`)
+
+    // Use waitUntil if available (Vercel Edge runtime) — respond to Stripe immediately
+    // and continue processing in background. Falls back to awaiting directly.
+    const ctx = (req as any)[Symbol.for('waitUntil')]
+
+    const generationPromise = generateSite(
+      business_name,
+      business_type as BusinessType,
+      location,
+      extra_notes || '',
+      owner_email || '',
+      session.id,
+      session.customer || null,
+    ).then(slug => {
       console.log(`[webhook] ✅ Site generated: /${slug} for "${business_name}"`)
-    } catch (err: any) {
+    }).catch((err: any) => {
       console.error(`[webhook] ❌ Generation failed for session ${session.id}:`, err.message)
+    })
+
+    // If waitUntil is available, use it — otherwise await directly
+    if (typeof ctx === 'function') {
+      ctx(generationPromise)
+    } else {
+      await generationPromise
     }
   }
 
