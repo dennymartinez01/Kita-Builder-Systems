@@ -25,6 +25,7 @@ interface BookingSummary {
 export default function RevenuePage() {
   const [sites, setSites] = useState<SiteRevenue[]>([])
   const [bookingCounts, setBookingCounts] = useState<Record<string, number>>({})
+  const [viewCounts, setViewCounts] = useState<Record<string, number>>({})
   const [loading, setLoading] = useState(true)
 
   useEffect(() => { loadData() }, [])
@@ -40,13 +41,27 @@ export default function RevenuePage() {
       .from('bookings')
       .select('site_id')
 
+    // Page views last 30 days
+    const since = new Date()
+    since.setDate(since.getDate() - 30)
+    const { data: viewsData } = await supabase
+      .from('page_views')
+      .select('site_id')
+      .gte('viewed_at', since.toISOString())
+
     const counts: Record<string, number> = {}
     bookingsData?.forEach((b: any) => {
       counts[b.site_id] = (counts[b.site_id] || 0) + 1
     })
 
+    const views: Record<string, number> = {}
+    viewsData?.forEach((v: any) => {
+      views[v.site_id] = (views[v.site_id] || 0) + 1
+    })
+
     setSites((sitesData as SiteRevenue[]) || [])
     setBookingCounts(counts)
+    setViewCounts(views)
     setLoading(false)
   }
 
@@ -57,7 +72,7 @@ export default function RevenuePage() {
   const totalBookings = Object.values(bookingCounts).reduce((a, b) => a + b, 0)
 
   function exportCSV() {
-    const headers = ['Business Name', 'Type', 'Owner Email', 'Payment Status', 'Paid At', 'Bookings', 'Created']
+    const headers = ['Business Name', 'Type', 'Owner Email', 'Payment Status', 'Paid At', 'Bookings', 'Views (30d)', 'Created']
     const rows = sites.map(s => [
       s.business_name,
       s.business_type,
@@ -65,6 +80,7 @@ export default function RevenuePage() {
       s.payment_status,
       s.paid_at ? new Date(s.paid_at).toLocaleDateString() : '',
       bookingCounts[s.id] || 0,
+      viewCounts[s.id] || 0,
       new Date(s.created_at).toLocaleDateString(),
     ])
     const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n')
@@ -132,6 +148,14 @@ export default function RevenuePage() {
             color: 'text-yellow-400',
             bg: 'border-yellow-800/50 bg-yellow-950/20',
           },
+          {
+            label: 'Total Page Views (30d)',
+            value: Object.values(viewCounts).reduce((a, b) => a + b, 0),
+            sub: 'visits across all client sites',
+            icon: Globe,
+            color: 'text-blue-300',
+            bg: 'border-blue-900/50 bg-blue-950/10',
+          },
         ].map(stat => {
           const Icon = stat.icon
           return (
@@ -177,6 +201,7 @@ export default function RevenuePage() {
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden sm:table-cell">Type</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs">Payment</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden md:table-cell">Bookings</th>
+                <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden md:table-cell">Views (30d)</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden lg:table-cell">Revenue</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden md:table-cell">Joined</th>
               </tr>
@@ -204,6 +229,9 @@ export default function RevenuePage() {
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell">
                     <span className="text-gray-400 text-xs">{bookingCounts[site.id] || 0}</span>
+                  </td>
+                  <td className="px-4 py-3 hidden md:table-cell">
+                    <span className="text-blue-300 text-xs">{viewCounts[site.id] || 0}</span>
                   </td>
                   <td className="px-4 py-3 hidden lg:table-cell">
                     <span className="text-green-400 text-xs font-mono">

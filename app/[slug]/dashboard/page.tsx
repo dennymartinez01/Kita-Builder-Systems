@@ -4,14 +4,15 @@ import { useEffect, useState, useCallback, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Site, Service, Booking, Staff } from '@/types/database'
 import AgentChat from '@/components/AgentChat'
+import { getWhiteLabelConfig } from '@/lib/whitelabel'
 import {
   CalendarCheck, Wrench, ExternalLink, CheckCircle,
   XCircle, Plus, Trash2, Loader2, Lock, Zap,
   Users, Clock, FileText, Save, KeyRound, Image,
-  Star, Upload, X, Download,
+  Star, Upload, X, Download, BarChart2,
 } from 'lucide-react'
 
-type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'ai'
+type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'ai'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -71,6 +72,10 @@ export default function OwnerDashboard({ params }: PageProps) {
   const [pinSaving, setPinSaving] = useState(false)
   const [pinMsg, setPinMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
+  // Analytics state
+  const [pageViews, setPageViews] = useState<{ date: string; count: number }[]>([])
+  const [analyticsLoading, setAnalyticsLoading] = useState(false)
+
   useEffect(() => {
     params.then(p => setSlug(p.slug))
   }, [params])
@@ -84,6 +89,9 @@ export default function OwnerDashboard({ params }: PageProps) {
     setServices(svcsRes.data || [])
     setBookings(bksRes.data || [])
     setStaffList(staffRes.data || [])
+
+    // Load analytics in background
+    loadAnalytics(siteData.id)
 
     // Load hours from theme_json if saved previously
     const themeJson = siteData.theme_json as any
@@ -314,6 +322,35 @@ export default function OwnerDashboard({ params }: PageProps) {
     }
   }
 
+  // ─── ANALYTICS ────────────────────────────────────────────────
+  async function loadAnalytics(siteId: string) {
+    setAnalyticsLoading(true)
+    // Get views for last 14 days
+    const since = new Date()
+    since.setDate(since.getDate() - 13)
+    const { data: views } = await supabase
+      .from('page_views')
+      .select('viewed_at')
+      .eq('site_id', siteId)
+      .gte('viewed_at', since.toISOString())
+      .order('viewed_at')
+
+    // Group by date
+    const counts: Record<string, number> = {}
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date()
+      d.setDate(d.getDate() - i)
+      counts[d.toISOString().split('T')[0]] = 0
+    }
+    views?.forEach(v => {
+      const date = v.viewed_at.split('T')[0]
+      if (counts[date] !== undefined) counts[date]++
+    })
+
+    setPageViews(Object.entries(counts).map(([date, count]) => ({ date, count })))
+    setAnalyticsLoading(false)
+  }
+
   // ─── BOOKINGS ─────────────────────────────────────────────────
   async function updateBookingStatus(id: string, status: Booking['status']) {
     await supabase.from('bookings').update({ status }).eq('id', id)
@@ -323,6 +360,7 @@ export default function OwnerDashboard({ params }: PageProps) {
   const primaryColor = (site?.theme_json as any)?.theme?.primary || '#1A1A2E'
   const pendingBookings = bookings.filter(b => b.status === 'pending').length
   const confirmedBookings = bookings.filter(b => b.status === 'confirmed').length
+  const wl = getWhiteLabelConfig()
 
   // ─── PIN GATE ─────────────────────────────────────────────────
   if (!authed) {
@@ -352,21 +390,26 @@ export default function OwnerDashboard({ params }: PageProps) {
               {loading ? <Loader2 size={16} className="animate-spin" /> : 'Enter Dashboard'}
             </button>
           </form>
-          <p className="text-gray-400 text-xs text-center mt-4">Default PIN: <span className="font-mono">1234</span></p>
+          <p className="text-gray-400 text-xs text-center mt-4">
+            Default PIN: <span className="font-mono">1234</span>
+            {wl.enabled && (
+              <span className="block text-gray-600 mt-1">Powered by {wl.agencyName}</span>
+            )}
+          </p>
         </div>
       </div>
     )
   }
 
   // ─── DASHBOARD ────────────────────────────────────────────────
-  const TABS = [
-    { id: 'bookings' as Tab, label: 'Bookings', icon: CalendarCheck, badge: pendingBookings > 0 ? pendingBookings : null },
+  const TABS = [    { id: 'bookings' as Tab, label: 'Bookings', icon: CalendarCheck, badge: pendingBookings > 0 ? pendingBookings : null },
     { id: 'services' as Tab, label: 'Services', icon: Wrench, badge: null },
     { id: 'staff' as Tab, label: 'Staff', icon: Users, badge: null },
     { id: 'hours' as Tab, label: 'Hours', icon: Clock, badge: null },
     { id: 'about' as Tab, label: 'About', icon: FileText, badge: null },
     { id: 'testimonials' as Tab, label: 'Reviews', icon: Star, badge: null },
     { id: 'gallery' as Tab, label: 'Gallery', icon: Image, badge: null },
+    { id: 'analytics' as Tab, label: 'Analytics', icon: BarChart2, badge: null },
     { id: 'settings' as Tab, label: 'Settings', icon: KeyRound, badge: null },
     { id: 'ai' as Tab, label: 'AI Assistant', icon: Zap, badge: null },
   ]
@@ -378,7 +421,9 @@ export default function OwnerDashboard({ params }: PageProps) {
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
             <h1 className="text-white font-bold text-xl">{site?.business_name}</h1>
-            <p className="text-white/60 text-sm">Owner Dashboard</p>
+            <p className="text-white/60 text-sm">
+              {wl.enabled ? wl.agencyName : 'Owner Dashboard'}
+            </p>
           </div>
           <a href={`/${slug}`} target="_blank" className="flex items-center gap-1.5 text-white/70 hover:text-white text-xs transition">
             View Site <ExternalLink size={12} />
@@ -784,6 +829,118 @@ export default function OwnerDashboard({ params }: PageProps) {
               )}
               {gallerySaved && <p className="text-green-600 text-xs text-center mt-3">✅ Gallery saved!</p>}
             </div>
+          </div>
+        )}
+
+        {/* ── ANALYTICS ── */}
+        {tab === 'analytics' && (
+          <div className="space-y-5">
+            {/* Summary stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {(() => {
+                const now = new Date()
+                const weekAgo = new Date(now); weekAgo.setDate(weekAgo.getDate() - 7)
+                const twoWeeksAgo = new Date(now); twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14)
+                const viewsThisWeek = pageViews.filter(v => new Date(v.date) >= weekAgo).reduce((a, v) => a + v.count, 0)
+                const viewsLastWeek = pageViews.filter(v => new Date(v.date) >= twoWeeksAgo && new Date(v.date) < weekAgo).reduce((a, v) => a + v.count, 0)
+                const bookingsThisWeek = bookings.filter(b => new Date(b.booking_date) >= weekAgo).length
+                const bookingsLastWeek = bookings.filter(b => new Date(b.booking_date) >= twoWeeksAgo && new Date(b.booking_date) < weekAgo).length
+                const totalViews = pageViews.reduce((a, v) => a + v.count, 0)
+                const viewTrend = viewsLastWeek > 0 ? Math.round(((viewsThisWeek - viewsLastWeek) / viewsLastWeek) * 100) : null
+
+                return [
+                  { label: 'Views This Week', value: viewsThisWeek, trend: viewTrend, color: 'text-blue-600 bg-blue-50' },
+                  { label: 'Views Last Week', value: viewsLastWeek, trend: null, color: 'text-gray-600 bg-gray-50' },
+                  { label: 'Bookings This Week', value: bookingsThisWeek, trend: null, color: 'text-green-600 bg-green-50' },
+                  { label: 'Total Views (14d)', value: totalViews, trend: null, color: 'text-purple-600 bg-purple-50' },
+                ].map(stat => (
+                  <div key={stat.label} className={`rounded-xl p-4 ${stat.color}`}>
+                    <div className="text-2xl font-bold">{analyticsLoading ? '…' : stat.value}</div>
+                    <div className="text-xs font-medium mt-0.5 opacity-70">{stat.label}</div>
+                    {stat.trend !== null && (
+                      <div className={`text-xs mt-1 font-semibold ${stat.trend >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+                        {stat.trend >= 0 ? '↑' : '↓'} {Math.abs(stat.trend)}% vs last week
+                      </div>
+                    )}
+                  </div>
+                ))
+              })()}
+            </div>
+
+            {/* Page views bar chart — last 14 days */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-900 text-sm">Page Views — Last 14 Days</h3>
+                <BarChart2 size={16} className="text-gray-400" />
+              </div>
+              {analyticsLoading ? (
+                <div className="h-32 flex items-center justify-center text-gray-400 text-sm">Loading...</div>
+              ) : pageViews.every(v => v.count === 0) ? (
+                <div className="h-32 flex items-center justify-center text-gray-400 text-sm">
+                  No views yet — share your site link to start tracking visitors.
+                </div>
+              ) : (
+                <div className="flex items-end gap-1 h-32">
+                  {pageViews.map((v, i) => {
+                    const max = Math.max(...pageViews.map(x => x.count), 1)
+                    const height = Math.max((v.count / max) * 100, v.count > 0 ? 4 : 0)
+                    const isToday = v.date === new Date().toISOString().split('T')[0]
+                    const label = new Date(v.date + 'T12:00:00').toLocaleDateString('en', { month: 'short', day: 'numeric' })
+                    return (
+                      <div key={v.date} className="flex-1 flex flex-col items-center gap-1" title={`${label}: ${v.count} views`}>
+                        <span className="text-gray-500 text-[9px]">{v.count > 0 ? v.count : ''}</span>
+                        <div
+                          className="w-full rounded-t transition-all"
+                          style={{
+                            height: `${height}%`,
+                            minHeight: v.count > 0 ? '4px' : '2px',
+                            backgroundColor: isToday ? (site?.theme_json as any)?.theme?.primary || '#3B82F6' : '#BFDBFE',
+                          }}
+                        />
+                        {(i === 0 || i === 6 || i === 13 || isToday) && (
+                          <span className="text-gray-400 text-[9px] whitespace-nowrap">{label}</span>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Bookings per week */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-5">
+              <h3 className="font-semibold text-gray-900 text-sm mb-4">Recent Bookings</h3>
+              {bookings.length === 0 ? (
+                <p className="text-gray-400 text-sm text-center py-4">No bookings yet.</p>
+              ) : (
+                <div className="space-y-2">
+                  {['confirmed', 'pending', 'cancelled'].map(status => {
+                    const count = bookings.filter(b => b.status === status).length
+                    const pct = Math.round((count / bookings.length) * 100)
+                    return (
+                      <div key={status} className="flex items-center gap-3">
+                        <span className="text-xs text-gray-500 w-20 capitalize">{status}</span>
+                        <div className="flex-1 bg-gray-100 rounded-full h-2">
+                          <div className="h-2 rounded-full transition-all" style={{
+                            width: `${pct}%`,
+                            backgroundColor: status === 'confirmed' ? '#16a34a' : status === 'pending' ? '#f59e0b' : '#ef4444'
+                          }} />
+                        </div>
+                        <span className="text-xs font-medium text-gray-700 w-8 text-right">{count}</span>
+                      </div>
+                    )
+                  })}
+                  <p className="text-gray-400 text-xs mt-2">{bookings.length} total bookings</p>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={() => site && loadAnalytics(site.id)}
+              className="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1 transition"
+            >
+              ↻ Refresh analytics
+            </button>
           </div>
         )}
 

@@ -669,6 +669,19 @@ NEXT_PUBLIC_ADMIN_PIN`,
               ],
             },
             {
+              category: '📊 Site Analytics',
+              items: [
+                'page_views table — tracks every visit to a client site (site_id, viewed_at, path)',
+                '/api/track — POST endpoint, records page views, silently fails if error',
+                'PageTracker component — client-side, fires on every public site load, non-blocking',
+                'Analytics tab in owner dashboard — 14-day page view bar chart, weekly comparison, booking status breakdown',
+                'Views trend — shows % change vs last week with ↑/↓ indicator',
+                'Admin Revenue page — Views (30d) column per site, total views stat card',
+                'CSV export includes Views (30d) column',
+                'supabase/analytics.sql — run to create page_views table',
+              ],
+            },
+            {
               category: '🏷️ White Label Mode',
               items: [
                 'NEXT_PUBLIC_WHITE_LABEL_MODE=on/off — global toggle via .env.local or Vercel env vars',
@@ -751,7 +764,7 @@ NEXT_PUBLIC_ADMIN_PIN`,
               color: 'border-blue-800 bg-blue-950/20',
               items: [
                 { for: 'Operator', feature: 'White-label mode — remove KITA branding for resellers ✅', why: 'DONE — configure via NEXT_PUBLIC_WHITE_LABEL_MODE=on in .env.local' },
-                { for: 'Operator', feature: 'Site analytics — page views, bookings per week', why: 'Show clients their ROI. Justifies the $29/mo.' },
+                { for: 'Operator', feature: 'Site analytics — page views, bookings per week ✅', why: 'DONE — Analytics tab in owner dashboard + views column in admin revenue page' },
                 { for: 'Client', feature: 'Testimonials editor in dashboard', why: 'Let clients add real reviews from actual customers.' },
                 { for: 'Client', feature: 'Multiple staff booking — assign service to specific staff', why: 'Salons need customers to pick their preferred stylist.' },
                 { for: 'Client', feature: 'Stripe deposit on booking (% pre-payment)', why: 'Reduce no-shows with a small deposit at booking time.' },

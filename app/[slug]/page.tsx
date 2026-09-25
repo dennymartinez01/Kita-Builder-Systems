@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import BookingForm from '@/components/BookingForm'
+import PageTracker from '@/components/PageTracker'
+import { getWhiteLabelConfig, getSiteWhiteLabel } from '@/lib/whitelabel'
 import type { ThemeJson, Service, Staff, HeroSection, AboutSection, BookingSection, TestimonialsSection } from '@/types/database'
 
 interface PageProps {
@@ -38,8 +40,25 @@ export default async function PublicSitePage({ params }: PageProps) {
   // Business hours from theme_json if set
   const hours = themeJson?.business_hours as Record<string, { open: string; close: string; closed: boolean }> | undefined
 
+  // White-label config
+  const wl = getWhiteLabelConfig()
+  const siteWl = getSiteWhiteLabel(themeJson)
+
+  // Determine footer brand text
+  const footerBrand = siteWl.hide_footer_brand
+    ? null
+    : siteWl.custom_footer
+      ? siteWl.custom_footer
+      : wl.enabled
+        ? `${wl.agencyName}${wl.agencyTagline ? ' · ' + wl.agencyTagline : ''}`
+        : null // null = use default KITA branding
+
+  const footerUrl = wl.enabled ? wl.agencyUrl : 'https://kita-builder-systems.vercel.app'
+
   return (
     <div style={{ backgroundColor: bg, fontFamily: `${theme.theme?.font || 'Inter'}, sans-serif` }} className="overflow-x-hidden">
+      {/* Fire analytics tracking — non-blocking, client-side */}
+      <PageTracker siteId={site.id} path={`/${slug}`} />
 
       {/* ── MOBILE NAV ── */}
       <nav className="sticky top-0 z-50 flex items-center justify-between px-4 py-3 border-b border-white/10" style={{ backgroundColor: primary }}>
@@ -219,8 +238,23 @@ export default async function PublicSitePage({ params }: PageProps) {
       {/* ── FOOTER ── */}
       <footer className="py-8 px-4 border-t border-gray-100 text-center">
         <p className="text-gray-400 text-xs">
-          {site.business_name} · Powered by{' '}
-          <span className="font-semibold" style={{ color: primary }}>KITA Systems</span>
+          {site.business_name}
+          {footerBrand !== null && (
+            <>
+              {' · '}
+              <a
+                href={footerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition hover:opacity-80"
+                style={{ color: primary }}
+              >
+                {footerBrand || (
+                  <>Powered by <span className="font-semibold">KITA Systems</span></>
+                )}
+              </a>
+            </>
+          )}
         </p>
         <a
           href={`/${slug}/dashboard`}

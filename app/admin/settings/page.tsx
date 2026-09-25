@@ -271,6 +271,62 @@ export default function SettingsPage() {
         </div>
       </div>
 
+      {/* WHITE LABEL SECTION */}
+      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-6">
+        <div className="flex items-center gap-2 mb-1">
+          <h2 className="text-white font-semibold">White Label Mode</h2>
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+            process.env.NEXT_PUBLIC_WHITE_LABEL_MODE === 'on'
+              ? 'bg-green-900/50 text-green-400'
+              : 'bg-gray-800 text-gray-500'
+          }`}>
+            {process.env.NEXT_PUBLIC_WHITE_LABEL_MODE === 'on' ? 'ON' : 'OFF'}
+          </span>
+        </div>
+        <p className="text-gray-500 text-sm mb-4">
+          When enabled, KITA branding is replaced with your agency name on all client sites and dashboards.
+          Perfect for reselling to other agencies.
+        </p>
+
+        <div className="space-y-3 mb-4">
+          {[
+            { key: 'NEXT_PUBLIC_WHITE_LABEL_MODE', value: process.env.NEXT_PUBLIC_WHITE_LABEL_MODE || 'off', desc: 'on = hide KITA branding, off = show KITA branding' },
+            { key: 'NEXT_PUBLIC_AGENCY_NAME', value: process.env.NEXT_PUBLIC_AGENCY_NAME || 'KITA Systems', desc: 'Your agency / brand name' },
+            { key: 'NEXT_PUBLIC_AGENCY_TAGLINE', value: process.env.NEXT_PUBLIC_AGENCY_TAGLINE || 'From Struggle to Booked.', desc: 'Shown in footer of client sites' },
+            { key: 'NEXT_PUBLIC_AGENCY_URL', value: process.env.NEXT_PUBLIC_AGENCY_URL || '', desc: 'Your website URL (linked in footer)' },
+            { key: 'NEXT_PUBLIC_AGENCY_LOGO_URL', value: process.env.NEXT_PUBLIC_AGENCY_LOGO_URL || '(not set)', desc: 'URL to your agency logo image' },
+          ].map(item => (
+            <div key={item.key} className="bg-gray-800 rounded-xl p-3">
+              <div className="flex items-center justify-between mb-1">
+                <code className="text-green-400 text-xs font-mono">{item.key}</code>
+                <span className="text-gray-400 text-xs">{item.value}</span>
+              </div>
+              <p className="text-gray-600 text-xs">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="bg-blue-950/30 border border-blue-900/50 rounded-xl p-4">
+          <p className="text-blue-400 text-xs font-semibold mb-2">How to enable white label:</p>
+          <pre className="text-xs text-gray-400 font-mono leading-5">{`# In .env.local (and Vercel Environment Variables):
+NEXT_PUBLIC_WHITE_LABEL_MODE=on
+NEXT_PUBLIC_AGENCY_NAME=Your Agency Name
+NEXT_PUBLIC_AGENCY_TAGLINE=Your tagline here
+NEXT_PUBLIC_AGENCY_URL=https://youragency.com
+NEXT_PUBLIC_AGENCY_LOGO_URL=https://youragency.com/logo.png`}</pre>
+        </div>
+
+        <div className="mt-4 bg-gray-800 rounded-xl p-4">
+          <p className="text-white text-xs font-semibold mb-2">Per-site white label (via theme_json)</p>
+          <p className="text-gray-500 text-xs mb-2">You can also override branding per site by editing the site's <code className="text-blue-300">theme_json</code> in Supabase:</p>
+          <pre className="text-xs text-gray-400 font-mono leading-5">{`"white_label": {
+  "enabled": true,
+  "custom_footer": "Powered by Sydney Web Co.",
+  "hide_footer_brand": false
+}`}</pre>
+        </div>
+      </div>
+
       {/* NOTIFICATION EMAIL SECTION */}
       <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
         <h2 className="text-white font-semibold mb-1">Notification Email</h2>
