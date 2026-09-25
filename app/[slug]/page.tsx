@@ -201,6 +201,7 @@ export default async function PublicSitePage({ params }: PageProps) {
             <BookingForm
               siteId={site.id}
               services={services}
+              staff={staff}
               requiresField={booking?.data.requires_field || 'none'}
               primaryColor={primary}
               depositPercent={booking?.data.deposit_percent || 0}

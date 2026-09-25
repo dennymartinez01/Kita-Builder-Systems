@@ -1,12 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import type { Service } from '@/types/database'
-import { CheckCircle, Loader2, Calendar, Clock, Phone, User, Car, PawPrint, MessageSquare } from 'lucide-react'
+import type { Service, Staff } from '@/types/database'
+import { CheckCircle, Loader2, Calendar, Clock, Phone, User, Car, PawPrint, MessageSquare, Users } from 'lucide-react'
 
 interface BookingFormProps {
   siteId: string
   services: Service[]
+  staff?: Staff[]
   requiresField: 'car_model' | 'pet_name' | 'none'
   primaryColor: string
   depositPercent: number
@@ -16,6 +17,7 @@ interface BookingFormProps {
 export default function BookingForm({
   siteId,
   services,
+  staff = [],
   requiresField,
   primaryColor,
   depositPercent,
@@ -24,6 +26,8 @@ export default function BookingForm({
   const [form, setForm] = useState({
     service_id: services[0]?.id || '',
     service_name: services[0]?.name || '',
+    staff_id: '',
+    staff_name: '',
     customer_name: '',
     customer_phone: '',
     booking_date: '',
@@ -46,6 +50,22 @@ export default function BookingForm({
       ...prev,
       service_id: serviceId,
       service_name: service?.name || '',
+      // Reset staff when service changes
+      staff_id: '',
+      staff_name: '',
+    }))
+  }
+
+  function handleStaffChange(staffId: string) {
+    if (!staffId) {
+      setForm(prev => ({ ...prev, staff_id: '', staff_name: '' }))
+      return
+    }
+    const member = staff.find(s => s.id === staffId)
+    setForm(prev => ({
+      ...prev,
+      staff_id: staffId,
+      staff_name: member?.name || '',
     }))
   }
 
@@ -58,10 +78,7 @@ export default function BookingForm({
       const res = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          site_id: siteId,
-          ...form,
-        }),
+        body: JSON.stringify({ site_id: siteId, ...form }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Booking failed')
@@ -81,6 +98,9 @@ export default function BookingForm({
         <p className="text-gray-600 text-sm mb-1">
           Thanks, <strong>{form.customer_name}</strong>! Your appointment for <strong>{form.service_name}</strong> is booked.
         </p>
+        {form.staff_name && (
+          <p className="text-gray-500 text-sm mb-1">With <strong>{form.staff_name}</strong></p>
+        )}
         <p className="text-gray-500 text-sm">
           {form.booking_date} at {form.booking_time} · We'll be in touch at {form.customer_phone}.
         </p>
@@ -90,6 +110,7 @@ export default function BookingForm({
             setForm({
               service_id: services[0]?.id || '',
               service_name: services[0]?.name || '',
+              staff_id: '', staff_name: '',
               customer_name: '', customer_phone: '',
               booking_date: '', booking_time: '',
               car_model: '', pet_name: '', notes: '',
@@ -116,8 +137,7 @@ export default function BookingForm({
           <select
             value={form.service_id}
             onChange={e => handleServiceChange(e.target.value)}
-            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-offset-0"
-            style={{ '--tw-ring-color': primaryColor } as any}
+            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2"
             required
           >
             {services.map(s => (
@@ -127,6 +147,30 @@ export default function BookingForm({
             ))}
           </select>
         </div>
+
+        {/* Staff picker — only show if there are staff members */}
+        {staff.length > 0 && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Preferred Staff <span className="text-gray-400 font-normal">(optional)</span>
+            </label>
+            <div className="relative">
+              <Users size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <select
+                value={form.staff_id}
+                onChange={e => handleStaffChange(e.target.value)}
+                className="w-full border border-gray-200 rounded-xl pl-9 pr-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 appearance-none"
+              >
+                <option value="">No preference — any available staff</option>
+                {staff.map(s => (
+                  <option key={s.id} value={s.id}>
+                    {s.name} — {s.role}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
 
         {/* Name + Phone — stack on mobile */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -223,7 +267,7 @@ export default function BookingForm({
           </div>
         )}
 
-        {/* Optional notes */}
+        {/* Notes */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Notes <span className="text-gray-400 font-normal">(optional)</span>
@@ -252,22 +296,16 @@ export default function BookingForm({
           style={{ backgroundColor: primaryColor }}
         >
           {loading ? (
-            <>
-              <Loader2 size={16} className="animate-spin" />
-              Confirming...
-            </>
+            <><Loader2 size={16} className="animate-spin" />Confirming...</>
           ) : (
-            <>
-              {depositPercent > 0
-                ? `Pay ${depositPercent}% Deposit & Confirm`
-                : 'Confirm Booking'}
-            </>
+            depositPercent > 0 ? `Pay ${depositPercent}% Deposit & Confirm` : 'Confirm Booking'
           )}
         </button>
 
         {selectedService && (
           <p className="text-center text-gray-400 text-xs">
             {selectedService.name} · ${selectedService.price} · {selectedService.duration_minutes} min
+            {form.staff_name && <> · with {form.staff_name}</>}
           </p>
         )}
       </form>

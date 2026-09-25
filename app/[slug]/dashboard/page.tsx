@@ -479,8 +479,8 @@ export default function OwnerDashboard({ params }: PageProps) {
               {bookings.length > 0 && (
                 <button
                   onClick={() => {
-                    const headers = ['Customer', 'Phone', 'Service', 'Date', 'Time', 'Status', 'Notes']
-                    const rows = bookings.map(b => [b.customer_name, b.customer_phone, b.service_name, b.booking_date, b.booking_time, b.status, b.notes || ''])
+                    const headers = ['Customer', 'Phone', 'Service', 'Staff', 'Date', 'Time', 'Status', 'Notes']
+                    const rows = bookings.map(b => [b.customer_name, b.customer_phone, b.service_name, b.staff_name || '', b.booking_date, b.booking_time, b.status, b.notes || ''])
                     const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n')
                     const blob = new Blob([csv], { type: 'text/csv' })
                     const url = URL.createObjectURL(blob)
@@ -521,6 +521,7 @@ export default function OwnerDashboard({ params }: PageProps) {
                         <p className="text-gray-600 text-xs mt-1"><strong>{b.service_name}</strong> · {b.booking_date} at {b.booking_time}</p>
                         <p className="text-gray-400 text-xs mt-0.5">
                           📞 {b.customer_phone}
+                          {b.staff_name && <> · 👤 {b.staff_name}</>}
                           {b.car_model && <> · 🚗 {b.car_model}</>}
                           {b.pet_name && <> · 🐾 {b.pet_name}</>}
                           {b.notes && <> · 💬 {b.notes}</>}

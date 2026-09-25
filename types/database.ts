@@ -121,6 +121,8 @@ export interface Booking {
   car_model: string | null
   pet_name: string | null
   notes: string | null
+  staff_id: string | null
+  staff_name: string | null
   status: BookingStatus
   created_at: string
 }

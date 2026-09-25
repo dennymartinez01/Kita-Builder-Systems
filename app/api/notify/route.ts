@@ -16,6 +16,8 @@ export async function POST(req: NextRequest) {
       car_model,
       pet_name,
       notes,
+      staff_id,
+      staff_name,
     } = body
 
     if (!site_id || !customer_name || !customer_phone || !service_name || !booking_date || !booking_time) {
@@ -41,6 +43,8 @@ export async function POST(req: NextRequest) {
         car_model: car_model || null,
         pet_name: pet_name || null,
         notes: notes || null,
+        staff_id: staff_id || null,
+        staff_name: staff_name || null,
         status: 'confirmed',
       })
       .select()
@@ -68,6 +72,7 @@ export async function POST(req: NextRequest) {
           ? `<br/><strong>Pet Name:</strong> ${pet_name}`
           : ''
 
+      const staffHtml = staff_name ? `<br/><strong>Staff:</strong> ${staff_name}` : ''
       const notesHtml = notes ? `<br/><strong>Notes:</strong> ${notes}` : ''
 
       // Email to owner
@@ -86,7 +91,7 @@ export async function POST(req: NextRequest) {
               <p style="margin: 0 0 8px; font-size: 14px;"><strong>Service:</strong> ${service_name}</p>
               <p style="margin: 0 0 8px; font-size: 14px;"><strong>Date:</strong> ${booking_date}</p>
               <p style="margin: 0 0 8px; font-size: 14px;"><strong>Time:</strong> ${booking_time}</p>
-              <p style="margin: 0; font-size: 14px;">${extraField}${notesHtml}</p>
+              <p style="margin: 0; font-size: 14px;">${staffHtml}${extraField}${notesHtml}</p>
             </div>
             
             <p style="color: #999; font-size: 12px; margin-top: 20px; text-align: center;">
