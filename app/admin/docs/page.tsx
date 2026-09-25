@@ -669,6 +669,19 @@ NEXT_PUBLIC_ADMIN_PIN`,
               ],
             },
             {
+              category: '📅 Booking System',
+              items: [
+                'Booking form — service selector, name, phone, date, time, conditional fields',
+                'Preferred Staff picker — optional dropdown, "No preference" default',
+                'Custom fields — car model (mechanic), pet name (pet clinic)',
+                'Staff selection saved to bookings — staff_id + staff_name columns',
+                'Staff name shown in owner dashboard bookings with 👤 icon',
+                'Staff name included in booking notification email',
+                'Booking confirmation — shows service, staff name, date, time',
+                'CSV export includes Staff column',
+              ],
+            },
+            {
               category: '📊 Site Analytics',
               items: [
                 'page_views table — tracks every visit to a client site (site_id, viewed_at, path)',
@@ -765,7 +778,7 @@ NEXT_PUBLIC_ADMIN_PIN`,
               items: [
                 { for: 'Operator', feature: 'White-label mode — remove KITA branding for resellers ✅', why: 'DONE — configure via NEXT_PUBLIC_WHITE_LABEL_MODE=on in .env.local' },
                 { for: 'Operator', feature: 'Site analytics — page views, bookings per week ✅', why: 'DONE — Analytics tab in owner dashboard + views column in admin revenue page' },
-                { for: 'Client', feature: 'Testimonials editor in dashboard', why: 'Let clients add real reviews from actual customers.' },
+                { for: 'Client', feature: 'Testimonials editor in dashboard ✅', why: 'DONE — Reviews tab in owner dashboard, add/edit/remove, star ratings, saves to theme_json' },
                 { for: 'Client', feature: 'Multiple staff booking — assign service to specific staff ✅', why: 'DONE — Optional staff picker in booking form, staff name in email + dashboard bookings' },
                 { for: 'Client', feature: 'Stripe deposit on booking (% pre-payment)', why: 'Reduce no-shows with a small deposit at booking time.' },
                 { for: 'Customer', feature: 'WhatsApp booking option', why: 'AU/PH customers prefer WhatsApp over email.' },
