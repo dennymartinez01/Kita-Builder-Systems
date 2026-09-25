@@ -13,6 +13,7 @@ import {
   Menu,
   Settings,
   Zap,
+  TrendingUp,
 } from 'lucide-react'
 
 const NAV_ITEMS = [
@@ -20,6 +21,7 @@ const NAV_ITEMS = [
   { href: '/admin/credentials', label: 'API Keys & Credentials', icon: KeyRound },
   { href: '/admin/generate', label: 'Generate Site', icon: Zap },
   { href: '/admin/sites', label: 'All Sites', icon: Globe },
+  { href: '/admin/revenue', label: 'Revenue', icon: TrendingUp },
   { href: '/admin/templates', label: 'Templates', icon: Layers },
   { href: '/admin/docs', label: 'Documentation', icon: BookOpen },
   { href: '/admin/settings', label: 'Settings', icon: Settings },

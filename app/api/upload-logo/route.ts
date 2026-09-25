@@ -5,6 +5,7 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
     const file = formData.get('file') as File | null
+    const folder = (formData.get('folder') as string) || 'brand'
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided.' }, { status: 400 })
@@ -33,9 +34,11 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer()
     const buffer = new Uint8Array(arrayBuffer)
 
-    // Use a fixed filename so it always overwrites the previous logo
+    // Use a fixed filename for logo (overwrites), unique for gallery
     const ext = file.name.split('.').pop() || 'png'
-    const fileName = `brand/kita-logo.${ext}`
+    const fileName = folder === 'brand'
+      ? `brand/kita-logo.${ext}`
+      : `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
     const { error: uploadError } = await supabase.storage
       .from('kita-assets')

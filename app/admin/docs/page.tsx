@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight } from 'lucide-react'
+import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo } from 'lucide-react'
 
 interface DocSection {
   id: string
@@ -556,6 +556,363 @@ NEXT_PUBLIC_ADMIN_PIN`,
               <p className="text-gray-400 text-sm">Add <code className="text-blue-300 font-mono">TWILIO_AUTH_TOKEN</code> + <code className="text-blue-300 font-mono">TWILIO_ACCOUNT_SID</code> to .env.local and the notify route will also fire an SMS to the owner's mobile.</p>
             </div>
           </div>
+        </div>
+      ),
+    },
+    // ─── FEATURES COMPLETED ───────────────────────────────────────
+    {
+      id: 'features',
+      title: 'Features Completed',
+      icon: CheckSquare,
+      content: (
+        <div className="space-y-6">
+          <p className="text-gray-400 text-sm">Everything built and integrated into KITA Builder Systems as of Week 3.</p>
+
+          {[
+            {
+              category: '🔧 Admin CMS (Your Control Panel)',
+              items: [
+                'Dashboard with live stats — total sites, bookings, pending, templates ready',
+                'Generate Site — AI-powered form to create any client site in ~10 seconds',
+                'All Sites — table view with search, filter by type, payment status badge, delete',
+                'Revenue Dashboard (/admin/revenue) — MRR, setup revenue, annual projection, CSV export',
+                'Templates marketplace — 11 templates, gradient cards, slide-over detail preview',
+                'API Keys & Credentials — reference panel for all service accounts + .env template',
+                'Settings — logo uploader via Supabase Storage, admin PIN config',
+                'Documentation — this page (live, searchable, collapsible sections)',
+                'Pitch Page link — direct access to the client-facing outreach page',
+                'PIN-protected login with session persistence',
+              ],
+            },
+            {
+              category: '🌐 Public Client Site (/{slug})',
+              items: [
+                'Sticky mobile nav with business name + Book Now CTA',
+                'Hero section — AI-generated headline, subtitle, CTA, background image',
+                'Services section — responsive grid, price displayed inline, Book Now per card',
+                'About section — AI-generated business description',
+                'Business hours display — shows Mon–Sun hours from owner dashboard',
+                'Staff / team section — avatar initials, name, role',
+                'Booking form — service selector, name, phone, date, time, conditional fields',
+                'Custom booking fields — car model (mechanic), pet name (pet clinic)',
+                'Testimonials section — AI-generated customer reviews with star ratings',
+                'Footer with KITA branding and owner login link',
+                'Mobile responsive — tested on 375px, works on all screen sizes',
+              ],
+            },
+            {
+              category: '📋 Owner Dashboard (/{slug}/dashboard)',
+              items: [
+                'PIN login — secure access, default 1234',
+                'PIN change — Settings tab, validates match + min 4 chars',
+                'Stats bar — pending bookings, confirmed, services count, staff count',
+                'Bookings tab — full list, confirm/cancel buttons, CSV export',
+                'Services tab — inline edit name/price/duration, add/delete service, saves instantly',
+                'Staff tab — add/edit/remove team members with name and role',
+                'Hours tab — toggle open/closed per day, time pickers, Save button',
+                'About tab — edit section title and body text, live preview, Save button',
+                'Reviews tab — add/edit/remove testimonials, star rating picker, save',
+                'Gallery tab — multi-photo upload, delete, saves to Supabase Storage',
+                'Settings tab — business logo upload + PIN change',
+                'AI Assistant tab — chat-based site editor, 9 agent tools',
+                'View Site link — opens public site in new tab',
+              ],
+            },
+            {
+              category: '🤖 AI Assistant (Agent Tools)',
+              items: [
+                'update_service_price — "change my haircut to $80"',
+                'update_service_name — "rename Beard Trim to Hot Towel Shave"',
+                'update_service_duration — "make oil change 45 minutes"',
+                'add_service — "add Deep Conditioning $45 45min"',
+                'delete_service — "remove the blowout service"',
+                'update_headline — "change the title to Portland\'s Best Barbers"',
+                'update_subheadline — "change subtitle to..."',
+                'update_about — "update our about section to..."',
+                'list_services — "show me my current services"',
+                'Changes apply to live site in real time — no reload needed',
+              ],
+            },
+            {
+              category: '💳 Payments (Stripe)',
+              items: [
+                '/onboard — client-facing $150 setup payment page with features list',
+                '/onboard/success — polls Supabase until site appears after payment',
+                '/api/checkout — creates Stripe Checkout session with business metadata',
+                '/api/webhook — handles checkout.session.completed, auto-generates site',
+                'Idempotency check — prevents duplicate site creation for same session',
+                'maxDuration=60 on webhook to prevent Vercel timeout',
+                'payment_status column on sites table — paid / free / unpaid',
+                'Test mode active — use card 4242 4242 4242 4242',
+                'Pitch page has Pay & Launch Now → /onboard button',
+              ],
+            },
+            {
+              category: '📧 Notifications (Resend)',
+              items: [
+                'Email sent to NOTIFICATION_EMAIL on every confirmed booking',
+                'Email includes: customer name, phone, service, date, time, notes, car/pet field',
+                'HTML email template with KITA branding',
+                'Works in test mode with resend.dev sender (no domain required)',
+                'NOTIFICATION_EMAIL is primary — bypasses domain restriction for testing',
+              ],
+            },
+            {
+              category: '🗄️ Database (Supabase)',
+              items: [
+                'sites — slug, business_name, type, owner_email, pin, theme_json, payment_status, stripe fields',
+                'services — linked to site, name, price, duration',
+                'staff — linked to site, name, role, avatar_url',
+                'bookings — all customer booking fields including car_model, pet_name, notes, status',
+                'Storage bucket kita-assets — logo uploads via /api/upload-logo',
+                'Row Level Security enabled on all tables (public access for MVP)',
+              ],
+            },
+            {
+              category: '🚀 Deployment',
+              items: [
+                'Deployed to Vercel — kita-builder-systems.vercel.app',
+                'GitHub repo — github.com/dennymartinez01/Kita-Builder-Systems',
+                'All env vars configured in Vercel dashboard',
+                'Stripe webhook endpoint configured for production URL',
+                'Auto-deploys on every push to main branch',
+              ],
+            },
+          ].map(group => (
+            <div key={group.category} className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
+              <div className="px-4 py-3 border-b border-gray-800">
+                <p className="text-white font-semibold text-sm">{group.category}</p>
+              </div>
+              <div className="p-4 space-y-2">
+                {group.items.map((item, i) => (
+                  <div key={i} className="flex items-start gap-2 text-sm">
+                    <span className="text-green-400 shrink-0 mt-0.5">✅</span>
+                    <span className="text-gray-400">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    // ─── RECOMMENDATIONS ──────────────────────────────────────────
+    {
+      id: 'recommendations',
+      title: 'Feature Recommendations',
+      icon: Lightbulb,
+      content: (
+        <div className="space-y-6">
+          <p className="text-gray-400 text-sm">
+            Suggested features to improve the system for you as operator, your clients, and their customers.
+            Prioritised by impact vs effort.
+          </p>
+
+          {[
+            {
+              label: '🔥 High Impact — Build Next',
+              color: 'border-red-800 bg-red-950/20',
+              items: [
+                { for: 'Operator', feature: 'Stripe $29/mo recurring subscription', why: 'Automated monthly billing — no manual chasing. Pure revenue.' },
+                { for: 'Operator', feature: 'Gemini webhook fix — auto-generate after payment', why: 'Core flow needs to work. Clients pay → site appears automatically.' },
+                { for: 'Client', feature: 'Custom PIN change in owner dashboard', why: 'Default 1234 is a security risk once real clients are using it.' },
+                { for: 'Client', feature: 'Business logo upload in owner dashboard', why: 'Clients want their own logo on the site, not just initials.' },
+                { for: 'Customer', feature: 'Booking confirmation SMS via Twilio', why: 'Customers expect SMS confirmation. Email goes to spam.' },
+              ],
+            },
+            {
+              label: '⚡ Medium Impact — Week 4 Target',
+              color: 'border-yellow-800 bg-yellow-950/20',
+              items: [
+                { for: 'Operator', feature: 'Revenue dashboard — MRR tracker', why: 'See total paid sites × $29 = monthly income. Motivating.' },
+                { for: 'Operator', feature: 'Bulk generate demo sites', why: 'Create 5 demo sites at once for outreach across different niches.' },
+                { for: 'Client', feature: 'Gallery / photo upload section', why: 'Businesses want to show photos of their work.' },
+                { for: 'Client', feature: 'Google Calendar integration', why: 'Auto-block time when a booking is confirmed.' },
+                { for: 'Client', feature: 'Booking reminder email 24h before', why: 'Reduces no-shows significantly.' },
+                { for: 'Customer', feature: 'Reschedule / cancel booking self-service', why: 'Customers want to manage their own bookings.' },
+              ],
+            },
+            {
+              label: '💡 Nice to Have — Future Sprints',
+              color: 'border-blue-800 bg-blue-950/20',
+              items: [
+                { for: 'Operator', feature: 'White-label mode — remove KITA branding for resellers', why: 'Other agencies could resell KITA under their own brand.' },
+                { for: 'Operator', feature: 'Site analytics — page views, bookings per week', why: 'Show clients their ROI. Justifies the $29/mo.' },
+                { for: 'Client', feature: 'Testimonials editor in dashboard', why: 'Let clients add real reviews from actual customers.' },
+                { for: 'Client', feature: 'Multiple staff booking — assign service to specific staff', why: 'Salons need customers to pick their preferred stylist.' },
+                { for: 'Client', feature: 'Stripe deposit on booking (% pre-payment)', why: 'Reduce no-shows with a small deposit at booking time.' },
+                { for: 'Customer', feature: 'WhatsApp booking option', why: 'AU/PH customers prefer WhatsApp over email.' },
+                { for: 'Operator', feature: 'Multi-site client accounts', why: 'A client with 2 locations needs one login for both.' },
+              ],
+            },
+          ].map(group => (
+            <div key={group.label} className={`border rounded-xl overflow-hidden ${group.color}`}>
+              <div className="px-4 py-3 border-b border-gray-800/50">
+                <p className="text-white font-semibold text-sm">{group.label}</p>
+              </div>
+              <div className="divide-y divide-gray-800/30">
+                {group.items.map((item, i) => (
+                  <div key={i} className="px-4 py-3 grid grid-cols-12 gap-3">
+                    <div className="col-span-2">
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                        item.for === 'Operator' ? 'bg-purple-900/50 text-purple-400'
+                        : item.for === 'Client' ? 'bg-blue-900/50 text-blue-400'
+                        : 'bg-green-900/50 text-green-400'
+                      }`}>{item.for}</span>
+                    </div>
+                    <div className="col-span-4">
+                      <p className="text-white text-xs font-medium">{item.feature}</p>
+                    </div>
+                    <div className="col-span-6">
+                      <p className="text-gray-500 text-xs">{item.why}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    // ─── BACKLOG ──────────────────────────────────────────────────
+    {
+      id: 'backlog',
+      title: 'Backlog — Next Week',
+      icon: ListTodo,
+      content: (
+        <div className="space-y-6">
+          <p className="text-gray-400 text-sm">
+            Tasks that require paid accounts or billing activation. Code preparation is done — just needs account setup and testing.
+          </p>
+
+          {[
+            {
+              label: '🔴 Blocked — Needs Gemini Account Fix',
+              color: 'border-red-800',
+              tasks: [
+                {
+                  title: 'Webhook auto-generation after Stripe payment',
+                  status: 'Code complete',
+                  blocker: 'Gemini API returning errors on Vercel cold start. Investigate account quota/limits at aistudio.google.com.',
+                  effort: '1-2 hours once account is fixed',
+                },
+                {
+                  title: 'Full /onboard → pay → site live flow end-to-end',
+                  status: 'Code complete',
+                  blocker: 'Depends on webhook Gemini fix above.',
+                  effort: 'Testing only — no code needed',
+                },
+              ],
+            },
+            {
+              label: '🟡 Blocked — Needs Stripe Live Keys',
+              color: 'border-yellow-800',
+              tasks: [
+                {
+                  title: '$29/month recurring subscription billing',
+                  status: 'Code not started — needs Stripe Products + Prices setup',
+                  blocker: 'Currently in test mode. Need to create a $29/mo Stripe Product and switch to live keys when ready for real clients.',
+                  effort: '2-3 hours coding + Stripe dashboard setup',
+                },
+                {
+                  title: 'Switch Stripe test keys to live keys',
+                  status: 'Pending',
+                  blocker: 'Only do this when you have a real paying client ready. Update STRIPE_SECRET_KEY in Vercel + .env.local.',
+                  effort: '5 minutes',
+                },
+              ],
+            },
+            {
+              label: '🟡 Blocked — Needs Twilio Account ($20 deposit)',
+              color: 'border-orange-800',
+              tasks: [
+                {
+                  title: 'SMS booking confirmation to customer',
+                  status: 'Code not started — /api/notify ready to extend',
+                  blocker: 'Need Twilio account funded. Add TWILIO_ACCOUNT_SID + TWILIO_AUTH_TOKEN + TWILIO_PHONE_NUMBER to .env.local.',
+                  effort: '1 hour to add SMS to /api/notify route',
+                },
+                {
+                  title: 'SMS reminder 24 hours before appointment',
+                  status: 'Code not started',
+                  blocker: 'Needs Twilio + a scheduled job (Vercel Cron or Supabase pg_cron).',
+                  effort: '2-3 hours',
+                },
+              ],
+            },
+            {
+              label: '🟡 Blocked — Needs Resend Verified Domain',
+              color: 'border-blue-800',
+              tasks: [
+                {
+                  title: 'Send booking emails to client\'s owner_email (not just your email)',
+                  status: 'Workaround active — currently all emails go to NOTIFICATION_EMAIL',
+                  blocker: 'Add a domain in Resend → verify DNS → update from address to bookings@yourdomain.com.',
+                  effort: '30 minutes once domain is ready',
+                },
+              ],
+            },
+            {
+              label: '🟢 No Blocker — Can Build Anytime',
+              color: 'border-green-800',
+              tasks: [
+                {
+                  title: 'Custom PIN change in owner dashboard',
+                  status: '✅ DONE — Settings tab in owner dashboard, validates match + min length',
+                  blocker: 'None',
+                  effort: 'Complete',
+                },
+                {
+                  title: 'Business logo upload in owner dashboard',
+                  status: '✅ DONE — Settings tab, uploads to Supabase Storage, saves to theme_json.logo_url',
+                  blocker: 'None',
+                  effort: 'Complete',
+                },
+                {
+                  title: 'Gallery / photo upload section on public site',
+                  status: '✅ DONE — Gallery tab in owner dashboard, multi-upload, delete, saves to theme_json',
+                  blocker: 'None',
+                  effort: 'Complete',
+                },
+                {
+                  title: 'Testimonials editor in owner dashboard',
+                  status: '✅ DONE — Reviews tab, add/edit/remove, star rating picker, save to theme_json',
+                  blocker: 'None',
+                  effort: 'Complete',
+                },
+                {
+                  title: 'Revenue dashboard in admin — MRR tracker',
+                  status: '✅ DONE — /admin/revenue: MRR, setup revenue, annual projection, per-site breakdown',
+                  blocker: 'None',
+                  effort: 'Complete',
+                },
+                {
+                  title: 'Export bookings to CSV',
+                  status: '✅ DONE — CSV export in owner dashboard Bookings tab + admin Revenue page',
+                  blocker: 'None',
+                  effort: 'Complete',
+                },
+              ],
+            },
+          ].map(group => (
+            <div key={group.label} className={`border rounded-xl overflow-hidden ${group.color} bg-gray-950/30`}>
+              <div className="px-4 py-3 border-b border-gray-800">
+                <p className="text-white font-semibold text-sm">{group.label}</p>
+              </div>
+              <div className="divide-y divide-gray-800">
+                {group.tasks.map((task, i) => (
+                  <div key={i} className="px-4 py-4 space-y-1.5">
+                    <p className="text-white text-sm font-medium">{task.title}</p>
+                    <div className="flex flex-wrap gap-3 text-xs">
+                      <span className="text-blue-400">Status: {task.status}</span>
+                      <span className="text-yellow-400/70">Effort: {task.effort}</span>
+                    </div>
+                    <p className="text-gray-500 text-xs">{task.blocker}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       ),
     },

@@ -1,16 +1,17 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Site, Service, Booking, Staff } from '@/types/database'
 import AgentChat from '@/components/AgentChat'
 import {
   CalendarCheck, Wrench, ExternalLink, CheckCircle,
   XCircle, Plus, Trash2, Loader2, Lock, Zap,
-  Users, Clock, FileText, Save,
+  Users, Clock, FileText, Save, KeyRound, Image,
+  Star, Upload, X, Download,
 } from 'lucide-react'
 
-type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'ai'
+type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'ai'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -49,6 +50,27 @@ export default function OwnerDashboard({ params }: PageProps) {
   const [aboutBody, setAboutBody] = useState('')
   const [aboutSaved, setAboutSaved] = useState(false)
 
+  // Testimonials state
+  const [testimonials, setTestimonials] = useState<{ name: string; text: string; rating: number }[]>([])
+  const [testimonialsSaved, setTestimonialsSaved] = useState(false)
+
+  // Gallery state
+  const [galleryImages, setGalleryImages] = useState<string[]>([])
+  const [galleryUploading, setGalleryUploading] = useState(false)
+  const [gallerySaved, setGallerySaved] = useState(false)
+  const galleryInputRef = useRef<HTMLInputElement>(null)
+
+  // Logo state
+  const [logoUploading, setLogoUploading] = useState(false)
+  const [logoUrl, setLogoUrl] = useState<string | null>(null)
+  const logoInputRef = useRef<HTMLInputElement>(null)
+
+  // PIN change state
+  const [newPin, setNewPin] = useState('')
+  const [confirmPin, setConfirmPin] = useState('')
+  const [pinSaving, setPinSaving] = useState(false)
+  const [pinMsg, setPinMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
   useEffect(() => {
     params.then(p => setSlug(p.slug))
   }, [params])
@@ -74,6 +96,23 @@ export default function OwnerDashboard({ params }: PageProps) {
     if (aboutSection) {
       setAboutTitle(aboutSection.data?.title || '')
       setAboutBody(aboutSection.data?.body || '')
+    }
+
+    // Load testimonials
+    const testimonialsSection = themeJson?.sections?.find((s: any) => s.type === 'testimonials')
+    if (testimonialsSection?.data?.items) {
+      setTestimonials(testimonialsSection.data.items)
+    }
+
+    // Load gallery
+    const gallerySection = themeJson?.sections?.find((s: any) => s.type === 'gallery')
+    if (gallerySection?.data?.images) {
+      setGalleryImages(gallerySection.data.images)
+    }
+
+    // Load logo
+    if (themeJson?.logo_url) {
+      setLogoUrl(themeJson.logo_url)
     }
   }, [])
 
@@ -164,6 +203,117 @@ export default function OwnerDashboard({ params }: PageProps) {
     setTimeout(() => setAboutSaved(false), 2500)
   }
 
+  // ─── TESTIMONIALS ─────────────────────────────────────────────
+  async function saveTestimonials() {
+    if (!site) return
+    const themeJson = site.theme_json as any
+    const updated = {
+      ...themeJson,
+      sections: themeJson.sections.map((s: any) =>
+        s.type === 'testimonials' ? { ...s, data: { items: testimonials } } : s
+      ),
+    }
+    // If no testimonials section exists, add one
+    if (!themeJson.sections.find((s: any) => s.type === 'testimonials')) {
+      updated.sections = [...themeJson.sections, { type: 'testimonials', data: { items: testimonials } }]
+    }
+    await supabase.from('sites').update({ theme_json: updated }).eq('id', site.id)
+    setSite(prev => prev ? { ...prev, theme_json: updated } : prev)
+    setTestimonialsSaved(true)
+    setTimeout(() => setTestimonialsSaved(false), 2500)
+  }
+
+  function addTestimonial() {
+    setTestimonials(prev => [...prev, { name: '', text: '', rating: 5 }])
+  }
+
+  function updateTestimonial(i: number, field: string, value: string | number) {
+    setTestimonials(prev => prev.map((t, idx) => idx === i ? { ...t, [field]: value } : t))
+  }
+
+  function removeTestimonial(i: number) {
+    setTestimonials(prev => prev.filter((_, idx) => idx !== i))
+  }
+
+  // ─── GALLERY ──────────────────────────────────────────────────
+  async function handleGalleryUpload(files: FileList | null) {
+    if (!files || !site) return
+    setGalleryUploading(true)
+    const newUrls: string[] = []
+    for (const file of Array.from(files)) {
+      if (file.size > 2 * 1024 * 1024) continue // skip >2MB
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('folder', `gallery/${site.id}`)
+      const res = await fetch('/api/upload-logo', { method: 'POST', body: formData })
+      const data = await res.json()
+      if (data.url) newUrls.push(data.url)
+    }
+    const updated = [...galleryImages, ...newUrls]
+    setGalleryImages(updated)
+    await saveGallery(updated)
+    setGalleryUploading(false)
+  }
+
+  async function saveGallery(images: string[]) {
+    if (!site) return
+    const themeJson = site.theme_json as any
+    const hasGallery = themeJson.sections.find((s: any) => s.type === 'gallery')
+    const updated = {
+      ...themeJson,
+      sections: hasGallery
+        ? themeJson.sections.map((s: any) => s.type === 'gallery' ? { ...s, data: { images } } : s)
+        : [...themeJson.sections, { type: 'gallery', data: { images } }],
+    }
+    await supabase.from('sites').update({ theme_json: updated }).eq('id', site.id)
+    setSite(prev => prev ? { ...prev, theme_json: updated } : prev)
+    setGallerySaved(true)
+    setTimeout(() => setGallerySaved(false), 2500)
+  }
+
+  async function removeGalleryImage(url: string) {
+    const updated = galleryImages.filter(u => u !== url)
+    setGalleryImages(updated)
+    await saveGallery(updated)
+  }
+
+  // ─── LOGO UPLOAD ──────────────────────────────────────────────
+  async function handleLogoUpload(file: File | null) {
+    if (!file || !site) return
+    setLogoUploading(true)
+    const formData = new FormData()
+    formData.append('file', file)
+    const res = await fetch('/api/upload-logo', { method: 'POST', body: formData })
+    const data = await res.json()
+    if (data.url) {
+      setLogoUrl(data.url)
+      const themeJson = site.theme_json as any
+      const updated = { ...themeJson, logo_url: data.url }
+      await supabase.from('sites').update({ theme_json: updated }).eq('id', site.id)
+      setSite(prev => prev ? { ...prev, theme_json: updated } : prev)
+    }
+    setLogoUploading(false)
+  }
+
+  // ─── PIN CHANGE ───────────────────────────────────────────────
+  async function handlePinChange(e: React.FormEvent) {
+    e.preventDefault()
+    setPinMsg(null)
+    if (newPin.length < 4) { setPinMsg({ type: 'error', text: 'PIN must be at least 4 characters.' }); return }
+    if (newPin !== confirmPin) { setPinMsg({ type: 'error', text: 'PINs do not match.' }); return }
+    setPinSaving(true)
+    const { error } = await supabase.from('sites').update({ owner_pin: newPin }).eq('id', site!.id)
+    setPinSaving(false)
+    if (error) {
+      setPinMsg({ type: 'error', text: 'Failed to save PIN. Try again.' })
+    } else {
+      setSite(prev => prev ? { ...prev, owner_pin: newPin } : prev)
+      setNewPin('')
+      setConfirmPin('')
+      setPinMsg({ type: 'success', text: 'PIN updated successfully!' })
+    }
+  }
+
   // ─── BOOKINGS ─────────────────────────────────────────────────
   async function updateBookingStatus(id: string, status: Booking['status']) {
     await supabase.from('bookings').update({ status }).eq('id', id)
@@ -215,6 +365,9 @@ export default function OwnerDashboard({ params }: PageProps) {
     { id: 'staff' as Tab, label: 'Staff', icon: Users, badge: null },
     { id: 'hours' as Tab, label: 'Hours', icon: Clock, badge: null },
     { id: 'about' as Tab, label: 'About', icon: FileText, badge: null },
+    { id: 'testimonials' as Tab, label: 'Reviews', icon: Star, badge: null },
+    { id: 'gallery' as Tab, label: 'Gallery', icon: Image, badge: null },
+    { id: 'settings' as Tab, label: 'Settings', icon: KeyRound, badge: null },
     { id: 'ai' as Tab, label: 'AI Assistant', icon: Zap, badge: null },
   ]
 
@@ -276,6 +429,28 @@ export default function OwnerDashboard({ params }: PageProps) {
         {/* ── BOOKINGS ── */}
         {tab === 'bookings' && (
           <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-3 border-b border-gray-100">
+              <p className="text-xs text-gray-400">{bookings.length} total bookings</p>
+              {bookings.length > 0 && (
+                <button
+                  onClick={() => {
+                    const headers = ['Customer', 'Phone', 'Service', 'Date', 'Time', 'Status', 'Notes']
+                    const rows = bookings.map(b => [b.customer_name, b.customer_phone, b.service_name, b.booking_date, b.booking_time, b.status, b.notes || ''])
+                    const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n')
+                    const blob = new Blob([csv], { type: 'text/csv' })
+                    const url = URL.createObjectURL(blob)
+                    const a = document.createElement('a')
+                    a.href = url
+                    a.download = `bookings-${slug}-${new Date().toISOString().split('T')[0]}.csv`
+                    a.click()
+                    URL.revokeObjectURL(url)
+                  }}
+                  className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 px-2 py-1 rounded-lg hover:bg-gray-50 transition"
+                >
+                  <Download size={12} /> Export CSV
+                </button>
+              )}
+            </div>
             {bookings.length === 0 ? (
               <div className="text-center py-12 text-gray-400">
                 <CalendarCheck size={32} className="mx-auto mb-3 opacity-30" />
@@ -494,6 +669,184 @@ export default function OwnerDashboard({ params }: PageProps) {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* ── AI ASSISTANT ── */}
+        {tab === 'ai' && site && (
+          <div>
+            <p className="text-gray-500 text-sm mb-4">
+              Tell the AI what to change on your site in plain English. Changes apply instantly.
+            </p>
+            <AgentChat siteId={site.id} primaryColor={primaryColor} businessName={site.business_name} />
+          </div>
+        )}
+
+        {/* ── TESTIMONIALS ── */}
+        {tab === 'testimonials' && (
+          <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-gray-100">
+              <p className="text-sm text-gray-500">Customer reviews shown on your public site.</p>
+              <div className="flex gap-2">
+                <button onClick={addTestimonial} className="flex items-center gap-1.5 text-sm font-medium text-white px-3 py-1.5 rounded-lg transition" style={{ backgroundColor: primaryColor }}>
+                  <Plus size={14} /> Add Review
+                </button>
+                <button
+                  onClick={saveTestimonials}
+                  className="flex items-center gap-1.5 text-sm font-medium text-white px-3 py-1.5 rounded-lg transition"
+                  style={{ backgroundColor: testimonialsSaved ? '#16a34a' : '#374151' }}
+                >
+                  {testimonialsSaved ? <><CheckCircle size={14} /> Saved!</> : <><Save size={14} /> Save</>}
+                </button>
+              </div>
+            </div>
+            <div className="p-4 space-y-4">
+              {testimonials.length === 0 && (
+                <p className="text-center text-gray-400 text-sm py-6">No reviews yet. Add your first one.</p>
+              )}
+              {testimonials.map((t, i) => (
+                <div key={i} className="border border-gray-100 rounded-xl p-4 space-y-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex-1 grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-gray-400 text-xs mb-1 block">Customer Name</label>
+                        <input value={t.name} onChange={e => updateTestimonial(i, 'name', e.target.value)}
+                          placeholder="e.g. Sarah M."
+                          className="w-full text-sm text-gray-900 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none" />
+                      </div>
+                      <div>
+                        <label className="text-gray-400 text-xs mb-1 block">Rating</label>
+                        <div className="flex gap-1 mt-1.5">
+                          {[1,2,3,4,5].map(star => (
+                            <button key={star} type="button" onClick={() => updateTestimonial(i, 'rating', star)}
+                              className={`text-xl transition ${star <= t.rating ? 'text-yellow-400' : 'text-gray-200'}`}>★</button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <button onClick={() => removeTestimonial(i)} className="text-gray-300 hover:text-red-400 transition p-1 shrink-0">
+                      <X size={16} />
+                    </button>
+                  </div>
+                  <div>
+                    <label className="text-gray-400 text-xs mb-1 block">Review Text</label>
+                    <textarea value={t.text} onChange={e => updateTestimonial(i, 'text', e.target.value)}
+                      rows={2} placeholder="What did they say about your business?"
+                      className="w-full text-sm text-gray-900 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none resize-none" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── GALLERY ── */}
+        {tab === 'gallery' && (
+          <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-gray-100">
+              <p className="text-sm text-gray-500">Photos shown on your public site. Max 2MB per image.</p>
+              <button onClick={() => galleryInputRef.current?.click()}
+                className="flex items-center gap-1.5 text-sm font-medium text-white px-3 py-1.5 rounded-lg transition"
+                style={{ backgroundColor: primaryColor }}
+                disabled={galleryUploading}
+              >
+                {galleryUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                {galleryUploading ? 'Uploading...' : 'Upload Photos'}
+              </button>
+              <input ref={galleryInputRef} type="file" multiple accept="image/*"
+                className="hidden" onChange={e => handleGalleryUpload(e.target.files)} />
+            </div>
+            <div className="p-4">
+              {galleryImages.length === 0 ? (
+                <div className="text-center py-10 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-gray-300 transition"
+                  onClick={() => galleryInputRef.current?.click()}>
+                  <Image size={28} className="mx-auto mb-2 text-gray-300" />
+                  <p className="text-gray-400 text-sm">Click to upload photos</p>
+                  <p className="text-gray-300 text-xs mt-1">PNG, JPG, WebP · Max 2MB each</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {galleryImages.map((url, i) => (
+                    <div key={i} className="relative group rounded-xl overflow-hidden aspect-square bg-gray-100">
+                      <img src={url} alt={`Gallery ${i+1}`} className="w-full h-full object-cover" />
+                      <button onClick={() => removeGalleryImage(url)}
+                        className="absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                        <X size={12} />
+                      </button>
+                    </div>
+                  ))}
+                  <div onClick={() => galleryInputRef.current?.click()}
+                    className="aspect-square border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center cursor-pointer hover:border-gray-400 transition">
+                    <Plus size={20} className="text-gray-300" />
+                  </div>
+                </div>
+              )}
+              {gallerySaved && <p className="text-green-600 text-xs text-center mt-3">✅ Gallery saved!</p>}
+            </div>
+          </div>
+        )}
+
+        {/* ── SETTINGS ── */}
+        {tab === 'settings' && site && (
+          <div className="space-y-5">
+            {/* Logo upload */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-5">
+              <h3 className="font-semibold text-gray-900 mb-1">Business Logo</h3>
+              <p className="text-gray-500 text-sm mb-4">Shown in your site header. PNG with transparent background recommended.</p>
+              <div className="flex items-center gap-4">
+                <div className="w-24 h-16 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
+                  {logoUrl
+                    ? <img src={logoUrl} alt="Logo" className="max-w-full max-h-full object-contain p-1" />
+                    : <span className="text-gray-300 text-2xl font-bold">{site.business_name.charAt(0)}</span>
+                  }
+                </div>
+                <div>
+                  <button onClick={() => logoInputRef.current?.click()}
+                    disabled={logoUploading}
+                    className="flex items-center gap-2 text-sm font-medium text-white px-4 py-2 rounded-lg transition"
+                    style={{ backgroundColor: primaryColor }}
+                  >
+                    {logoUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                    {logoUrl ? 'Replace Logo' : 'Upload Logo'}
+                  </button>
+                  <p className="text-gray-400 text-xs mt-1">PNG, JPG, SVG · Max 2MB</p>
+                </div>
+                <input ref={logoInputRef} type="file" accept="image/*" className="hidden"
+                  onChange={e => handleLogoUpload(e.target.files?.[0] || null)} />
+              </div>
+            </div>
+
+            {/* PIN change */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-5">
+              <h3 className="font-semibold text-gray-900 mb-1">Change Dashboard PIN</h3>
+              <p className="text-gray-500 text-sm mb-4">
+                Current PIN: <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded">{site.owner_pin}</span>
+              </p>
+              <form onSubmit={handlePinChange} className="space-y-3 max-w-sm">
+                <div>
+                  <label className="text-gray-700 text-xs font-medium block mb-1">New PIN (min 4 characters)</label>
+                  <input type="password" value={newPin} onChange={e => setNewPin(e.target.value)}
+                    placeholder="Enter new PIN" maxLength={12}
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-gray-400 font-mono tracking-widest" />
+                </div>
+                <div>
+                  <label className="text-gray-700 text-xs font-medium block mb-1">Confirm New PIN</label>
+                  <input type="password" value={confirmPin} onChange={e => setConfirmPin(e.target.value)}
+                    placeholder="Repeat new PIN" maxLength={12}
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-gray-400 font-mono tracking-widest" />
+                </div>
+                {pinMsg && (
+                  <p className={`text-xs ${pinMsg.type === 'success' ? 'text-green-600' : 'text-red-500'}`}>{pinMsg.text}</p>
+                )}
+                <button type="submit" disabled={pinSaving || !newPin || !confirmPin}
+                  className="flex items-center gap-2 text-sm font-medium text-white px-4 py-2 rounded-lg transition disabled:opacity-50"
+                  style={{ backgroundColor: primaryColor }}
+                >
+                  {pinSaving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+                  {pinSaving ? 'Saving...' : 'Update PIN'}
+                </button>
+              </form>
             </div>
           </div>
         )}
