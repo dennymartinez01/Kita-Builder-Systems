@@ -823,45 +823,80 @@ NEXT_PUBLIC_ADMIN_PIN`,
       content: (
         <div className="space-y-6">
           <p className="text-gray-400 text-sm">
-            Suggested features to improve the system for you as operator, your clients, and their customers.
-            Prioritised by impact vs effort.
+            Comprehensive feature roadmap covering operator tools, client admin features, customer booking experience, and commercial pitch features.
+            Organized by priority and build phase.
           </p>
 
           {[
             {
-              label: '🔥 High Impact — Build Next',
+              label: '✅ Already Built',
+              color: 'border-green-800 bg-green-950/10',
+              items: [
+                { for: 'Operator', feature: 'Revenue dashboard / MRR tracker ✅', why: '/admin/revenue — MRR, setup revenue, annual projection, CSV export' },
+                { for: 'Operator', feature: 'White-label mode ✅', why: 'NEXT_PUBLIC_WHITE_LABEL_MODE=on, agency name/tagline/logo via env vars' },
+                { for: 'Operator', feature: 'Site analytics — page views ✅', why: 'Analytics tab in dashboard + /api/track + admin Revenue page' },
+                { for: 'Client', feature: 'Custom PIN change ✅', why: 'Settings tab in owner dashboard' },
+                { for: 'Client', feature: 'Business logo upload ✅', why: 'Settings tab — Supabase Storage, shows on site' },
+                { for: 'Client', feature: 'Gallery / photo upload ✅', why: 'Gallery tab — multi-upload, "Our Work" grid on public site' },
+                { for: 'Client', feature: 'Testimonials / Reviews editor ✅', why: 'Reviews tab — add/edit/remove, star ratings, live on site' },
+                { for: 'Client', feature: 'Business hours management ✅', why: 'Hours tab — Mon-Sun open/closed toggle, time pickers' },
+                { for: 'Client', feature: 'About section editor ✅', why: 'About tab — title + body with live preview' },
+                { for: 'Client', feature: 'AI Assistant — chat to edit site ✅', why: '9 agent tools — change prices, add services, update headline, etc.' },
+                { for: 'Customer', feature: 'Preferred staff picker in booking form ✅', why: 'Optional staff dropdown in booking form, saved to booking' },
+                { for: 'Customer', feature: 'Custom notes label per template ✅', why: '"Your Concern" (clinic), "Guests + Notes" (cafe), "Preferred Style" (salon)' },
+              ],
+            },
+            {
+              label: '🔥 Phase 5 — Generate Flow Enhancement (Build Next)',
               color: 'border-red-800 bg-red-950/20',
               items: [
-                { for: 'Operator', feature: 'Stripe $29/mo recurring subscription', why: 'Automated monthly billing — no manual chasing. Pure revenue.' },
-                { for: 'Operator', feature: 'Gemini webhook fix — auto-generate after payment', why: 'Core flow needs to work. Clients pay → site appears automatically.' },
-                { for: 'Client', feature: 'Custom PIN change in owner dashboard ✅', why: 'DONE — Settings tab in owner dashboard, validates match + min 4 chars' },
-                { for: 'Client', feature: 'Business logo upload in owner dashboard ✅', why: 'DONE — Settings tab, uploads to Supabase Storage, saves to theme_json.logo_url' },
-                { for: 'Customer', feature: 'Booking confirmation SMS via Twilio', why: 'Customers expect SMS confirmation. Email goes to spam.' },
+                { for: 'Client', feature: 'Service selector on generate form', why: 'Client picks/edits default services before generation. Their choices = their data.' },
+                { for: 'Client', feature: 'Currency selector on generate form', why: 'USD, AUD, GBP, PHP, CAD, NZD. Stored on site, used everywhere prices show.' },
+                { for: 'Client', feature: 'Custom service add on generate form', why: 'Client adds their own services during onboarding, not just AI defaults.' },
+                { for: 'Client', feature: 'Editable service prices before generation', why: 'Client sets their own prices immediately — no need to edit in dashboard after.' },
               ],
             },
             {
-              label: '⚡ Medium Impact — Week 4 Target',
+              label: '🔥 Phase 6 — Smart Booking System',
+              color: 'border-orange-800 bg-orange-950/20',
+              items: [
+                { for: 'Customer', feature: 'Real-time slot availability check', why: 'Prevents double-bookings. Checks existing confirmed bookings before allowing a time slot.' },
+                { for: 'Customer', feature: 'Add to Calendar button after booking', why: 'Google Calendar / Apple Calendar one-click. Reduces no-shows by 30-40%.' },
+                { for: 'Customer', feature: 'Next available slot suggestion', why: '"Next available: Tomorrow 2pm" shown before date picker. Speeds up booking.' },
+                { for: 'Customer', feature: 'Booking confirmation dedicated page', why: 'Full summary page — service, staff, date, time, address, cancel link.' },
+                { for: 'Customer', feature: 'Reschedule / cancel self-service', why: 'Link in confirmation email. Owner saves time — no manual calls.' },
+                { for: 'Customer', feature: 'Save details for return visits', why: 'localStorage auto-fill name/phone on return. Faster second booking.' },
+                { for: 'Client', feature: 'Block out dates / time off', why: 'Owner marks holidays, breaks, unavailable periods. Customers cannot book those slots.' },
+                { for: 'Client', feature: 'Auto-confirm vs manual confirm toggle', why: 'Toggle in dashboard — auto-confirm all OR review each booking manually.' },
+                { for: 'Client', feature: 'Booking capacity per time slot', why: 'e.g. Cafe can handle 3 table bookings at 7pm simultaneously.' },
+              ],
+            },
+            {
+              label: '⚡ Phase 7 — Admin Power Tools',
               color: 'border-yellow-800 bg-yellow-950/20',
               items: [
-                { for: 'Operator', feature: 'Revenue dashboard — MRR tracker ✅', why: 'DONE — /admin/revenue: MRR, setup revenue, annual projection, per-site breakdown, CSV export' },
-                { for: 'Operator', feature: 'Bulk generate demo sites', why: 'Create 5 demo sites at once for outreach across different niches.' },
-                { for: 'Client', feature: "Gallery / photo upload section ✅", why: 'DONE — Gallery tab in owner dashboard, grid display on public site' },
-                { for: 'Client', feature: 'Google Calendar integration', why: 'Auto-block time when a booking is confirmed.' },
-                { for: 'Client', feature: 'Booking reminder email 24h before', why: 'Reduces no-shows significantly.' },
-                { for: 'Customer', feature: 'Reschedule / cancel booking self-service', why: 'Customers want to manage their own bookings.' },
+                { for: 'Client', feature: 'Booking calendar view in dashboard', why: 'Weekly/monthly calendar view of bookings. Much easier than a list.' },
+                { for: 'Client', feature: 'Peak hours heatmap analytics', why: 'Shows which days/times get most bookings. Helps owner plan staffing + promotions.' },
+                { for: 'Client', feature: 'Most booked service analytics', why: 'Top 3 services by booking count. Helps with pricing and promotion decisions.' },
+                { for: 'Client', feature: 'Promo codes / discount system', why: 'e.g. FIRST10 = 10% off first booking. Owner creates codes in dashboard.' },
+                { for: 'Client', feature: 'Google My Business link prompt', why: 'Prompt owner to add booking link to GMB profile. Free traffic.' },
+                { for: 'Client', feature: 'Share booking link button', why: 'One-click copy of /{slug}#book for Instagram bio, Facebook, WhatsApp.' },
+                { for: 'Operator', feature: 'Booking reminder email 24h before', why: 'Auto-send reminder to customer before their appointment. Vercel Cron.' },
+                { for: 'Operator', feature: 'Booking reminder SMS via Twilio', why: 'SMS reminder — higher open rate than email. Needs Twilio.' },
               ],
             },
             {
-              label: '💡 Nice to Have — Future Sprints',
+              label: '💡 Phase 8 — Growth & Monetization',
               color: 'border-blue-800 bg-blue-950/20',
               items: [
-                { for: 'Operator', feature: 'White-label mode — remove KITA branding for resellers ✅', why: 'DONE — configure via NEXT_PUBLIC_WHITE_LABEL_MODE=on in .env.local' },
-                { for: 'Operator', feature: 'Site analytics — page views, bookings per week ✅', why: 'DONE — Analytics tab in owner dashboard + views column in admin revenue page' },
-                { for: 'Client', feature: 'Testimonials editor in dashboard ✅', why: 'DONE — Reviews tab in owner dashboard, add/edit/remove, star ratings, saves to theme_json' },
-                { for: 'Client', feature: 'Multiple staff booking — assign service to specific staff ✅', why: 'DONE — Optional staff picker in booking form, staff name in email + dashboard bookings' },
-                { for: 'Client', feature: 'Stripe deposit on booking (% pre-payment)', why: 'Reduce no-shows with a small deposit at booking time.' },
-                { for: 'Customer', feature: 'WhatsApp booking option', why: 'AU/PH customers prefer WhatsApp over email.' },
-                { for: 'Operator', feature: 'Multi-site client accounts', why: 'A client with 2 locations needs one login for both.' },
+                { for: 'Operator', feature: 'Stripe $29/mo recurring subscription', why: 'Automated monthly billing. Pure passive revenue.' },
+                { for: 'Operator', feature: 'Gemini webhook fix — auto-generate after payment', why: 'Core flow: client pays → site appears automatically. Currently blocked on Gemini 503 from Vercel.' },
+                { for: 'Client', feature: 'Stripe deposit on booking', why: 'Reduce no-shows with a small upfront deposit. Client sets % in dashboard.' },
+                { for: 'Client', feature: 'Google Calendar integration', why: 'Auto-block time in owner calendar when a booking is confirmed.' },
+                { for: 'Customer', feature: 'WhatsApp booking option', why: 'PH/AU customers prefer WhatsApp. Direct link pre-filled with service details.' },
+                { for: 'Customer', feature: '"Book for someone else" option', why: 'e.g. Booking for a family member. Second person name field.' },
+                { for: 'Operator', feature: 'Multi-site client accounts', why: 'A client with 2 locations needs one dashboard for both.' },
+                { for: 'Operator', feature: 'Bulk generate demo sites', why: 'Create 5 demo sites at once for outreach across niches.' },
               ],
             },
           ].map(group => (
@@ -890,6 +925,28 @@ NEXT_PUBLIC_ADMIN_PIN`,
               </div>
             </div>
           ))}
+
+          {/* Commercial Pitch Value Props */}
+          <div className="bg-blue-950/20 border border-blue-800 rounded-xl p-5">
+            <p className="text-blue-400 font-bold text-sm mb-3">💼 Commercial Pitch — What to Tell Prospective Clients</p>
+            <div className="space-y-2 text-sm text-gray-400">
+              {[
+                '"Your customers can book you 24/7 — even while you sleep. No more missed bookings on Instagram DMs."',
+                '"They pick their preferred staff member, select a service, and get an instant confirmation — in under 60 seconds."',
+                '"You see all bookings in one place. Confirm, cancel, or let it auto-approve — your choice."',
+                '"Edit your services and prices anytime — just type it in chat: \'change my haircut to $80\'."',
+                '"Your site shows your hours, your team, your gallery, and your reviews — all managed from one dashboard."',
+                '"Customers get a reminder before their appointment — fewer no-shows, more revenue."',
+                '"We built this for salons, clinics, mechanics, cafes, and pet clinics — across AU, US, UK, PH."',
+                '"$150 to launch. $29/month to keep it running. That\'s less than 1 booking per month to pay for itself."',
+              ].map((pitch, i) => (
+                <div key={i} className="flex gap-2">
+                  <span className="text-blue-400 shrink-0">→</span>
+                  <p className="italic">{pitch}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       ),
     },
@@ -1010,6 +1067,48 @@ NEXT_PUBLIC_ADMIN_PIN`,
                   status: '✅ DONE — CSV export in owner dashboard Bookings tab + admin Revenue page',
                   blocker: 'None',
                   effort: 'Complete',
+                },
+                {
+                  title: 'Service selector + currency on generate form (Phase 5)',
+                  status: 'Planned — client picks services + currency before site generation',
+                  blocker: 'None — pure UI + DB change. No paid accounts needed.',
+                  effort: '3-4 hours',
+                },
+                {
+                  title: 'Real-time slot availability check (Phase 6)',
+                  status: 'Planned — query existing bookings before allowing a time slot',
+                  blocker: 'None — pure Supabase query logic in BookingForm.',
+                  effort: '2 hours',
+                },
+                {
+                  title: 'Add to Calendar button after booking (Phase 6)',
+                  status: 'Planned — Google Calendar + Apple Calendar .ics link',
+                  blocker: 'None — pure client-side URL generation.',
+                  effort: '1 hour',
+                },
+                {
+                  title: 'Block out dates / time off (Phase 6)',
+                  status: 'Planned — owner marks unavailable dates in dashboard',
+                  blocker: 'None — new DB table + dashboard tab.',
+                  effort: '2-3 hours',
+                },
+                {
+                  title: 'Booking calendar view in dashboard (Phase 7)',
+                  status: 'Planned — weekly/monthly calendar view of all bookings',
+                  blocker: 'None — display only, reads existing bookings table.',
+                  effort: '3-4 hours',
+                },
+                {
+                  title: 'Promo codes / discount system (Phase 7)',
+                  status: 'Planned — owner creates codes in dashboard, applied at booking',
+                  blocker: 'None — new DB table for promo_codes.',
+                  effort: '3-4 hours',
+                },
+                {
+                  title: 'Reschedule / cancel self-service link (Phase 6)',
+                  status: 'Planned — link in confirmation email, customer updates booking status',
+                  blocker: 'None — new route /booking/[id]/cancel + [id]/reschedule.',
+                  effort: '2 hours',
                 },
               ],
             },
