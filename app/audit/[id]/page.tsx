@@ -6,7 +6,7 @@ import Link from 'next/link'
 import {
   ArrowLeft, RefreshCw, Loader2, Globe, Shield, Search,
   BarChart2, Zap, AlertTriangle, Info, CheckCircle,
-  ChevronDown, ChevronUp, ExternalLink, Code2, Layers, FileSearch,
+  ChevronDown, ChevronUp, ExternalLink, Code2, Layers, FileSearch, Download,
 } from 'lucide-react'
 import type { AuditRecord, AuditIssue, IssueSeverity } from '@/lib/audit/types'
 import type { CrawledPage } from '@/lib/audit/crawler'
@@ -110,6 +110,7 @@ export default function AuditResultPage() {
   const [pages, setPages] = useState<CrawledPage[]>([])
   const [loading, setLoading] = useState(true)
   const [rerunning, setRerunning] = useState(false)
+  const [downloading, setDownloading] = useState(false)
   const [tab, setTab] = useState<TabKey>('overview')
   const [severityFilter, setSeverityFilter] = useState<IssueSeverity | 'all'>('all')
   const [categoryFilter, setCategoryFilter] = useState<string>('all')
@@ -133,6 +134,19 @@ export default function AuditResultPage() {
       await fetch(`/api/audit/${id}`, { method: 'POST' })
       await loadAudit()
     } finally { setRerunning(false) }
+  }
+
+  async function downloadPDF() {
+    if (!audit) return
+    setDownloading(true)
+    try {
+      const { generateAuditPDF } = await import('@/lib/audit/pdf')
+      await generateAuditPDF({ audit, pages })
+    } catch (err: any) {
+      alert('PDF generation failed: ' + err.message)
+    } finally {
+      setDownloading(false)
+    }
   }
 
   if (loading) {
@@ -220,6 +234,19 @@ export default function AuditResultPage() {
             <RefreshCw size={12} className={rerunning ? 'animate-spin' : ''} />
             Re-run
           </button>
+          {audit.status === 'completed' && (
+            <button
+              onClick={downloadPDF}
+              disabled={downloading}
+              className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-2 rounded-lg transition disabled:opacity-50"
+            >
+              {downloading
+                ? <Loader2 size={12} className="animate-spin" />
+                : <Download size={12} />
+              }
+              {downloading ? 'Generating...' : 'Download PDF'}
+            </button>
+          )}
           <a
             href={audit.url}
             target="_blank"
