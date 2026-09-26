@@ -447,7 +447,7 @@ export default function DocsPage() {
                 'Stripe webhook endpoint configured on Vercel ✅',
                 'Admin /sites shows payment status badge (paid/free/unpaid) ✅',
                 'Pitch page updated with Pay & Launch Now → /onboard button ✅',
-                'Fix webhook: idempotency check + extended polling to 120s',
+                'Fix webhook: idempotency check + extended polling to 120s ✅',
                 'Debug Gemini timeout in webhook on Vercel cold start → moved to backlog (Gemini 503 on all models from Vercel IPs)',
                 'Get 2 paying clients',
                 'Collect real feedback and fix actual issues',
