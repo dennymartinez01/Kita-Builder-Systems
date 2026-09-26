@@ -25,29 +25,94 @@ export default function DocsPage() {
       content: (
         <div className="space-y-4">
           <p className="text-gray-300 leading-relaxed">
-            <strong className="text-white">KITA Builder Systems</strong> is an AI-powered website builder for local service businesses — Salon, Clinic, Pet Clinic, Cafe, and Mechanic shops. It generates a full booking website in ~10 seconds using AI, backed by Supabase and delivered via Next.js.
+            <strong className="text-white">KITA Builder Systems</strong> is a two-product platform built for web agencies, freelancers, and developers serving local service businesses across AU, US, UK, PH, and CAN.
           </p>
+          <p className="text-gray-300 leading-relaxed">
+            <strong className="text-white">Product 1 — AI Website Builder:</strong> Generates a fully-functional booking website in ~10 seconds from a business name and location. Includes a 10-tab owner CMS, AI assistant for live edits, analytics, gallery, reviews, and a Stripe payment flow.
+          </p>
+          <p className="text-gray-300 leading-relaxed">
+            <strong className="text-white">Product 2 — Website Intelligence & Audit:</strong> Forensic website audit tool — enter any URL to get scores + issues + PDF report covering Performance, SEO, Security, Tech Stack, Accessibility, and a 10-page internal crawler.
+          </p>
+
+          {/* Product 1 value props */}
           <div className="bg-gray-950 rounded-xl p-4 border border-gray-800">
-            <p className="text-blue-400 font-semibold text-sm mb-3">Core Value Proposition</p>
-            <div className="space-y-2 text-sm text-gray-400">
-              <div className="flex gap-2"><span className="text-green-400">✓</span> AI generates copy, services, staff tailored to business type + location</div>
-              <div className="flex gap-2"><span className="text-green-400">✓</span> Live booking widget — customers book 24/7, owner gets email instantly</div>
-              <div className="flex gap-2"><span className="text-green-400">✓</span> Owner dashboard with PIN — manage services/prices, view all bookings</div>
-              <div className="flex gap-2"><span className="text-green-400">✓</span> 5 pre-built templates: Salon, Clinic, Pet, Cafe, Mechanic</div>
-              <div className="flex gap-2"><span className="text-green-400">✓</span> Deploy to Vercel — each site live at yourdomain.com/slug</div>
+            <p className="text-blue-400 font-semibold text-sm mb-3">⚡ Product 1 — AI Website Builder</p>
+            <div className="space-y-1.5 text-sm text-gray-400">
+              {[
+                'AI generates copy, services, staff tailored to business type + location in ~10 seconds',
+                'Live booking widget — customers book 24/7, owner gets instant email notification',
+                'Owner dashboard with PIN — 10 tabs: Bookings, Services, Staff, Hours, About, Reviews, Gallery, Analytics, Settings, AI Assistant',
+                'AI Assistant — chat to edit live site: "change my haircut to $80" updates instantly',
+                'Preferred staff picker — customers choose their preferred team member',
+                'Custom notes labels per template — "Your Concern" for clinics, "Guests + Notes" for cafes',
+                'Site analytics — 14-day page view chart, weekly trends, booking status breakdown',
+                'Gallery — multi-photo upload, "Our Work" grid on public site',
+                'White-label mode — remove KITA branding, use your agency name and logo',
+                '11 templates across 5 business types: Salon, Clinic, Pet, Cafe, Mechanic',
+                'Stripe payment flow — $150 setup fee via Checkout, payment_status tracked per site',
+                'Deployed on Vercel — live at kita-builder-systems.vercel.app',
+              ].map((item, i) => (
+                <div key={i} className="flex gap-2"><span className="text-green-400">✓</span>{item}</div>
+              ))}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-              <p className="text-gray-500 text-xs mb-1">Revenue Model</p>
-              <p className="text-white font-bold">$150 setup + $29/mo</p>
-              <p className="text-gray-600 text-xs mt-1">per client site</p>
+
+          {/* Product 2 value props */}
+          <div className="bg-gray-950 rounded-xl p-4 border border-gray-800">
+            <p className="text-purple-400 font-semibold text-sm mb-3">🔍 Product 2 — Website Intelligence & Audit</p>
+            <div className="space-y-1.5 text-sm text-gray-400">
+              {[
+                'Forensic audit: Performance (PSI), SEO, Security headers, Tech Stack, Accessibility',
+                'Page crawler — crawls up to 10 internal pages, detects broken links + duplicate titles',
+                'Score rings per category (0-100) + weighted overall score',
+                'Issue explorer — filter by severity (critical/high/medium/low) + category',
+                'PDF report download — Forensic Website Audit Report format, multi-page',
+                'Audit history — search, delete, score trend comparison (↑↓—)',
+                'Audit pitch page at /audit-pitch — shareable outreach link for selling audit services',
+                'Dark admin theme — integrated into the admin panel',
+              ].map((item, i) => (
+                <div key={i} className="flex gap-2"><span className="text-green-400">✓</span>{item}</div>
+              ))}
             </div>
-            <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-              <p className="text-gray-500 text-xs mb-1">Target Market</p>
-              <p className="text-white font-bold">AU / US / UK / CAN</p>
-              <p className="text-gray-600 text-xs mt-1">local service businesses</p>
+          </div>
+
+          {/* Roadmap preview */}
+          <div className="bg-gray-950 rounded-xl p-4 border border-gray-800">
+            <p className="text-yellow-400 font-semibold text-sm mb-3">🗺️ Upcoming Phases</p>
+            <div className="space-y-1.5 text-sm text-gray-400">
+              {[
+                'Phase 5 — Service selector + currency picker on generate form',
+                'Phase 6 — Smart Booking: real-time availability, Add to Calendar, block dates, self-service cancel',
+                'Phase 7 — Admin Power Tools: calendar view, peak analytics, promo codes',
+                'Phase 8 — Growth: Stripe subscriptions, deposits, WhatsApp booking, Google Calendar',
+              ].map((item, i) => (
+                <div key={i} className="flex gap-2"><span className="text-yellow-400">→</span>{item}</div>
+              ))}
             </div>
+          </div>
+
+          {/* Commercial pitch box */}
+          <div className="bg-blue-950/30 rounded-xl p-4 border border-blue-800">
+            <p className="text-blue-400 font-semibold text-sm mb-2">💼 The Pitch</p>
+            <p className="text-gray-300 text-sm leading-relaxed italic">
+              "Your customers can book you 24/7 — even while you sleep. AI builds your site in 10 seconds, your clients manage everything themselves, and you get notified every time someone books. $150 to launch. $29/month to keep it running. That's less than one booking to pay for itself."
+            </p>
+          </div>
+
+          {/* Stats grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {[
+              { label: 'Revenue Model', value: '$150 setup + $29/mo', sub: 'per client site' },
+              { label: 'Target Market', value: 'AU / US / UK / PH / CAN', sub: 'local service businesses' },
+              { label: 'Live URL', value: 'Vercel', sub: 'kita-builder-systems.vercel.app' },
+              { label: 'AI Engine', value: 'Gemini 3.6 Flash', sub: 'free tier · AQ. key format' },
+            ].map(stat => (
+              <div key={stat.label} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                <p className="text-gray-500 text-xs mb-1">{stat.label}</p>
+                <p className="text-white font-bold text-sm">{stat.value}</p>
+                <p className="text-gray-600 text-xs mt-0.5">{stat.sub}</p>
+              </div>
+            ))}
           </div>
         </div>
       ),
