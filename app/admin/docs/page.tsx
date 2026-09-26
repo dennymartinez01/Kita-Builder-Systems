@@ -883,127 +883,171 @@ NEXT_PUBLIC_ADMIN_PIN`,
     // ─── RECOMMENDATIONS ──────────────────────────────────────────
     {
       id: 'recommendations',
-      title: 'Feature Recommendations',
+      title: 'Feature Roadmap & Recommendations',
       icon: Lightbulb,
       content: (
-        <div className="space-y-6">
-          <p className="text-gray-400 text-sm">
-            Comprehensive feature roadmap covering operator tools, client admin features, customer booking experience, and commercial pitch features.
-            Organized by priority and build phase.
-          </p>
+        <div className="space-y-8">
+          <div className="bg-gray-950 border border-blue-900/50 rounded-xl p-4">
+            <p className="text-blue-400 font-semibold text-sm mb-2">📋 Documentation Standard</p>
+            <p className="text-gray-400 text-xs leading-relaxed">
+              Every feature below follows this format: <strong className="text-white">What</strong> (what it does), <strong className="text-white">Why</strong> (the business or user pain it solves), <strong className="text-white">Who</strong> (Operator / Client / Customer), <strong className="text-white">Status</strong>. This helps any developer, business partner, or investor understand the reasoning behind every decision.
+            </p>
+          </div>
 
-          {[
-            {
-              label: '✅ Already Built',
-              color: 'border-green-800 bg-green-950/10',
-              items: [
-                { for: 'Operator', feature: 'Revenue dashboard / MRR tracker ✅', why: '/admin/revenue — MRR, setup revenue, annual projection, CSV export' },
-                { for: 'Operator', feature: 'White-label mode ✅', why: 'NEXT_PUBLIC_WHITE_LABEL_MODE=on, agency name/tagline/logo via env vars' },
-                { for: 'Operator', feature: 'Site analytics — page views ✅', why: 'Analytics tab in dashboard + /api/track + admin Revenue page' },
-                { for: 'Client', feature: 'Custom PIN change ✅', why: 'Settings tab in owner dashboard' },
-                { for: 'Client', feature: 'Business logo upload ✅', why: 'Settings tab — Supabase Storage, shows on site' },
-                { for: 'Client', feature: 'Gallery / photo upload ✅', why: 'Gallery tab — multi-upload, "Our Work" grid on public site' },
-                { for: 'Client', feature: 'Testimonials / Reviews editor ✅', why: 'Reviews tab — add/edit/remove, star ratings, live on site' },
-                { for: 'Client', feature: 'Business hours management ✅', why: 'Hours tab — Mon-Sun open/closed toggle, time pickers' },
-                { for: 'Client', feature: 'About section editor ✅', why: 'About tab — title + body with live preview' },
-                { for: 'Client', feature: 'AI Assistant — chat to edit site ✅', why: '9 agent tools — change prices, add services, update headline, etc.' },
-                { for: 'Customer', feature: 'Preferred staff picker in booking form ✅', why: 'Optional staff dropdown in booking form, saved to booking' },
-                { for: 'Customer', feature: 'Custom notes label per template ✅', why: '"Your Concern" (clinic), "Guests + Notes" (cafe), "Preferred Style" (salon)' },
-              ],
-            },
-            {
-              label: '✅ Phase 5 — Generate Flow Enhancement (Complete)',
-              color: 'border-green-800 bg-green-950/10',
-              items: [
-                { for: 'Client', feature: 'Service selector on generate form ✅', why: '3-step form — client picks/deselects default services before generation' },
-                { for: 'Client', feature: 'Currency selector on generate form ✅', why: '10 currencies: USD, AUD, GBP, PHP, CAD, NZD, EUR, SGD, MYR, INR' },
-                { for: 'Client', feature: 'Custom service add on generate form ✅', why: 'Client adds own services during onboarding with name + price + duration' },
-                { for: 'Client', feature: 'Editable service prices before generation ✅', why: 'Inline editable price and duration for each service in the form' },
-              ],
-            },
-            {
-              label: '🔥 Phase 6 — Smart Booking System',
-              color: 'border-orange-800 bg-orange-950/20',
-              items: [
-                { for: 'Customer', feature: 'Real-time slot availability check', why: 'Prevents double-bookings. Checks existing confirmed bookings before allowing a time slot.' },
-                { for: 'Customer', feature: 'Add to Calendar button after booking', why: 'Google Calendar / Apple Calendar one-click. Reduces no-shows by 30-40%.' },
-                { for: 'Customer', feature: 'Next available slot suggestion', why: '"Next available: Tomorrow 2pm" shown before date picker. Speeds up booking.' },
-                { for: 'Customer', feature: 'Booking confirmation dedicated page', why: 'Full summary page — service, staff, date, time, address, cancel link.' },
-                { for: 'Customer', feature: 'Reschedule / cancel self-service', why: 'Link in confirmation email. Owner saves time — no manual calls.' },
-                { for: 'Customer', feature: 'Save details for return visits', why: 'localStorage auto-fill name/phone on return. Faster second booking.' },
-                { for: 'Client', feature: 'Block out dates / time off', why: 'Owner marks holidays, breaks, unavailable periods. Customers cannot book those slots.' },
-                { for: 'Client', feature: 'Auto-confirm vs manual confirm toggle', why: 'Toggle in dashboard — auto-confirm all OR review each booking manually.' },
-                { for: 'Client', feature: 'Booking capacity per time slot', why: 'e.g. Cafe can handle 3 table bookings at 7pm simultaneously.' },
-              ],
-            },
-            {
-              label: '⚡ Phase 7 — Admin Power Tools',
-              color: 'border-yellow-800 bg-yellow-950/20',
-              items: [
-                { for: 'Client', feature: 'Booking calendar view in dashboard', why: 'Weekly/monthly calendar view of bookings. Much easier than a list.' },
-                { for: 'Client', feature: 'Peak hours heatmap analytics', why: 'Shows which days/times get most bookings. Helps owner plan staffing + promotions.' },
-                { for: 'Client', feature: 'Most booked service analytics', why: 'Top 3 services by booking count. Helps with pricing and promotion decisions.' },
-                { for: 'Client', feature: 'Promo codes / discount system', why: 'e.g. FIRST10 = 10% off first booking. Owner creates codes in dashboard.' },
-                { for: 'Client', feature: 'Google My Business link prompt', why: 'Prompt owner to add booking link to GMB profile. Free traffic.' },
-                { for: 'Client', feature: 'Share booking link button', why: 'One-click copy of /{slug}#book for Instagram bio, Facebook, WhatsApp.' },
-                { for: 'Operator', feature: 'Booking reminder email 24h before', why: 'Auto-send reminder to customer before their appointment. Vercel Cron.' },
-                { for: 'Operator', feature: 'Booking reminder SMS via Twilio', why: 'SMS reminder — higher open rate than email. Needs Twilio.' },
-              ],
-            },
-            {
-              label: '💡 Phase 8 — Growth & Monetization',
-              color: 'border-blue-800 bg-blue-950/20',
-              items: [
-                { for: 'Operator', feature: 'Stripe $29/mo recurring subscription', why: 'Automated monthly billing. Pure passive revenue.' },
-                { for: 'Operator', feature: 'Gemini webhook fix — auto-generate after payment', why: 'Core flow: client pays → site appears automatically. Currently blocked on Gemini 503 from Vercel.' },
-                { for: 'Client', feature: 'Stripe deposit on booking', why: 'Reduce no-shows with a small upfront deposit. Client sets % in dashboard.' },
-                { for: 'Client', feature: 'Google Calendar integration', why: 'Auto-block time in owner calendar when a booking is confirmed.' },
-                { for: 'Customer', feature: 'WhatsApp booking option', why: 'PH/AU customers prefer WhatsApp. Direct link pre-filled with service details.' },
-                { for: 'Customer', feature: '"Book for someone else" option', why: 'e.g. Booking for a family member. Second person name field.' },
-                { for: 'Operator', feature: 'Multi-site client accounts', why: 'A client with 2 locations needs one dashboard for both.' },
-                { for: 'Operator', feature: 'Bulk generate demo sites', why: 'Create 5 demo sites at once for outreach across niches.' },
-              ],
-            },
-          ].map(group => (
-            <div key={group.label} className={`border rounded-xl overflow-hidden ${group.color}`}>
-              <div className="px-4 py-3 border-b border-gray-800/50">
-                <p className="text-white font-semibold text-sm">{group.label}</p>
-              </div>
-              <div className="divide-y divide-gray-800/30">
-                {group.items.map((item, i) => (
-                  <div key={i} className="px-4 py-3 grid grid-cols-12 gap-3">
-                    <div className="col-span-2">
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                        item.for === 'Operator' ? 'bg-purple-900/50 text-purple-400'
-                        : item.for === 'Client' ? 'bg-blue-900/50 text-blue-400'
-                        : 'bg-green-900/50 text-green-400'
-                      }`}>{item.for}</span>
-                    </div>
-                    <div className="col-span-4">
-                      <p className="text-white text-xs font-medium">{item.feature}</p>
-                    </div>
-                    <div className="col-span-6">
-                      <p className="text-gray-500 text-xs">{item.why}</p>
-                    </div>
+          {/* ── FOR THE OPERATOR (You — Admin) ── */}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-4 flex items-center gap-2">
+              <span className="bg-purple-900/50 text-purple-400 text-xs px-2 py-0.5 rounded-full">Operator</span>
+              For You — The Admin / Agency
+            </h3>
+            <div className="space-y-3">
+              {[
+                { feature: 'AI Site Generator (3-step form)', what: 'Client selects business type, configures services + currency, enters details — AI generates the full site in ~10 seconds.', why: 'Removes the need for manual site building. One person can generate 10 sites per day. Time = money.', status: '✅ Built' },
+                { feature: 'Revenue Dashboard / MRR Tracker', what: 'Shows monthly recurring revenue, total setup fees, annual projection, and per-site breakdown with CSV export.', why: 'Without visibility into revenue, it is impossible to make decisions about pricing, scaling, or client retention.', status: '✅ Built' },
+                { feature: 'White-Label Mode', what: 'Removes all KITA branding and replaces with your agency name, logo, tagline, and URL across all client sites and dashboards.', why: 'Agencies reselling KITA need to present it as their own product. White-labelling is a standard requirement for B2B SaaS resellers.', status: '✅ Built' },
+                { feature: 'Website Audit Module (Phases 1-3)', what: 'Forensic audit of any URL — Performance, SEO, Security, Tech Stack, Accessibility, 10-page crawler, PDF report.', why: 'Auditing a prospect\'s existing site before a sales call is one of the most powerful sales tools. "Your SEO score is 42/100 — here\'s what we\'d fix" closes deals.', status: '✅ Built' },
+                { feature: 'Stripe $29/mo Recurring Billing', what: 'Auto-charge clients monthly using Stripe subscriptions. No manual invoicing.', why: 'Manual billing does not scale. Without automated recurring billing, the business cannot grow beyond 5-10 clients.', status: '⏳ Backlog — needs Stripe live keys' },
+                { feature: 'Gemini Webhook Auto-Generation', what: 'After a client pays $150 via /onboard, Gemini auto-generates their site and they see it within 30 seconds.', why: 'The full value of the product is the magic moment when someone pays and instantly gets a live site. Currently blocked by Gemini 503 errors from Vercel IPs.', status: '⏳ Backlog — Gemini API issue' },
+                { feature: 'Bulk Demo Site Generator', what: 'Generate 5 demo sites across different niches in one click for outreach purposes.', why: 'When pitching to a barbershop, showing a live barbershop demo is 10x more persuasive than a generic demo. Speed of demo creation = more outreach per day.', status: '📋 Planned — Phase 8' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-white font-semibold text-sm">{item.feature}</p>
+                    <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 font-medium ${
+                      item.status.startsWith('✅') ? 'bg-green-900/50 text-green-400' :
+                      item.status.startsWith('⏳') ? 'bg-red-900/50 text-red-400' :
+                      'bg-gray-800 text-gray-500'
+                    }`}>{item.status}</span>
                   </div>
-                ))}
-              </div>
+                  <p className="text-gray-400 text-xs mb-1.5"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
 
-          {/* Commercial Pitch Value Props */}
+          {/* ── FOR THE CLIENT (Business Owner) ── */}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-4 flex items-center gap-2">
+              <span className="bg-blue-900/50 text-blue-400 text-xs px-2 py-0.5 rounded-full">Client</span>
+              For Your Client — The Business Owner
+            </h3>
+
+            <p className="text-gray-500 text-xs mb-3 italic">Administration & Site Management</p>
+            <div className="space-y-3 mb-5">
+              {[
+                { feature: '10-Tab Owner Dashboard', what: 'Bookings, Services, Staff, Hours, About, Reviews, Gallery, Analytics, Settings, AI Assistant — all in one PIN-protected dashboard.', why: 'Business owners do not want to call their developer to change a price. Full self-service CMS eliminates support requests and increases client retention.', status: '✅ Built' },
+                { feature: 'AI Assistant (Chat to Edit)', what: 'Owner types "change my haircut to $80" and the site updates instantly. 9 agent tools cover services, headlines, about text.', why: 'Most CMS tools require navigating menus. Natural language editing removes the learning curve entirely — any non-technical owner can use it.', status: '✅ Built' },
+                { feature: 'Service Selector + Currency on Generate', what: '3-step generation: client picks services, sets prices, chooses currency — before AI generates the site. 10 currencies supported.', why: 'Pre-set services and local currency means the site is ready to use immediately after generation with no editing required.', status: '✅ Built — Phase 5' },
+                { feature: 'Business Logo Upload', what: 'Owner uploads their logo via the Settings tab. Stored in Supabase Storage, shows on the site header.', why: 'A business without its logo on its website looks amateur. This is a basic requirement for professional presentation.', status: '✅ Built' },
+                { feature: 'Gallery / Photo Upload', what: 'Owner uploads photos of their work via the Gallery tab. Shows as "Our Work" grid on the public site.', why: 'For salons, mechanics, and clinics — showing real photos of work builds trust faster than any text description.', status: '✅ Built' },
+                { feature: 'Site Analytics (14-day view)', what: 'Analytics tab shows page views per day for 14 days, weekly trend comparison, and booking status breakdown.', why: 'Clients need to see that their investment is working. "You had 47 site visits and 8 bookings this week" justifies the $29/mo fee.', status: '✅ Built' },
+                { feature: 'Booking Calendar View', what: 'Weekly/monthly calendar view of all bookings in the owner dashboard — not just a flat list.', why: 'A list of bookings is hard to scan. A calendar immediately shows gaps, busy periods, and patterns — how any service business thinks about their schedule.', status: '📋 Planned — Phase 7' },
+                { feature: 'Block Out Dates / Time Off', what: 'Owner marks holidays, lunch breaks, or unavailable days — customers cannot book those slots.', why: 'Without this, customers book during Christmas, public holidays, or while the owner is on holiday. This is a day-one operational requirement.', status: '📋 Planned — Phase 6' },
+                { feature: 'Auto-Confirm vs Manual Confirm Toggle', what: 'Toggle: auto-confirm all bookings OR review each one manually before confirming.', why: 'High-volume businesses (cafes, clinics) want auto-confirm. Premium services (consultants, specialists) want to review each booking first.', status: '📋 Planned — Phase 6' },
+                { feature: 'Promo Codes / Discount System', what: 'Owner creates promo codes (e.g. FIRST10 = 10% off) that customers can enter at booking.', why: 'Promo codes are the #1 tool for first-time customer acquisition on social media. "DM us for your code" is a proven engagement tactic.', status: '📋 Planned — Phase 7' },
+                { feature: 'Google Calendar Integration', what: 'Confirmed bookings automatically block time in the owner\'s Google Calendar.', why: 'Most service business owners run their schedule from Google Calendar. Without this, they have to manually copy every booking — high friction.', status: '📋 Planned — Phase 8' },
+                { feature: 'Stripe Deposit on Booking', what: 'Owner sets a % deposit (e.g. 20%) that customers pay at booking time via Stripe.', why: 'No-shows cost service businesses 10-15% of revenue. A deposit creates skin in the game — customers who pay a deposit almost always show up.', status: '📋 Planned — Phase 8' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-white font-semibold text-sm">{item.feature}</p>
+                    <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 font-medium ${
+                      item.status.startsWith('✅') ? 'bg-green-900/50 text-green-400' :
+                      item.status.startsWith('⏳') ? 'bg-red-900/50 text-red-400' :
+                      'bg-gray-800 text-gray-500'
+                    }`}>{item.status}</span>
+                  </div>
+                  <p className="text-gray-400 text-xs mb-1.5"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── FOR THE CUSTOMER (End User) ── */}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-4 flex items-center gap-2">
+              <span className="bg-green-900/50 text-green-400 text-xs px-2 py-0.5 rounded-full">Customer</span>
+              For the Customer — The End User Booking Experience
+            </h3>
+
+            <p className="text-gray-500 text-xs mb-3 italic">Before Booking</p>
+            <div className="space-y-3 mb-5">
+              {[
+                { feature: 'Service Duration + Price Shown Clearly', what: 'Each service shows "45 min · $65" in the booking form dropdown so customers know exactly what they are committing to.', why: 'Customers abandon bookings when they do not know how long a service takes. Showing duration prevents surprises and sets expectations.', status: '✅ Built' },
+                { feature: 'Preferred Staff Picker', what: 'Optional dropdown in the booking form — customer selects their preferred team member or chooses "No preference".', why: 'Loyalty to a specific stylist, vet, or mechanic is a primary driver of repeat bookings. Enabling this increases retention.', status: '✅ Built' },
+                { feature: 'Custom Notes Label Per Template', what: '"Your Concern" for clinics, "Guests + Notes" for cafes, "Preferred Style" for salons — contextually relevant notes field.', why: 'A generic "Notes" field feels impersonal. A field labelled "Your Concern" tells clinic patients the right information to provide, improving service quality.', status: '✅ Built' },
+                { feature: 'Next Available Slot Suggestion', what: 'Before the customer picks a date, show "Next available: Tomorrow 2pm" based on existing bookings.', why: 'Most customers do not know when the business is available. Showing the next open slot removes decision paralysis and speeds up the booking process.', status: '📋 Planned — Phase 6' },
+                { feature: 'Google Maps Link / Get Directions', what: 'Business address shown on the site with a "Get Directions" button that opens Google Maps.', why: 'A first-time customer who cannot find the location will not come back. Reducing friction in getting there directly impacts show-up rates.', status: '📋 Planned — Phase 6' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-white font-semibold text-sm">{item.feature}</p>
+                    <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 font-medium ${
+                      item.status.startsWith('✅') ? 'bg-green-900/50 text-green-400' : 'bg-gray-800 text-gray-500'
+                    }`}>{item.status}</span>
+                  </div>
+                  <p className="text-gray-400 text-xs mb-1.5"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-gray-500 text-xs mb-3 italic">During Booking</p>
+            <div className="space-y-3 mb-5">
+              {[
+                { feature: 'Real-Time Slot Availability Check', what: 'Before confirming a time, query existing bookings to prevent two customers from booking the same slot.', why: 'Double-bookings destroy client trust instantly. A customer who shows up and finds their slot taken will never return and will leave a bad review.', status: '📋 Planned — Phase 6' },
+                { feature: 'Save Booking Details (Auto-Fill)', what: 'Store name and phone in localStorage so returning customers do not need to re-enter their details.', why: 'Repeat customers are the backbone of service businesses. Reducing friction for their second booking directly increases lifetime value.', status: '📋 Planned — Phase 6' },
+                { feature: '"Book for Someone Else" Option', what: 'A checkbox that lets the booker enter a different person\'s name — e.g. booking a haircut for their child or spouse.', why: 'Service businesses often receive bookings on behalf of family members. Without this, the booking shows the wrong name and creates confusion at check-in.', status: '📋 Planned — Phase 7' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-white font-semibold text-sm">{item.feature}</p>
+                    <span className="text-xs px-2 py-0.5 rounded-full shrink-0 font-medium bg-gray-800 text-gray-500">{item.status}</span>
+                  </div>
+                  <p className="text-gray-400 text-xs mb-1.5"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-gray-500 text-xs mb-3 italic">After Booking</p>
+            <div className="space-y-3">
+              {[
+                { feature: 'Booking Confirmation Page', what: 'After submitting, customer is shown a full dedicated page with service, staff, date, time, address, and a cancel link.', why: 'A banner that disappears is not confirmation — it is anxiety. A permanent, shareable confirmation page gives customers something to reference and share.', status: '📋 Planned — Phase 6' },
+                { feature: 'Add to Calendar Button', what: '"Add to Google Calendar" and "Add to Apple Calendar" buttons appear on the confirmation page with one click.', why: 'Customers who add a booking to their calendar are 3x less likely to no-show. This is one of the highest-ROI features for reducing no-show rates.', status: '📋 Planned — Phase 6' },
+                { feature: 'Reschedule / Cancel Self-Service Link', what: 'Confirmation email includes a link where the customer can cancel or reschedule their own booking without calling.', why: 'Calling to cancel is friction many customers avoid — they simply do not show up instead. A self-service link converts no-shows into reschedules.', status: '📋 Planned — Phase 6' },
+                { feature: 'Booking Reminder Email / SMS', what: 'Auto-send a reminder to the customer 24 hours before their appointment via email (Resend) and SMS (Twilio).', why: 'Research shows 24h reminders reduce no-shows by 30-40%. For a salon with 20 bookings per week, that is potentially 6-8 saved appointments per week.', status: '⏳ Backlog — needs Twilio' },
+                { feature: 'WhatsApp Booking Option', what: 'A "Book via WhatsApp" button pre-filled with the service details opens a WhatsApp chat with the business.', why: 'In the Philippines, Australia, and Southeast Asia, WhatsApp is the primary communication channel. Meeting customers where they are increases conversion.', status: '📋 Planned — Phase 8' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-white font-semibold text-sm">{item.feature}</p>
+                    <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 font-medium ${
+                      item.status.startsWith('⏳') ? 'bg-red-900/50 text-red-400' : 'bg-gray-800 text-gray-500'
+                    }`}>{item.status}</span>
+                  </div>
+                  <p className="text-gray-400 text-xs mb-1.5"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Commercial Pitch */}
           <div className="bg-blue-950/20 border border-blue-800 rounded-xl p-5">
             <p className="text-blue-400 font-bold text-sm mb-3">💼 Commercial Pitch — What to Tell Prospective Clients</p>
             <div className="space-y-2 text-sm text-gray-400">
               {[
-                '"Your customers can book you 24/7 — even while you sleep. No more missed bookings on Instagram DMs."',
-                '"They pick their preferred staff member, select a service, and get an instant confirmation — in under 60 seconds."',
+                '"Your customers can book you 24/7 — even while you sleep. No more missed bookings via Instagram DMs."',
+                '"They pick their preferred stylist, select a service, and get an instant confirmation — in under 60 seconds."',
                 '"You see all bookings in one place. Confirm, cancel, or let it auto-approve — your choice."',
                 '"Edit your services and prices anytime — just type it in chat: \'change my haircut to $80\'."',
                 '"Your site shows your hours, your team, your gallery, and your reviews — all managed from one dashboard."',
                 '"Customers get a reminder before their appointment — fewer no-shows, more revenue."',
-                '"We built this for salons, clinics, mechanics, cafes, and pet clinics — across AU, US, UK, PH."',
-                '"$150 to launch. $29/month to keep it running. That\'s less than 1 booking per month to pay for itself."',
+                '"Built for salons, clinics, mechanics, cafes, and pet clinics — across AU, US, UK, PH."',
+                '"$150 to launch. $29/month to keep it running. That\'s less than one booking per month to pay for itself."',
               ].map((pitch, i) => (
                 <div key={i} className="flex gap-2">
                   <span className="text-blue-400 shrink-0">→</span>
