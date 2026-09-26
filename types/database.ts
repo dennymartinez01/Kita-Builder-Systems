@@ -13,6 +13,7 @@ export interface Site {
   owner_pin: string
   theme_json: ThemeJson
   published: boolean
+  currency: string
   payment_status: 'unpaid' | 'paid' | 'free'
   stripe_customer_id: string | null
   stripe_session_id: string | null

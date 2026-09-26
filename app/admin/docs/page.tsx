@@ -81,7 +81,7 @@ export default function DocsPage() {
             <p className="text-yellow-400 font-semibold text-sm mb-3">🗺️ Upcoming Phases</p>
             <div className="space-y-1.5 text-sm text-gray-400">
               {[
-                'Phase 5 — Service selector + currency picker on generate form',
+                'Phase 5 — Service selector + currency picker on generate form ✅',
                 'Phase 6 — Smart Booking: real-time availability, Add to Calendar, block dates, self-service cancel',
                 'Phase 7 — Admin Power Tools: calendar view, peak analytics, promo codes',
                 'Phase 8 — Growth: Stripe subscriptions, deposits, WhatsApp booking, Google Calendar',
@@ -912,13 +912,13 @@ NEXT_PUBLIC_ADMIN_PIN`,
               ],
             },
             {
-              label: '🔥 Phase 5 — Generate Flow Enhancement (Build Next)',
-              color: 'border-red-800 bg-red-950/20',
+              label: '✅ Phase 5 — Generate Flow Enhancement (Complete)',
+              color: 'border-green-800 bg-green-950/10',
               items: [
-                { for: 'Client', feature: 'Service selector on generate form', why: 'Client picks/edits default services before generation. Their choices = their data.' },
-                { for: 'Client', feature: 'Currency selector on generate form', why: 'USD, AUD, GBP, PHP, CAD, NZD. Stored on site, used everywhere prices show.' },
-                { for: 'Client', feature: 'Custom service add on generate form', why: 'Client adds their own services during onboarding, not just AI defaults.' },
-                { for: 'Client', feature: 'Editable service prices before generation', why: 'Client sets their own prices immediately — no need to edit in dashboard after.' },
+                { for: 'Client', feature: 'Service selector on generate form ✅', why: '3-step form — client picks/deselects default services before generation' },
+                { for: 'Client', feature: 'Currency selector on generate form ✅', why: '10 currencies: USD, AUD, GBP, PHP, CAD, NZD, EUR, SGD, MYR, INR' },
+                { for: 'Client', feature: 'Custom service add on generate form ✅', why: 'Client adds own services during onboarding with name + price + duration' },
+                { for: 'Client', feature: 'Editable service prices before generation ✅', why: 'Inline editable price and duration for each service in the form' },
               ],
             },
             {
@@ -1135,9 +1135,9 @@ NEXT_PUBLIC_ADMIN_PIN`,
                 },
                 {
                   title: 'Service selector + currency on generate form (Phase 5)',
-                  status: 'Planned — client picks services + currency before site generation',
-                  blocker: 'None — pure UI + DB change. No paid accounts needed.',
-                  effort: '3-4 hours',
+                  status: '✅ DONE — 3-step form: Type → Services + Currency → Details. Client picks/edits services, currency stored on site.',
+                  blocker: 'None',
+                  effort: 'Complete',
                 },
                 {
                   title: 'Real-time slot availability check (Phase 6)',

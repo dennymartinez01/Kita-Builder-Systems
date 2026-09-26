@@ -15,6 +15,7 @@ interface BookingFormProps {
   notesLabel?: string
   notesPlaceholder?: string
   notesRequired?: boolean
+  currencySymbol?: string
 }
 
 export default function BookingForm({
@@ -28,6 +29,7 @@ export default function BookingForm({
   notesLabel = 'Notes',
   notesPlaceholder = 'Anything we should know...',
   notesRequired = false,
+  currencySymbol = '$',
 }: BookingFormProps) {
   const [form, setForm] = useState({
     service_id: services[0]?.id || '',
@@ -148,7 +150,7 @@ export default function BookingForm({
           >
             {services.map(s => (
               <option key={s.id} value={s.id}>
-                {s.name} — ${s.price} ({s.duration_minutes} min)
+                {s.name} — {currencySymbol}{s.price} ({s.duration_minutes} min)
               </option>
             ))}
           </select>
@@ -311,7 +313,7 @@ export default function BookingForm({
 
         {selectedService && (
           <p className="text-center text-gray-400 text-xs">
-            {selectedService.name} · ${selectedService.price} · {selectedService.duration_minutes} min
+            {selectedService.name} · {currencySymbol}{selectedService.price} · {selectedService.duration_minutes} min
             {form.staff_name && <> · with {form.staff_name}</>}
           </p>
         )}

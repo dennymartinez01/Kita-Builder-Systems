@@ -27,7 +27,7 @@ const DEFAULT_STAFF = {
 
 export async function POST(req: NextRequest) {
   try {
-    const { business_name, business_type, location, owner_email, extra_notes } = await req.json()
+    const { business_name, business_type, location, owner_email, extra_notes, custom_services, currency = 'USD' } = await req.json()
 
     if (!business_name || !business_type || !location) {
       return NextResponse.json(
@@ -41,41 +41,33 @@ export async function POST(req: NextRequest) {
 
     const baseTemplate = getTemplate(business_type as BusinessType)
 
+    // If client provided custom services, only ask AI for copy (no services needed)
+    const hasClientServices = Array.isArray(custom_services) && custom_services.length > 0
+
     const prompt = `You are a professional website copywriter for local service businesses.
 
 Business: "${business_name}"
 Type: ${business_type}
 Location: ${location}
+Currency: ${currency}
 ${extra_notes ? `Additional context: ${extra_notes}` : ''}
 
-Generate website copy and business details with realistic local pricing for ${location}.
-Return ONLY a valid JSON object with this exact structure:
+Generate website copy. Return ONLY a valid JSON object:
 {
   "headline": "compelling hero headline max 8 words",
   "sub": "supporting subtitle max 15 words",
   "about_title": "About ${business_name}",
   "about_body": "2-3 sentences about this business type in ${location}",
-  "services": [
-    {"name": "service name", "price": 95, "duration_minutes": 45}
-  ],
-  "staff": [
-    {"name": "First Last", "role": "job title"}
-  ],
-  "testimonials": [
-    {"name": "Customer Name", "text": "short genuine review 10-15 words", "rating": 5}
-  ]
+  ${hasClientServices ? '' : `"services": [{"name": "service name", "price": 95, "duration_minutes": 45}],`}
+  "staff": [{"name": "First Last", "role": "job title"}],
+  "testimonials": [{"name": "Customer Name", "text": "short genuine review 10-15 words", "rating": 5}]
 }
 
 Requirements:
-- 3-5 services with realistic ${location} pricing for ${business_type}
+- Headline must be punchy and specific to ${business_type} in ${location}
 - 2-3 staff with appropriate titles for a ${business_type}
 - 3 testimonials with realistic local names for ${location}
-- Headline must be punchy and specific to ${business_type}
-- For mechanic: oil change, brakes, full service
-- For salon: haircut, color, styling services
-- For clinic: consultation, checkup, treatment
-- For pet: vet visit, grooming, vaccination  
-- For cafe: table sizes (2, 4, 6 people)`
+${!hasClientServices ? `- 3-5 services with realistic ${currency} pricing for ${business_type} in ${location}` : '- Do NOT include services in your response — client has provided their own'}`
 
     // Try primary model, fall back if unavailable
     const MODELS = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-2.5-flash-lite']
@@ -169,15 +161,19 @@ Requirements:
         owner_pin: '1234',
         theme_json: themeJson,
         published: true,
-      })
+        currency: currency || 'USD',
+      } as any)
       .select()
       .single()
 
     if (siteError) throw new Error(`Supabase insert error: ${siteError.message}`)
 
-    const servicesData = aiData.services?.length
-      ? aiData.services
-      : DEFAULT_SERVICES[business_type as BusinessType]
+    // Use client's custom services if provided, otherwise fall back to AI → template defaults
+    const servicesData = hasClientServices
+      ? custom_services
+      : aiData.services?.length
+        ? aiData.services
+        : DEFAULT_SERVICES[business_type as BusinessType]
 
     const staffData = aiData.staff?.length
       ? aiData.staff

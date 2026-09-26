@@ -38,6 +38,11 @@ export default async function PublicSitePage({ params }: PageProps) {
 
   const primary = theme.theme?.primary || '#1A1A1A'
   const bg = theme.theme?.bg || '#FFFFFF'
+  const currency = (site as any).currency || 'USD'
+  const currencySymbol = (() => {
+    const map: Record<string, string> = { USD: '$', AUD: '$', GBP: '£', CAD: '$', NZD: '$', PHP: '₱', EUR: '€', SGD: '$', MYR: 'RM', INR: '₹' }
+    return map[currency] || '$'
+  })()
 
   // Business hours from theme_json if set
   const hours = themeJson?.business_hours as Record<string, { open: string; close: string; closed: boolean }> | undefined
@@ -118,7 +123,7 @@ export default async function PublicSitePage({ params }: PageProps) {
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="font-bold text-gray-900 text-base leading-tight">{service.name}</h3>
                     <span className="text-xl font-bold shrink-0" style={{ color: primary }}>
-                      ${service.price}
+                      {currencySymbol}{service.price}
                     </span>
                   </div>
                   <p className="text-sm text-gray-500 mt-1">{service.duration_minutes} min</p>
@@ -232,6 +237,7 @@ export default async function PublicSitePage({ params }: PageProps) {
               notesLabel={booking?.data.notes_label || 'Notes'}
               notesPlaceholder={booking?.data.notes_placeholder || 'Anything we should know...'}
               notesRequired={booking?.data.notes_required || false}
+              currencySymbol={currencySymbol}
             />
           </div>
         </section>
