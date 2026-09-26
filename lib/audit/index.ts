@@ -3,14 +3,17 @@ import { analyzeSEO } from './seo'
 import { analyzeSecurity } from './security'
 import { analyzeTech } from './tech'
 import { analyzeAccessibility } from './accessibility'
+import { crawlSite } from './crawler'
 import type { AuditScores, AuditIssue, AnalyzerResult } from './types'
 
 export * from './types'
+export * from './crawler'
 
 interface RunAuditResult {
   scores: AuditScores
   raw_data: Record<string, any>
   issues: AuditIssue[]
+  pages: import('./crawler').CrawledPage[]
 }
 
 // ─── FETCH HTML + HEADERS ────────────────────────────────────────
@@ -24,15 +27,11 @@ async function fetchPage(url: string): Promise<{ html: string; headers: Record<s
     signal: AbortSignal.timeout(15000),
   })
 
-  if (!res.ok) {
-    throw new Error(`Failed to fetch page: HTTP ${res.status} ${res.statusText}`)
-  }
+  if (!res.ok) throw new Error(`Failed to fetch page: HTTP ${res.status} ${res.statusText}`)
 
   const html = await res.text()
   const headers: Record<string, string> = {}
-  res.headers.forEach((value, key) => {
-    headers[key.toLowerCase()] = value
-  })
+  res.headers.forEach((value, key) => { headers[key.toLowerCase()] = value })
 
   return { html, headers }
 }
@@ -55,16 +54,18 @@ export function normalizeUrl(url: string): string {
 export async function runAudit(rawUrl: string): Promise<RunAuditResult> {
   const url = normalizeUrl(rawUrl)
 
-  // Fetch page HTML and headers first (shared across analyzers)
+  // Fetch root page (shared across all analyzers)
   const { html, headers } = await fetchPage(url)
 
-  // Run all analyzers in parallel (PSI is slow — run it alongside others)
-  const [perfResult, seoResult, secResult, techResult, a11yResult] = await Promise.allSettled([
+  // Run page analyzers + crawler in parallel
+  // Crawler is capped at 10 pages with 5s per-page timeout — safe within maxDuration=60
+  const [perfResult, seoResult, secResult, techResult, a11yResult, crawlResult] = await Promise.allSettled([
     analyzePerformance(url),
     analyzeSEO(url, html),
     analyzeSecurity(url),
     analyzeTech(url, html, headers),
     analyzeAccessibility(url, html),
+    crawlSite(url, html, 10),
   ])
 
   function unwrap(result: PromiseSettledResult<AnalyzerResult>, fallbackCategory: string): AnalyzerResult {
@@ -82,13 +83,18 @@ export async function runAudit(rawUrl: string): Promise<RunAuditResult> {
     }
   }
 
-  const perf = unwrap(perfResult, 'performance')
-  const seo = unwrap(seoResult, 'seo')
-  const sec = unwrap(secResult, 'security')
-  const tech = unwrap(techResult, 'tech')
-  const a11y = unwrap(a11yResult, 'accessibility')
+  const perf  = unwrap(perfResult,  'performance')
+  const seo   = unwrap(seoResult,   'seo')
+  const sec   = unwrap(secResult,   'security')
+  const tech  = unwrap(techResult,  'tech')
+  const a11y  = unwrap(a11yResult,  'accessibility')
 
-  // Calculate overall score (weighted average)
+  // Extract crawler result
+  const crawl = crawlResult.status === 'fulfilled'
+    ? crawlResult.value
+    : { pages: [], issues: [], stats: {} }
+
+  // Weighted overall score
   const overall = Math.round(
     perf.score * 0.30 +
     seo.score  * 0.25 +
@@ -98,25 +104,26 @@ export async function runAudit(rawUrl: string): Promise<RunAuditResult> {
   )
 
   const scores: AuditScores = {
-    performance: perf.score,
-    seo: seo.score,
-    security: sec.score,
+    performance:   perf.score,
+    seo:           seo.score,
+    security:      sec.score,
     accessibility: a11y.score,
-    tech: tech.score,
+    tech:          tech.score,
     overall,
   }
 
   const raw_data = {
-    performance: perf.data || {},
-    seo: seo.data || {},
-    security: sec.data || {},
-    tech: tech.data || {},
-    accessibility: a11y.data || {},
-    html_length: html.length,
-    fetched_at: new Date().toISOString(),
+    performance:   perf.data  || {},
+    seo:           seo.data   || {},
+    security:      sec.data   || {},
+    tech:          tech.data  || {},
+    accessibility: a11y.data  || {},
+    crawler:       crawl.stats || {},
+    html_length:   html.length,
+    fetched_at:    new Date().toISOString(),
   }
 
-  // Combine all issues, sorted by severity
+  // Merge all issues sorted by severity
   const severityOrder: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3, info: 4 }
   const allIssues: AuditIssue[] = [
     ...perf.issues,
@@ -124,7 +131,13 @@ export async function runAudit(rawUrl: string): Promise<RunAuditResult> {
     ...sec.issues,
     ...tech.issues,
     ...a11y.issues,
+    ...crawl.issues,
   ].sort((a, b) => (severityOrder[a.severity] ?? 5) - (severityOrder[b.severity] ?? 5))
 
-  return { scores, raw_data, issues: allIssues }
+  return {
+    scores,
+    raw_data,
+    issues: allIssues,
+    pages: crawl.pages,
+  }
 }

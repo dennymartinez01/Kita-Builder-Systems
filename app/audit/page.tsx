@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Search, Loader2, Globe, CheckCircle, XCircle, Clock, RefreshCw, ChevronRight, Shield, Zap, BarChart2 } from 'lucide-react'
+import { Search, Loader2, Globe, CheckCircle, XCircle, Clock, RefreshCw, ChevronRight, Shield, Zap, BarChart2, Trash2, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 
 interface AuditSummary {
   id: string
@@ -16,6 +16,15 @@ function ScoreBadge({ score }: { score?: number }) {
   if (score === undefined || score === null) return <span className="text-gray-600 text-xs">—</span>
   const color = score >= 80 ? 'text-green-400' : score >= 60 ? 'text-yellow-400' : 'text-red-400'
   return <span className={`font-bold text-sm ${color}`}>{score}</span>
+}
+
+// Show trend vs previous audit of same URL
+function ScoreTrend({ current, previous }: { current?: number; previous?: number }) {
+  if (!current || !previous) return null
+  const diff = current - previous
+  if (Math.abs(diff) < 2) return <Minus size={10} className="text-gray-500" />
+  if (diff > 0) return <span className="text-green-400 text-xs flex items-center gap-0.5"><TrendingUp size={10} />+{diff}</span>
+  return <span className="text-red-400 text-xs flex items-center gap-0.5"><TrendingDown size={10} />{diff}</span>
 }
 
 function StatusBadge({ status }: { status: AuditSummary['status'] }) {
@@ -40,18 +49,46 @@ export default function AuditPage() {
   const [audits, setAudits] = useState<AuditSummary[]>([])
   const [loadingHistory, setLoadingHistory] = useState(true)
   const [error, setError] = useState('')
+  const [search, setSearch] = useState('')
+  const [deleting, setDeleting] = useState<string | null>(null)
 
   useEffect(() => { loadHistory() }, [])
 
-  async function loadHistory() {
+  // Debounced search
+  useEffect(() => {
+    const t = setTimeout(() => loadHistory(search), 300)
+    return () => clearTimeout(t)
+  }, [search])
+
+  async function loadHistory(q = '') {
     setLoadingHistory(true)
     try {
-      const res = await fetch('/api/audit?limit=20')
+      const params = new URLSearchParams({ limit: '30' })
+      if (q) params.set('search', q)
+      const res = await fetch(`/api/audit?${params}`)
       const data = await res.json()
       setAudits(data.audits || [])
     } catch { /* silent */ }
     finally { setLoadingHistory(false) }
   }
+
+  async function deleteAudit(id: string, e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!confirm('Delete this audit? This cannot be undone.')) return
+    setDeleting(id)
+    try {
+      await fetch(`/api/audit?id=${id}`, { method: 'DELETE' })
+      setAudits(prev => prev.filter(a => a.id !== id))
+    } finally { setDeleting(null) }
+  }
+
+  // Build previous score map for trend comparison (same URL, older audit)
+  const prevScores: Record<string, AuditSummary['scores']> = {}
+  audits.forEach((audit, i) => {
+    const prev = audits.slice(i + 1).find(a => a.url === audit.url && a.status === 'completed')
+    if (prev) prevScores[audit.id] = prev.scores
+  })
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -178,9 +215,20 @@ export default function AuditPage() {
       <div>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-white font-semibold text-sm uppercase tracking-wider">Recent Audits</h2>
-          <button onClick={loadHistory} className="text-gray-600 hover:text-gray-400 transition">
+          <button onClick={() => loadHistory(search)} className="text-gray-600 hover:text-gray-400 transition">
             <RefreshCw size={14} />
           </button>
+        </div>
+
+        {/* Search */}
+        <div className="relative mb-3">
+          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          <input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search by URL..."
+            className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition placeholder-gray-600"
+          />
         </div>
 
         <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
@@ -189,7 +237,7 @@ export default function AuditPage() {
           ) : audits.length === 0 ? (
             <div className="text-center py-10 text-gray-600">
               <Search size={28} className="mx-auto mb-3 opacity-30" />
-              <p className="text-sm">No audits yet. Enter a URL above to get started.</p>
+              <p className="text-sm">{search ? `No audits matching "${search}"` : 'No audits yet. Enter a URL above to get started.'}</p>
             </div>
           ) : (
             <table className="w-full text-sm">
@@ -202,6 +250,7 @@ export default function AuditPage() {
                   <th className="text-center text-gray-500 font-medium px-3 py-3 text-xs hidden md:table-cell">Sec</th>
                   <th className="text-center text-gray-500 font-medium px-3 py-3 text-xs hidden lg:table-cell">A11y</th>
                   <th className="text-center text-gray-500 font-medium px-3 py-3 text-xs">Overall</th>
+                  <th className="text-center text-gray-500 font-medium px-3 py-3 text-xs hidden lg:table-cell">Trend</th>
                   <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden lg:table-cell">Date</th>
                   <th className="px-4 py-3 text-xs"></th>
                 </tr>
@@ -209,7 +258,7 @@ export default function AuditPage() {
               <tbody>
                 {audits.map(audit => (
                   <tr key={audit.id} className="border-b border-gray-800 last:border-0 hover:bg-gray-800/40 transition">
-                    <td className="px-4 py-3 max-w-[200px]">
+                    <td className="px-4 py-3 max-w-[180px]">
                       <span className="text-gray-300 text-xs font-mono truncate block">{audit.url}</span>
                     </td>
                     <td className="px-4 py-3 hidden sm:table-cell">
@@ -230,15 +279,27 @@ export default function AuditPage() {
                     <td className="px-3 py-3 text-center">
                       <ScoreBadge score={audit.scores?.overall} />
                     </td>
+                    <td className="px-3 py-3 text-center hidden lg:table-cell">
+                      <ScoreTrend current={audit.scores?.overall} previous={prevScores[audit.id]?.overall} />
+                    </td>
                     <td className="px-4 py-3 hidden lg:table-cell">
                       <span className="text-gray-600 text-xs">{new Date(audit.created_at).toLocaleDateString()}</span>
                     </td>
                     <td className="px-4 py-3">
-                      {audit.status === 'completed' && (
-                        <Link href={`/audit/${audit.id}`} className="text-blue-400 hover:text-blue-300 transition">
-                          <ChevronRight size={16} />
-                        </Link>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {audit.status === 'completed' && (
+                          <Link href={`/audit/${audit.id}`} className="text-blue-400 hover:text-blue-300 transition">
+                            <ChevronRight size={16} />
+                          </Link>
+                        )}
+                        <button
+                          onClick={e => deleteAudit(audit.id, e)}
+                          disabled={deleting === audit.id}
+                          className="text-gray-700 hover:text-red-400 transition disabled:opacity-50"
+                        >
+                          {deleting === audit.id ? <Loader2 size={13} className="animate-spin" /> : <Trash2 size={13} />}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

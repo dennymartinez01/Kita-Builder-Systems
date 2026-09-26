@@ -328,15 +328,16 @@ export default function AuditDocsPage() {
           {[
             {
               phase: 'Phase 2 — Crawler',
-              color: 'border-yellow-800 bg-yellow-950/20',
-              badge: 'UPCOMING',
-              badgeColor: 'bg-gray-800 text-gray-500',
+              color: 'border-green-800 bg-green-950/20',
+              badge: '✅ COMPLETE',
+              badgeColor: 'bg-green-900/50 text-green-400',
               items: [
-                'Crawl up to 10 internal pages from the same domain',
-                'Populate audit_pages table with per-page SEO data',
-                'Pages tab in the audit dashboard',
-                'Broken link detection across all crawled pages',
-                'Duplicate title/meta detection across pages',
+                'Crawl up to 10 internal pages from the same domain ✅',
+                'Populate audit_pages table with per-page SEO data ✅',
+                'Pages tab in the audit dashboard ✅',
+                'Broken link detection across all crawled pages ✅',
+                'Duplicate title/meta detection across pages ✅',
+                'History search + delete + score trend comparison ✅',
               ],
             },
             {
@@ -440,6 +441,7 @@ export default function AuditDocsPage() {
             <Search size={12} /> Open Audit Tool
           </Link>
           <span className="text-xs px-2 py-1.5 rounded-lg bg-green-900/50 text-green-400 font-medium">Phase 1 Complete</span>
+          <span className="text-xs px-2 py-1.5 rounded-lg bg-green-900/50 text-green-400 font-medium">Phase 2 Complete</span>
         </div>
       </div>
 

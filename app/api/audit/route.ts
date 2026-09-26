@@ -4,7 +4,7 @@ import { runAudit, normalizeUrl } from '@/lib/audit'
 
 export const maxDuration = 60
 
-// POST /api/audit — create new audit and run analysis
+// POST /api/audit — create and run a new audit
 export async function POST(req: NextRequest) {
   try {
     const { url } = await req.json()
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const normalizedUrl = normalizeUrl(url)
     const supabase = createServerClient()
 
-    // Create audit record with queued status
+    // Create audit record
     const { data: audit, error: insertError } = await supabase
       .from('audits')
       .insert({ url: normalizedUrl, status: 'queued' })
@@ -22,13 +22,13 @@ export async function POST(req: NextRequest) {
 
     if (insertError) throw new Error(`Failed to create audit: ${insertError.message}`)
 
-    // Mark as running
+    // Mark running
     await supabase.from('audits').update({ status: 'running' }).eq('id', audit.id)
 
-    // Run all analyzers (within maxDuration=60)
     try {
-      const { scores, raw_data, issues } = await runAudit(normalizedUrl)
+      const { scores, raw_data, issues, pages } = await runAudit(normalizedUrl)
 
+      // Save main audit record
       await supabase.from('audits').update({
         status: 'completed',
         scores,
@@ -36,7 +36,26 @@ export async function POST(req: NextRequest) {
         issues,
       }).eq('id', audit.id)
 
-      return NextResponse.json({ id: audit.id, status: 'completed', scores })
+      // Save crawled pages to audit_pages table
+      if (pages && pages.length > 0) {
+        await supabase.from('audit_pages').insert(
+          pages.map(p => ({
+            audit_id: audit.id,
+            url: p.url,
+            status_code: p.status_code || null,
+            title: p.title || null,
+            meta_desc: p.meta_desc || null,
+            h1_count: p.h1_count ?? 0,
+          }))
+        )
+      }
+
+      return NextResponse.json({
+        id: audit.id,
+        status: 'completed',
+        scores,
+        pages_crawled: pages?.length ?? 0,
+      })
     } catch (analysisError: any) {
       await supabase.from('audits').update({
         status: 'failed',
@@ -54,21 +73,45 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET /api/audit — list recent audits
+// GET /api/audit — list recent audits with optional search
 export async function GET(req: NextRequest) {
   try {
     const supabase = createServerClient()
     const { searchParams } = new URL(req.url)
     const limit = parseInt(searchParams.get('limit') || '20')
+    const search = searchParams.get('search') || ''
 
-    const { data, error } = await supabase
+    let query = supabase
       .from('audits')
       .select('id, url, status, scores, created_at')
       .order('created_at', { ascending: false })
       .limit(limit)
 
+    if (search) {
+      query = query.ilike('url', `%${search}%`)
+    }
+
+    const { data, error } = await query
     if (error) throw new Error(error.message)
+
     return NextResponse.json({ audits: data || [] })
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
+}
+
+// DELETE /api/audit — delete an audit by id
+export async function DELETE(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url)
+    const id = searchParams.get('id')
+    if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
+
+    const supabase = createServerClient()
+    const { error } = await supabase.from('audits').delete().eq('id', id)
+    if (error) throw new Error(error.message)
+
+    return NextResponse.json({ success: true })
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 })
   }

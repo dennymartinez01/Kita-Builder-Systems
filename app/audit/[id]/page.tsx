@@ -6,11 +6,12 @@ import Link from 'next/link'
 import {
   ArrowLeft, RefreshCw, Loader2, Globe, Shield, Search,
   BarChart2, Zap, AlertTriangle, Info, CheckCircle,
-  ChevronDown, ChevronUp, ExternalLink, Code2, Layers,
+  ChevronDown, ChevronUp, ExternalLink, Code2, Layers, FileSearch,
 } from 'lucide-react'
 import type { AuditRecord, AuditIssue, IssueSeverity } from '@/lib/audit/types'
+import type { CrawledPage } from '@/lib/audit/crawler'
 
-type TabKey = 'overview' | 'performance' | 'seo' | 'security' | 'tech' | 'accessibility' | 'issues' | 'raw'
+type TabKey = 'overview' | 'performance' | 'seo' | 'security' | 'tech' | 'accessibility' | 'issues' | 'pages' | 'raw'
 
 // ─── SCORE RING ───────────────────────────────────────────────────
 function ScoreRing({ score, size = 80, label }: { score: number; size?: number; label?: string }) {
@@ -106,6 +107,7 @@ export default function AuditResultPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const [audit, setAudit] = useState<AuditRecord | null>(null)
+  const [pages, setPages] = useState<CrawledPage[]>([])
   const [loading, setLoading] = useState(true)
   const [rerunning, setRerunning] = useState(false)
   const [tab, setTab] = useState<TabKey>('overview')
@@ -120,6 +122,7 @@ export default function AuditResultPage() {
       const res = await fetch(`/api/audit/${id}`)
       const data = await res.json()
       if (data.audit) setAudit(data.audit)
+      if (data.pages) setPages(data.pages)
     } catch { /* silent */ }
     finally { setLoading(false) }
   }
@@ -170,14 +173,15 @@ export default function AuditResultPage() {
   }
 
   const TABS: { id: TabKey; label: string; icon: React.ComponentType<any> }[] = [
-    { id: 'overview',      label: 'Overview',     icon: BarChart2 },
-    { id: 'performance',   label: 'Performance',  icon: Zap },
-    { id: 'seo',           label: 'SEO',          icon: Search },
-    { id: 'security',      label: 'Security',     icon: Shield },
+    { id: 'overview',      label: 'Overview',      icon: BarChart2 },
+    { id: 'performance',   label: 'Performance',   icon: Zap },
+    { id: 'seo',           label: 'SEO',           icon: Search },
+    { id: 'security',      label: 'Security',      icon: Shield },
     { id: 'accessibility', label: 'Accessibility', icon: CheckCircle },
-    { id: 'tech',          label: 'Tech Stack',   icon: Layers },
+    { id: 'tech',          label: 'Tech Stack',    icon: Layers },
+    { id: 'pages',         label: `Pages (${pages.length})`, icon: FileSearch },
     { id: 'issues',        label: `Issues (${issues.length})`, icon: AlertTriangle },
-    { id: 'raw',           label: 'Raw Data',     icon: Code2 },
+    { id: 'raw',           label: 'Raw Data',      icon: Code2 },
   ]
 
   const perfData = rawData.performance || {}
@@ -313,6 +317,25 @@ export default function AuditResultPage() {
               </div>
             )}
           </div>
+          {/* Crawler stats in overview */}
+          {rawData.crawler && rawData.crawler.pages_crawled > 0 && (
+            <div className="bg-gray-900 border border-gray-800 rounded-xl p-5 md:col-span-2">
+              <h3 className="text-white font-semibold text-sm mb-4 flex items-center gap-2"><FileSearch size={14} className="text-blue-400" /> Crawler Summary</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { label: 'Internal links found', value: rawData.crawler.total_links_found },
+                  { label: 'Pages crawled', value: rawData.crawler.pages_crawled },
+                  { label: 'Broken links', value: rawData.crawler.broken_links, bad: rawData.crawler.broken_links > 0 },
+                  { label: 'Missing titles', value: rawData.crawler.missing_titles, bad: rawData.crawler.missing_titles > 0 },
+                ].map(s => (
+                  <div key={s.label} className="text-center">
+                    <div className={`text-2xl font-bold ${s.bad ? 'text-red-400' : 'text-white'}`}>{s.value ?? 0}</div>
+                    <div className="text-gray-600 text-xs mt-0.5">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -470,6 +493,122 @@ export default function AuditResultPage() {
               filteredIssues.map((issue, idx) => <IssueCard key={idx} issue={issue} />)
             )}
           </div>
+        </div>
+      )}
+
+      {/* ── PAGES ── */}
+      {tab === 'pages' && (
+        <div>
+          {/* Crawler stats summary */}
+          {rawData.crawler && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+              {[
+                { label: 'Links Found', value: rawData.crawler.total_links_found ?? 0, color: 'text-blue-400' },
+                { label: 'Pages Crawled', value: rawData.crawler.pages_crawled ?? 0, color: 'text-green-400' },
+                { label: 'Broken Links', value: rawData.crawler.broken_links ?? 0, color: 'text-red-400' },
+                { label: 'Noindex Pages', value: rawData.crawler.noindex_pages ?? 0, color: 'text-yellow-400' },
+              ].map(s => (
+                <div key={s.label} className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
+                  <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
+                  <div className="text-gray-500 text-xs mt-0.5">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {pages.length === 0 ? (
+            <div className="bg-gray-900 border border-gray-800 rounded-xl p-10 text-center">
+              <FileSearch size={28} className="mx-auto mb-3 text-gray-600" />
+              <p className="text-gray-500 text-sm mb-1">No internal pages crawled yet.</p>
+              <p className="text-gray-600 text-xs">Pages are crawled automatically when you run an audit. Re-run to crawl internal links.</p>
+            </div>
+          ) : (
+            <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+              <div className="px-4 py-3 border-b border-gray-800 flex items-center justify-between">
+                <p className="text-white font-semibold text-sm">{pages.length} internal pages crawled</p>
+                <div className="flex gap-2 text-xs text-gray-500">
+                  <span className="text-green-400">■</span> OK
+                  <span className="text-red-400">■</span> Broken
+                  <span className="text-yellow-400">■</span> Issues
+                </div>
+              </div>
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-gray-800">
+                    <th className="text-left text-gray-500 font-medium px-4 py-2">URL</th>
+                    <th className="text-left text-gray-500 font-medium px-3 py-2 hidden sm:table-cell">Status</th>
+                    <th className="text-left text-gray-500 font-medium px-3 py-2 hidden md:table-cell">Title</th>
+                    <th className="text-left text-gray-500 font-medium px-3 py-2 hidden lg:table-cell">H1s</th>
+                    <th className="text-left text-gray-500 font-medium px-3 py-2 hidden lg:table-cell">Meta</th>
+                    <th className="px-3 py-2"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pages.map((page, i) => {
+                    const isBroken = (page.status_code ?? 0) >= 400 || page.status_code === 0
+                    const hasIssue = !page.title || !page.meta_desc || page.h1_count !== 1
+                    const rowColor = isBroken ? 'bg-red-950/10' : hasIssue ? 'bg-yellow-950/10' : ''
+                    return (
+                      <tr key={i} className={`border-b border-gray-800 last:border-0 hover:bg-gray-800/30 transition ${rowColor}`}>
+                        <td className="px-4 py-2.5 max-w-[200px]">
+                          <span className="text-gray-300 font-mono truncate block text-xs">
+                            {new URL(page.url).pathname || '/'}
+                          </span>
+                        </td>
+                        <td className="px-3 py-2.5 hidden sm:table-cell">
+                          <span className={`font-mono font-bold ${
+                            isBroken ? 'text-red-400' : 'text-green-400'
+                          }`}>
+                            {page.status_code || '—'}
+                          </span>
+                        </td>
+                        <td className="px-3 py-2.5 hidden md:table-cell max-w-[180px]">
+                          {page.title ? (
+                            <span className="text-gray-400 truncate block">{page.title.substring(0, 40)}{page.title.length > 40 ? '…' : ''}</span>
+                          ) : (
+                            <span className="text-red-400 italic">Missing</span>
+                          )}
+                        </td>
+                        <td className="px-3 py-2.5 hidden lg:table-cell">
+                          <span className={page.h1_count === 1 ? 'text-green-400' : 'text-yellow-400'}>
+                            {page.h1_count}
+                          </span>
+                        </td>
+                        <td className="px-3 py-2.5 hidden lg:table-cell">
+                          {page.meta_desc ? (
+                            <span className="text-green-400">✓</span>
+                          ) : (
+                            <span className="text-red-400">✗</span>
+                          )}
+                        </td>
+                        <td className="px-3 py-2.5">
+                          <a href={page.url} target="_blank" rel="noopener noreferrer"
+                            className="text-gray-600 hover:text-blue-400 transition">
+                            <ExternalLink size={11} />
+                          </a>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* Cross-page issues from crawler */}
+          {issues.filter(i => i.element && !i.element.startsWith('<')).length > 0 && (
+            <div className="mt-5">
+              <h3 className="text-white font-semibold text-sm mb-3">Cross-page Issues</h3>
+              <div className="space-y-2">
+                {issues
+                  .filter(i => ['broken internal link', 'duplicate page title', 'duplicate meta description',
+                    'page missing title tag', 'page missing meta description', 'page missing h1 tag',
+                    'slow page response time', 'internal page set to noindex'].includes(i.title.toLowerCase()))
+                  .map((issue, idx) => <IssueCard key={idx} issue={issue} />)
+                }
+              </div>
+            </div>
+          )}
         </div>
       )}
 
