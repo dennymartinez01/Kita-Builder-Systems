@@ -61,10 +61,13 @@ export default function DocsPage() {
           {[
             { layer: 'Framework', tech: 'Next.js 16 (App Router + TypeScript)', note: 'Full-stack React, server components, API routes' },
             { layer: 'Styling', tech: 'Tailwind CSS v4', note: 'Utility-first, no extra config needed' },
-            { layer: 'Database', tech: 'Supabase (Postgres + RLS)', note: 'Cloud hosted, free tier sufficient for MVP' },
+            { layer: 'Database', tech: 'Supabase (Postgres + RLS + Storage)', note: 'Cloud hosted, free tier sufficient for MVP' },
             { layer: 'AI Generation', tech: 'Gemini 3.6 Flash (Google AI)', note: 'Free tier, AQ. auth key format, ~500 generations/day' },
+            { layer: 'HTML Parsing', tech: 'cheerio', note: 'SEO + accessibility audit analyzers' },
+            { layer: 'PDF Generation', tech: 'jsPDF', note: 'Client-side PDF reports, no server needed' },
+            { layer: 'Payments', tech: 'Stripe', note: '$150 setup fee, test mode active' },
             { layer: 'Email', tech: 'Resend', note: 'Booking notification emails, free 100/day' },
-            { layer: 'Hosting', tech: 'Vercel (when ready)', note: 'Free tier, auto-deploys from GitHub' },
+            { layer: 'Hosting', tech: 'Vercel', note: 'Live at kita-builder-systems.vercel.app' },
             { layer: 'Icons', tech: 'Lucide React', note: 'Consistent icon set throughout admin' },
           ].map(row => (
             <div key={row.layer} className="flex gap-4 bg-gray-950 border border-gray-800 rounded-xl p-4">
@@ -89,34 +92,65 @@ export default function DocsPage() {
           <p className="text-gray-400 text-sm mb-4">All source files live inside <code className="text-blue-300 font-mono">kita-builder/</code></p>
           <pre className="bg-gray-950 border border-gray-800 rounded-xl p-4 text-xs text-gray-400 font-mono leading-6 overflow-x-auto">{`kita-builder/
 ├── app/
-│   ├── admin/                  ← Your internal CMS
-│   │   ├── layout.tsx          ← Sidebar + PIN auth
-│   │   ├── page.tsx            ← Dashboard + stats
-│   │   ├── credentials/        ← API keys reference
+│   ├── admin/                  ← Your internal CMS (PIN protected)
+│   │   ├── layout.tsx          ← Sidebar + PIN auth + logo loader
+│   │   ├── page.tsx            ← Dashboard + live stats
+│   │   ├── credentials/        ← API keys reference + .env template
 │   │   ├── generate/           ← AI site generator form
-│   │   ├── sites/              ← All generated sites list
-│   │   ├── templates/          ← Template browser
-│   │   ├── settings/           ← Logo uploader + CMS config
-│   │   └── docs/               ← This page
+│   │   ├── revenue/            ← MRR tracker + CSV export
+│   │   ├── sites/              ← All generated sites + payment status
+│   │   ├── templates/          ← 11-template marketplace grid
+│   │   ├── settings/           ← Logo, PIN, white-label, email config
+│   │   └── docs/               ← Documentation (this page)
+│   │       └── audit/          ← Audit module docs
 │   ├── api/
-│   │   ├── generate/route.ts   ← POST: Claude AI generation
-│   │   ├── notify/route.ts     ← POST: Save booking + email
-│   │   └── upload-logo/route.ts← POST: Logo upload to Supabase Storage
+│   │   ├── agent/route.ts      ← AI chat agent (9 tools)
+│   │   ├── audit/route.ts      ← Audit create/list/delete
+│   │   ├── audit/[id]/route.ts ← Audit fetch/re-run
+│   │   ├── checkout/route.ts   ← Stripe Checkout session
+│   │   ├── generate/route.ts   ← Gemini AI site generation
+│   │   ├── notify/route.ts     ← Save booking + Resend email
+│   │   ├── track/route.ts      ← Page view analytics
+│   │   ├── upload-logo/route.ts← Image upload to Supabase Storage
+│   │   └── webhook/route.ts    ← Stripe webhook handler
+│   ├── audit/                  ← Website Audit tool (dark admin theme)
+│   │   ├── layout.tsx          ← Audit layout with top bar
+│   │   ├── page.tsx            ← URL input + audit history
+│   │   └── [id]/page.tsx       ← Full results dashboard + PDF download
+│   ├── audit-pitch/page.tsx    ← Audit pitch/outreach page
 │   ├── [slug]/
-│   │   ├── page.tsx            ← Public client site
-│   │   └── dashboard/page.tsx  ← Owner CMS (PIN protected)
+│   │   ├── page.tsx            ← Public client site (white-label aware)
+│   │   └── dashboard/page.tsx  ← Owner CMS (10 tabs, PIN protected)
+│   ├── onboard/
+│   │   ├── page.tsx            ← $150 client payment page
+│   │   └── success/page.tsx    ← Post-payment site polling
+│   ├── pitch/page.tsx          ← KITA Builder outreach pitch
 │   ├── layout.tsx
-│   └── page.tsx                ← Home
+│   └── page.tsx
 ├── components/
-│   └── BookingForm.tsx         ← Client booking widget
+│   ├── AgentChat.tsx           ← AI chat widget (owner dashboard)
+│   ├── BookingForm.tsx         ← Customer booking form
+│   └── PageTracker.tsx         ← Non-blocking page view tracker
 ├── lib/
-│   ├── supabase.ts             ← DB client
-│   └── templates/              ← 5 base templates
+│   ├── supabase.ts             ← Supabase client (server + anon)
+│   ├── stripe.ts               ← Stripe client (server-only)
+│   ├── pricing.ts              ← Client-safe pricing constants
+│   ├── whitelabel.ts           ← White-label config helpers
+│   ├── templates/              ← 11 template variants
+│   │   ├── index.ts, registry.ts
+│   │   └── salon/clinic/pet/cafe/mechanic.ts
+│   └── audit/                  ← Audit analyzers
+│       ├── types.ts, index.ts, crawler.ts, pdf.ts
+│       └── performance/seo/security/tech/accessibility.ts
 ├── supabase/
-│   ├── schema.sql              ← Run once in Supabase SQL Editor
-│   └── storage.sql             ← Run once for logo storage bucket
+│   ├── schema.sql              ← sites, services, staff, bookings
+│   ├── storage.sql             ← kita-assets storage bucket
+│   ├── payments.sql            ← payment_status, stripe columns
+│   ├── analytics.sql           ← page_views table
+│   ├── audit.sql               ← audits + audit_pages tables
+│   └── staff-booking.sql       ← staff_id + staff_name on bookings
 ├── types/
-│   └── database.ts             ← TypeScript types
+│   └── database.ts             ← TypeScript types for all DB tables
 └── .env.local                  ← API keys (never commit)`}</pre>
         </div>
       ),
@@ -127,7 +161,7 @@ export default function DocsPage() {
       icon: Database,
       content: (
         <div className="space-y-4">
-          <p className="text-gray-400 text-sm">4 tables in Supabase. All have Row Level Security enabled with public access for MVP.</p>
+          <p className="text-gray-400 text-sm">6 tables + 1 storage bucket. All have Row Level Security enabled. Run SQL files in order listed.</p>
           {[
             {
               table: 'sites',
@@ -140,8 +174,12 @@ export default function DocsPage() {
                 { name: 'business_type', type: 'text', note: 'salon | clinic | pet | cafe | mechanic' },
                 { name: 'owner_email', type: 'text', note: 'Booking notification destination' },
                 { name: 'owner_pin', type: 'text', note: 'PIN for owner dashboard login' },
-                { name: 'theme_json', type: 'jsonb', note: 'Full site structure — sections, colors, copy' },
+                { name: 'theme_json', type: 'jsonb', note: 'Full site structure — sections, colors, copy, hours, gallery, logo_url' },
                 { name: 'published', type: 'bool', note: 'Controls whether public site is visible' },
+                { name: 'payment_status', type: 'text', note: 'paid | free | unpaid' },
+                { name: 'stripe_session_id', type: 'text', note: 'Stripe Checkout session ID' },
+                { name: 'stripe_customer_id', type: 'text', note: 'Stripe customer ID' },
+                { name: 'paid_at', type: 'timestamptz', note: 'When payment was confirmed' },
               ],
             },
             {
@@ -169,7 +207,7 @@ export default function DocsPage() {
             {
               table: 'bookings',
               color: 'text-yellow-400',
-              desc: 'Customer appointments — the money maker',
+              desc: 'Customer appointments',
               columns: [
                 { name: 'site_id', type: 'uuid', note: 'FK → sites.id' },
                 { name: 'service_id', type: 'uuid', note: 'FK → services.id (nullable)' },
@@ -180,7 +218,31 @@ export default function DocsPage() {
                 { name: 'booking_time', type: 'text', note: 'HH:MM format' },
                 { name: 'car_model', type: 'text', note: 'Mechanic only — nullable' },
                 { name: 'pet_name', type: 'text', note: 'Pet clinic only — nullable' },
+                { name: 'staff_id', type: 'uuid', note: 'FK → staff.id (nullable) — preferred staff' },
+                { name: 'staff_name', type: 'text', note: 'Denormalized staff name for display' },
                 { name: 'status', type: 'text', note: 'pending | confirmed | cancelled' },
+              ],
+            },
+            {
+              table: 'page_views',
+              color: 'text-blue-300',
+              desc: 'Analytics — tracks visits to client sites',
+              columns: [
+                { name: 'site_id', type: 'uuid', note: 'FK → sites.id (cascade delete)' },
+                { name: 'viewed_at', type: 'timestamptz', note: 'When the visit occurred' },
+                { name: 'path', type: 'text', note: 'URL path visited' },
+              ],
+            },
+            {
+              table: 'audits',
+              color: 'text-red-400',
+              desc: 'Website audit runs',
+              columns: [
+                { name: 'url', type: 'text', note: 'Normalized URL audited' },
+                { name: 'status', type: 'text', note: 'queued | running | completed | failed' },
+                { name: 'scores', type: 'jsonb', note: '{ performance, seo, security, accessibility, tech, overall }' },
+                { name: 'raw_data', type: 'jsonb', note: 'Full data from all analyzers' },
+                { name: 'issues', type: 'jsonb', note: 'Array of AuditIssue objects sorted by severity' },
               ],
             },
           ].map(t => (
@@ -274,65 +336,24 @@ export default function DocsPage() {
       content: (
         <div className="space-y-4">
           {[
-            {
-              method: 'POST',
-              path: '/api/generate',
-              color: 'bg-green-900/50 text-green-300',
-              desc: 'Generates a full site using Claude AI and saves to Supabase',
-              body: `{
-  "business_name": "Jim's Auto Repair",
-  "business_type": "mechanic",
-  "location": "Sydney, AU",
-  "owner_email": "jim@example.com",    // optional
-  "extra_notes": "Specialises in 4WDs" // optional
-}`,
-              response: `{
-  "slug": "jims-auto-repair-k3x9",
-  "business_name": "Jim's Auto Repair",
-  "business_type": "mechanic",
-  "site_id": "uuid..."
-}`,
-            },
-            {
-              method: 'POST',
-              path: '/api/notify',
-              color: 'bg-green-900/50 text-green-300',
-              desc: 'Saves a customer booking and sends email notification to owner',
-              body: `{
-  "site_id": "uuid...",
-  "service_id": "uuid...",        // optional
-  "customer_name": "Craig B.",
-  "customer_phone": "+61400000000",
-  "service_name": "Oil Change",
-  "booking_date": "2026-10-01",
-  "booking_time": "10:00",
-  "car_model": "Toyota HiLux 2021", // mechanic only
-  "pet_name": null,
-  "notes": null
-}`,
-              response: `{
-  "success": true,
-  "booking": { ...booking row }
-}`,
-            },
+            { method: 'POST', path: '/api/generate', color: 'bg-green-900/50 text-green-300', desc: 'Generates a full site using Gemini AI and saves to Supabase' },
+            { method: 'POST', path: '/api/notify', color: 'bg-green-900/50 text-green-300', desc: 'Saves a customer booking and sends Resend email notification' },
+            { method: 'POST', path: '/api/agent', color: 'bg-green-900/50 text-green-300', desc: 'AI chat agent — 9 tools for editing site content via natural language' },
+            { method: 'POST', path: '/api/checkout', color: 'bg-green-900/50 text-green-300', desc: 'Creates a Stripe Checkout session for $150 setup fee' },
+            { method: 'POST', path: '/api/webhook', color: 'bg-green-900/50 text-green-300', desc: 'Stripe webhook — handles payment.completed, auto-generates site' },
+            { method: 'POST', path: '/api/upload-logo', color: 'bg-green-900/50 text-green-300', desc: 'Uploads an image to Supabase Storage kita-assets bucket' },
+            { method: 'POST', path: '/api/track', color: 'bg-green-900/50 text-green-300', desc: 'Records a page view for site analytics (non-blocking)' },
+            { method: 'POST', path: '/api/audit', color: 'bg-purple-900/50 text-purple-300', desc: 'Runs a full website audit — Performance, SEO, Security, Tech, Accessibility + Crawler' },
+            { method: 'GET', path: '/api/audit', color: 'bg-blue-900/50 text-blue-300', desc: 'Lists recent audits with optional ?search= filter' },
+            { method: 'GET', path: '/api/audit/[id]', color: 'bg-blue-900/50 text-blue-300', desc: 'Fetches full audit record + crawled pages' },
+            { method: 'POST', path: '/api/audit/[id]', color: 'bg-green-900/50 text-green-300', desc: 'Re-runs an existing audit for the same URL' },
+            { method: 'DELETE', path: '/api/audit?id=', color: 'bg-red-900/50 text-red-300', desc: 'Deletes an audit and all its crawled pages' },
           ].map(route => (
             <div key={route.path} className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
-              <div className="px-4 py-3 border-b border-gray-800 flex items-center gap-3">
+              <div className="px-4 py-3 flex items-center gap-3">
                 <span className={`text-xs font-bold px-2 py-0.5 rounded ${route.color}`}>{route.method}</span>
                 <code className="text-white font-mono text-sm">{route.path}</code>
-              </div>
-              <div className="p-4">
-                <p className="text-gray-400 text-sm mb-3">{route.desc}</p>
-                <div className="grid md:grid-cols-2 gap-3">
-                  <div>
-                    <p className="text-gray-600 text-xs mb-1 uppercase tracking-wider">Request Body</p>
-                    <pre className="bg-gray-900 rounded-lg p-3 text-xs text-green-300 font-mono overflow-x-auto">{route.body}</pre>
-                  </div>
-                  <div>
-                    <p className="text-gray-600 text-xs mb-1 uppercase tracking-wider">Response</p>
-                    <pre className="bg-gray-900 rounded-lg p-3 text-xs text-blue-300 font-mono overflow-x-auto">{route.response}</pre>
-                  </div>
-                </div>
+                <span className="text-gray-500 text-xs">{route.desc}</span>
               </div>
             </div>
           ))}
@@ -434,17 +455,26 @@ export default function DocsPage() {
             },
             {
               week: 'Week 4 — Scale (Days 22–30)',
-              color: 'border-purple-800',
-              badge: 'UPCOMING',
-              badgeColor: 'bg-gray-800 text-gray-500',
+              color: 'border-yellow-800',
+              badge: '🔄 CURRENT',
+              badgeColor: 'bg-yellow-900/50 text-yellow-400',
               tasks: [
-                'Deploy to Vercel production — kita-builder-systems.vercel.app ✅',
+                'Deploy to Vercel — kita-builder-systems.vercel.app ✅',
+                'Website Audit Module Phase 1 (Performance, SEO, Security, Tech, A11y) ✅',
+                'Website Audit Module Phase 2 (Crawler, Pages tab, History, Delete) ✅',
+                'Website Audit Module Phase 3 (PDF Report download) ✅',
+                'Audit pitch page at /audit-pitch ✅',
+                'Owner dashboard expanded to 10 tabs (Gallery, Reviews, Analytics, Settings) ✅',
+                'Staff booking — preferred staff picker in booking form ✅',
+                'Site analytics — page views tracking + Analytics tab ✅',
+                'White-label mode — agency branding via env vars ✅',
+                'Revenue dashboard — MRR tracker at /admin/revenue ✅',
+                'Custom PIN change + logo upload in owner dashboard ✅',
+                'README fully updated with all features and routes ✅',
                 'Custom domain (kita.build or kitasystems.com)',
                 'Twilio SMS reminders for owners + customers',
-                'Record 60-sec Loom demo video of site generation',
-                'Post demo to AU/US small business Facebook groups',
-                'Image upload for business logos + gallery',
                 '$29/mo recurring billing via Stripe subscriptions',
+                'Record 60-sec Loom demo video of site generation',
               ],
             },
           ].map(week => (
@@ -486,7 +516,7 @@ export default function DocsPage() {
             A standalone website intelligence tool built inside the admin panel. Audits any public URL for performance, SEO, security, tech stack, and accessibility — all in one run.
           </p>
           <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-            <p className="text-blue-400 font-semibold text-sm mb-3">Phase 1 Features (Complete)</p>
+            <p className="text-blue-400 font-semibold text-sm mb-3">Phases 1 + 2 + 3 Complete</p>
             <div className="grid sm:grid-cols-2 gap-2 text-sm text-gray-400">
               {[
                 '⚡ Performance — Core Web Vitals via Google PSI',
@@ -496,7 +526,11 @@ export default function DocsPage() {
                 '♿ Accessibility — WCAG 2.1 basic checks',
                 '📊 Score rings — animated 0-100 per category',
                 '🔎 Issue explorer — filter by severity + category',
-                '🔄 Re-run — refresh audit for same URL',
+                '🕷️ Crawler — 10 internal pages, broken links, duplicate titles',
+                '📄 PDF Report — Forensic format, all sections, download button',
+                '🔍 History — search, delete, score trend comparison',
+                '🎨 Audit Pitch Page — /audit-pitch',
+                '🌑 Dark admin theme for /audit pages',
               ].map(item => (
                 <div key={item} className="flex gap-2"><span className="text-green-400">✓</span>{item}</div>
               ))}
@@ -797,8 +831,8 @@ NEXT_PUBLIC_ADMIN_PIN`,
               items: [
                 { for: 'Operator', feature: 'Stripe $29/mo recurring subscription', why: 'Automated monthly billing — no manual chasing. Pure revenue.' },
                 { for: 'Operator', feature: 'Gemini webhook fix — auto-generate after payment', why: 'Core flow needs to work. Clients pay → site appears automatically.' },
-                { for: 'Client', feature: 'Custom PIN change in owner dashboard', why: 'Default 1234 is a security risk once real clients are using it.' },
-                { for: 'Client', feature: 'Business logo upload in owner dashboard', why: 'Clients want their own logo on the site, not just initials.' },
+                { for: 'Client', feature: 'Custom PIN change in owner dashboard ✅', why: 'DONE — Settings tab in owner dashboard, validates match + min 4 chars' },
+                { for: 'Client', feature: 'Business logo upload in owner dashboard ✅', why: 'DONE — Settings tab, uploads to Supabase Storage, saves to theme_json.logo_url' },
                 { for: 'Customer', feature: 'Booking confirmation SMS via Twilio', why: 'Customers expect SMS confirmation. Email goes to spam.' },
               ],
             },
@@ -806,7 +840,7 @@ NEXT_PUBLIC_ADMIN_PIN`,
               label: '⚡ Medium Impact — Week 4 Target',
               color: 'border-yellow-800 bg-yellow-950/20',
               items: [
-                { for: 'Operator', feature: 'Revenue dashboard — MRR tracker', why: 'See total paid sites × $29 = monthly income. Motivating.' },
+                { for: 'Operator', feature: 'Revenue dashboard — MRR tracker ✅', why: 'DONE — /admin/revenue: MRR, setup revenue, annual projection, per-site breakdown, CSV export' },
                 { for: 'Operator', feature: 'Bulk generate demo sites', why: 'Create 5 demo sites at once for outreach across different niches.' },
                 { for: 'Client', feature: "Gallery / photo upload section ✅", why: 'DONE — Gallery tab in owner dashboard, grid display on public site' },
                 { for: 'Client', feature: 'Google Calendar integration', why: 'Auto-block time when a booking is confirmed.' },
