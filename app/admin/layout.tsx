@@ -14,6 +14,7 @@ import {
   Settings,
   Zap,
   TrendingUp,
+  Search,
 } from 'lucide-react'
 
 const NAV_ITEMS = [
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { href: '/admin/sites', label: 'All Sites', icon: Globe },
   { href: '/admin/revenue', label: 'Revenue', icon: TrendingUp },
   { href: '/admin/templates', label: 'Templates', icon: Layers },
+  { href: '/audit', label: 'Website Audit', icon: Search },
   { href: '/admin/docs', label: 'Documentation', icon: BookOpen },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
   { href: '/pitch', label: 'Pitch Page ↗', icon: Globe },

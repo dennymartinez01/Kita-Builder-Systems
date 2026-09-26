@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo } from 'lucide-react'
+import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo, Search } from 'lucide-react'
 
 interface DocSection {
   id: string
@@ -472,6 +472,47 @@ export default function DocsPage() {
           <div className="bg-yellow-950/30 border border-yellow-900/50 rounded-xl p-4">
             <p className="text-yellow-400 font-semibold text-sm mb-1">The One Rule</p>
             <p className="text-yellow-200/60 text-sm">No new features unless a paying client asks for it. Ship ugly but working. A live site that takes bookings beats a perfect Figma mock every time.</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'audit',
+      title: 'Website Audit Module',
+      icon: Search,
+      content: (
+        <div className="space-y-4">
+          <p className="text-gray-300 leading-relaxed">
+            A standalone website intelligence tool built inside the admin panel. Audits any public URL for performance, SEO, security, tech stack, and accessibility — all in one run.
+          </p>
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+            <p className="text-blue-400 font-semibold text-sm mb-3">Phase 1 Features (Complete)</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-sm text-gray-400">
+              {[
+                '⚡ Performance — Core Web Vitals via Google PSI',
+                '🔍 SEO — 12+ on-page checks via cheerio',
+                '🔒 Security — 8 HTTP security headers',
+                '🧩 Tech Stack — 30+ technology fingerprints',
+                '♿ Accessibility — WCAG 2.1 basic checks',
+                '📊 Score rings — animated 0-100 per category',
+                '🔎 Issue explorer — filter by severity + category',
+                '🔄 Re-run — refresh audit for same URL',
+              ].map(item => (
+                <div key={item} className="flex gap-2"><span className="text-green-400">✓</span>{item}</div>
+              ))}
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <a href="/audit" className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-2 rounded-lg transition">
+              Open Audit Tool →
+            </a>
+            <a href="/admin/docs/audit" className="flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium px-3 py-2 rounded-lg transition">
+              Full Audit Docs →
+            </a>
+          </div>
+          <div className="bg-yellow-950/30 border border-yellow-900/50 rounded-xl p-3">
+            <p className="text-yellow-400 text-xs font-semibold mb-1">⚠️ Setup Required</p>
+            <p className="text-yellow-200/60 text-xs">Run <code className="font-mono text-yellow-300">supabase/audit.sql</code> in Supabase SQL Editor before using.</p>
           </div>
         </div>
       ),
