@@ -12,6 +12,9 @@ interface BookingFormProps {
   primaryColor: string
   depositPercent: number
   title?: string
+  notesLabel?: string
+  notesPlaceholder?: string
+  notesRequired?: boolean
 }
 
 export default function BookingForm({
@@ -22,6 +25,9 @@ export default function BookingForm({
   primaryColor,
   depositPercent,
   title = 'Book an Appointment',
+  notesLabel = 'Notes',
+  notesPlaceholder = 'Anything we should know...',
+  notesRequired = false,
 }: BookingFormProps) {
   const [form, setForm] = useState({
     service_id: services[0]?.id || '',
@@ -267,17 +273,18 @@ export default function BookingForm({
           </div>
         )}
 
-        {/* Notes */}
+        {/* Notes — custom label per template */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Notes <span className="text-gray-400 font-normal">(optional)</span>
+            {notesLabel} {notesRequired ? <span className="text-red-400">*</span> : <span className="text-gray-400 font-normal">(optional)</span>}
           </label>
           <div className="relative">
             <MessageSquare size={14} className="absolute left-3 top-3.5 text-gray-400" />
             <textarea
               value={form.notes}
               onChange={e => setField('notes', e.target.value)}
-              placeholder="Anything we should know..."
+              placeholder={notesPlaceholder}
+              required={notesRequired}
               rows={2}
               className="w-full border border-gray-200 rounded-xl pl-9 pr-4 py-3 text-sm focus:outline-none focus:ring-2 resize-none"
             />

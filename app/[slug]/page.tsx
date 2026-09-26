@@ -229,6 +229,9 @@ export default async function PublicSitePage({ params }: PageProps) {
               primaryColor={primary}
               depositPercent={booking?.data.deposit_percent || 0}
               title={booking?.data.title || 'Book an Appointment'}
+              notesLabel={booking?.data.notes_label || 'Notes'}
+              notesPlaceholder={booking?.data.notes_placeholder || 'Anything we should know...'}
+              notesRequired={booking?.data.notes_required || false}
             />
           </div>
         </section>

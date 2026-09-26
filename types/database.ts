@@ -76,6 +76,9 @@ export interface BookingSection {
     requires_field: 'car_model' | 'pet_name' | 'none'
     deposit_percent: number
     title?: string
+    notes_label?: string      // custom label for the notes field e.g. "Your Concern"
+    notes_placeholder?: string // custom placeholder e.g. "What brings you in today?"
+    notes_required?: boolean   // make notes required for this template
   }
 }
 

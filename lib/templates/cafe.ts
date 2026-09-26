@@ -40,6 +40,9 @@ export const cafeTemplate: ThemeJson = {
         requires_field: 'none',
         deposit_percent: 0,
         title: 'Reserve Your Table',
+        notes_label: 'Number of Guests & Special Requests',
+        notes_placeholder: 'e.g. 4 guests, birthday celebration, dietary requirements...',
+        notes_required: false,
       },
     },
     {

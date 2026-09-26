@@ -40,6 +40,9 @@ export const salonTemplate: ThemeJson = {
         requires_field: 'none',
         deposit_percent: 0,
         title: 'Book Your Appointment',
+        notes_label: 'Preferred Style / Service Type',
+        notes_placeholder: 'e.g. Balayage, keratin treatment, specific style reference...',
+        notes_required: false,
       },
     },
     {

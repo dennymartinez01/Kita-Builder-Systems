@@ -40,6 +40,9 @@ export const clinicTemplate: ThemeJson = {
         requires_field: 'none',
         deposit_percent: 0,
         title: 'Book a Consultation',
+        notes_label: 'Your Concern',
+        notes_placeholder: 'e.g. Tooth pain, general checkup, skin concern, vaccination...',
+        notes_required: true,
       },
     },
     {

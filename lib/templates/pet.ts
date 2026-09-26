@@ -40,6 +40,9 @@ export const petTemplate: ThemeJson = {
         requires_field: 'pet_name',
         deposit_percent: 0,
         title: 'Book for Your Pet',
+        notes_label: 'Reason for Visit',
+        notes_placeholder: 'e.g. Annual vaccination, skin condition, grooming style preference...',
+        notes_required: false,
       },
     },
     {

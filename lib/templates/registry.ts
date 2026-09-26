@@ -30,7 +30,7 @@ const salonBase: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'We are a professional salon dedicated to making you look and feel your best.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Book Your Appointment' } },
+    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Book Your Appointment', notes_label: 'Preferred Style / Service Type', notes_placeholder: 'e.g. Balayage, keratin treatment, specific style reference...', notes_required: false } },
     { type: 'testimonials', data: { items: [{ name: 'Sarah M.', text: "Best salon I've been to! My hair has never looked this good.", rating: 5 }, { name: 'James T.', text: 'Quick, clean, and professional. Will definitely be back.', rating: 5 }, { name: 'Chloe R.', text: 'The team is so talented. They listened to exactly what I wanted.', rating: 5 }] } },
   ],
 }
@@ -44,7 +44,7 @@ const salonGold: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'A luxury salon experience for those who expect the best.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 20, title: 'Reserve Your Session' } },
+    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 20, title: 'Reserve Your Session', notes_label: 'Preferred Style / Service Type', notes_placeholder: 'e.g. Highlights, updo, specific colour reference...', notes_required: false } },
     { type: 'testimonials', data: { items: [{ name: 'Emma W.', text: 'Absolute luxury. Worth every penny.', rating: 5 }, { name: 'Olivia R.', text: 'Best colour work in the city. I get compliments everywhere.', rating: 5 }, { name: 'Sophia L.', text: 'The most relaxing salon experience I have ever had.', rating: 5 }] } },
   ],
 }
@@ -58,7 +58,7 @@ const salonMinimal: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'Minimalist barbershop focused on precision cuts and great service.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Book a Cut' } },
+    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Book a Cut', notes_label: 'Preferred Barber / Style Notes', notes_placeholder: 'e.g. Ask for Marcus, skin fade with 1 on sides, leave top long...', notes_required: false } },
     { type: 'testimonials', data: { items: [{ name: 'Mike D.', text: 'No nonsense, great cut every time.', rating: 5 }, { name: 'Tom B.', text: 'Best fade in the area. Always on time.', rating: 5 }, { name: 'Jay P.', text: 'Clean shop, clean cuts. My go-to spot.', rating: 5 }] } },
   ],
 }
@@ -73,7 +73,7 @@ const clinicBase: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'We provide compassionate, high-quality healthcare for patients of all ages.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Book a Consultation' } },
+    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Book a Consultation', notes_label: 'Your Concern', notes_placeholder: 'e.g. Tooth pain, general checkup, skin condition, vaccination...', notes_required: true } },
     { type: 'testimonials', data: { items: [{ name: 'Maria L.', text: 'The doctor was thorough and took time to explain everything.', rating: 5 }, { name: 'David K.', text: 'Booked online and was seen within the hour. Very professional.', rating: 5 }, { name: 'Priya S.', text: 'Clean, efficient, and caring staff. Highly recommend.', rating: 5 }] } },
   ],
 }
@@ -87,7 +87,7 @@ const clinicGreen: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'A modern health clinic committed to preventive care and wellness.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Schedule Your Visit' } },
+    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Schedule Your Visit', notes_label: 'Your Concern', notes_placeholder: 'e.g. Annual checkup, follow-up appointment, referral...', notes_required: true } },
     { type: 'testimonials', data: { items: [{ name: 'James F.', text: 'Finally a clinic that actually listens to patients.', rating: 5 }, { name: 'Helen C.', text: 'Modern facility, friendly staff, quick service.', rating: 5 }, { name: 'Robert M.', text: 'I have been coming here for years. Always excellent.', rating: 5 }] } },
   ],
 }
@@ -102,7 +102,7 @@ const petBase: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'We are passionate about animal health and happiness.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'pet_name', deposit_percent: 0, title: 'Book for Your Pet' } },
+    { type: 'booking_widget', data: { requires_field: 'pet_name', deposit_percent: 0, title: 'Book for Your Pet', notes_label: 'Reason for Visit', notes_placeholder: 'e.g. Annual vaccination, skin condition, grooming style preference...', notes_required: false } },
     { type: 'testimonials', data: { items: [{ name: 'Tom & Biscuit 🐶', text: 'My dog loves coming here! The vet is so patient and kind.', rating: 5 }, { name: 'Anna & Whiskers 🐱', text: 'Grooming was perfect. My cat was calm after.', rating: 5 }, { name: 'Leo H.', text: 'Vaccination done in 20 minutes. Very efficient team.', rating: 5 }] } },
   ],
 }
@@ -116,7 +116,7 @@ const petPlayful: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'A fun, stress-free environment where pets actually enjoy their visits.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'pet_name', deposit_percent: 0, title: 'Book Your Furry Friend' } },
+    { type: 'booking_widget', data: { requires_field: 'pet_name', deposit_percent: 0, title: 'Book Your Furry Friend', notes_label: 'Reason for Visit', notes_placeholder: 'e.g. First visit, grooming preferences, any health concerns...', notes_required: false } },
     { type: 'testimonials', data: { items: [{ name: 'Sophie & Mochi 🐰', text: 'My bunny actually seemed happy after the visit!', rating: 5 }, { name: 'Carlos & Rex 🐶', text: 'Friendly staff and great with nervous dogs.', rating: 5 }, { name: 'Mia & Luna 🐱', text: 'Best grooming in town. Luna looks gorgeous!', rating: 5 }] } },
   ],
 }
@@ -131,7 +131,7 @@ const cafeBase: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'We brew with passion and serve with heart.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Reserve Your Table' } },
+    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Reserve Your Table', notes_label: 'Number of Guests & Special Requests', notes_placeholder: 'e.g. 4 guests, birthday celebration, dietary requirements...', notes_required: false } },
     { type: 'testimonials', data: { items: [{ name: 'Jake W.', text: 'Best flat white in the city. The food is incredible too.', rating: 5 }, { name: 'Michelle P.', text: 'Love the vibe here. Always come back with friends.', rating: 5 }, { name: 'Raul G.', text: 'Reserved online and the table was ready exactly on time.', rating: 5 }] } },
   ],
 }
@@ -145,7 +145,7 @@ const cafeDark: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'A dark roast specialist cafe with a passion for the perfect cup.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Book a Table' } },
+    { type: 'booking_widget', data: { requires_field: 'none', deposit_percent: 0, title: 'Book a Table', notes_label: 'Number of Guests & Special Requests', notes_placeholder: 'e.g. 2 guests, quiet corner table, coffee tasting...', notes_required: false } },
     { type: 'testimonials', data: { items: [{ name: 'Aaron T.', text: 'The espresso here is genuinely world class.', rating: 5 }, { name: 'Fiona B.', text: 'Dark, cozy, and perfect for a working lunch.', rating: 5 }, { name: 'Liam S.', text: 'I come here every morning. Never disappoints.', rating: 5 }] } },
   ],
 }
@@ -160,7 +160,7 @@ const mechanicBase: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'A trusted local mechanic shop with years of experience servicing all makes and models.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'car_model', deposit_percent: 0, title: 'Book Your Car Service' } },
+    { type: 'booking_widget', data: { requires_field: 'car_model', deposit_percent: 0, title: 'Book Your Car Service', notes_label: 'Additional Notes', notes_placeholder: 'e.g. Strange noise from brakes, car has not been serviced in 2 years...', notes_required: false } },
     { type: 'testimonials', data: { items: [{ name: 'Craig B.', text: 'Fixed my brakes same day. Fair pricing and transparent.', rating: 5 }, { name: 'Natasha V.', text: "I finally found a mechanic I can trust. Won't go anywhere else.", rating: 5 }, { name: 'Steve L.', text: 'Booked online, dropped car off, picked up 3 hours later.', rating: 5 }] } },
   ],
 }
@@ -174,7 +174,7 @@ const mechanicBlue: ThemeJson = {
     { type: 'about', data: { title: 'About {{BUSINESS_NAME}}', body: 'A professional auto repair centre with certified mechanics and transparent pricing.' } },
     { type: 'services', data: { source: 'services_table' } },
     { type: 'staff', data: { source: 'staff_table' } },
-    { type: 'booking_widget', data: { requires_field: 'car_model', deposit_percent: 0, title: 'Schedule Your Service' } },
+    { type: 'booking_widget', data: { requires_field: 'car_model', deposit_percent: 0, title: 'Schedule Your Service', notes_label: 'Additional Notes', notes_placeholder: 'e.g. Fleet vehicle, warranty work, specific issue to inspect...', notes_required: false } },
     { type: 'testimonials', data: { items: [{ name: 'Daniel F.', text: 'Professional, transparent, and fast. Highly recommended.', rating: 5 }, { name: 'Karen M.', text: 'They diagnosed the issue in minutes and had it fixed by lunch.', rating: 5 }, { name: 'Paul T.', text: 'Best auto shop in the area. Will not go anywhere else.', rating: 5 }] } },
   ],
 }

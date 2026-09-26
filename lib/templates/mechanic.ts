@@ -40,6 +40,9 @@ export const mechanicTemplate: ThemeJson = {
         requires_field: 'car_model',
         deposit_percent: 0,
         title: 'Book Your Car Service',
+        notes_label: 'Additional Notes',
+        notes_placeholder: 'e.g. Strange noise from brakes, car has not been serviced in 2 years...',
+        notes_required: false,
       },
     },
     {
