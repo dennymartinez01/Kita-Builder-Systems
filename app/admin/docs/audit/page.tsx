@@ -341,8 +341,7 @@ export default function AuditDocsPage() {
               ],
             },
             {
-              phase: 'Phase 3 — PDF Report',
-              color: 'border-orange-800 bg-orange-950/20',
+              phase: 'Phase 3 — PDF Report',              color: 'border-orange-800 bg-orange-950/20',
               badge: 'UPCOMING',
               badgeColor: 'bg-gray-800 text-gray-500',
               items: [
@@ -363,6 +362,22 @@ export default function AuditDocsPage() {
                 'Score history chart — see progress over time',
                 'Email alert when score drops below threshold',
                 'Requires Vercel Cron Jobs (free on Hobby plan)',
+              ],
+            },
+            {
+              phase: 'Phase 5 — Client-Facing Audit Frontend (Backlog)',
+              color: 'border-gray-700 bg-gray-900/30',
+              badge: 'BACKLOG',
+              badgeColor: 'bg-gray-800 text-gray-500',
+              items: [
+                'Current /audit pages use the admin dark theme — admin access only',
+                'Build a separate public-facing white/light theme for client reports',
+                'Shareable audit report URL — clients can view their own site audit',
+                'Branded with client site colors or white-label agency branding',
+                'Clean executive summary at the top — score rings, key issues, quick wins',
+                'Remove raw JSON tab and internal admin controls from client view',
+                'Optional password protection for client report URLs',
+                'Route: /audit/report/[id] — separate from admin /audit/[id]',
               ],
             },
           ].map(phase => (
