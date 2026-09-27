@@ -44,6 +44,11 @@ const USE_CASES = [
     title: 'Competitor analysis',
     desc: "Audit your client's top 3 competitors. Show the score gap. Now they understand why they're losing — and who can close it.",
   },
+  {
+    icon: '📬',
+    title: 'Lead capture on audit results',
+    desc: "After a prospect views their audit, offer them a free consultation or a quote. Their contact details become a qualified lead — they already know their problem, you have the solution.",
+  },
 ]
 
 export default function AuditPitchPage() {

@@ -50,10 +50,14 @@ Forensic website audit tool — enter any URL, get scores + issues + PDF report 
 /admin                      # Admin CMS dashboard (PIN protected)
 /admin/credentials          # API keys & accounts reference
 /admin/generate             # AI site generator
-/admin/revenue              # MRR tracker + CSV export
-/admin/sites                # All generated client sites
+/admin/revenue              # MRR tracker + CSV export (Overview + By Client tabs)
+/admin/sites                # All generated client sites (with Client column)
 /admin/templates            # 11-template marketplace
 /admin/settings             # Logo upload, PIN, white-label, email
+/admin/clients              # Client list — search, filter, MRR, CSV (Phase 9)
+/admin/clients/[id]         # Client profile — edit, linked sites, revenue (Phase 9)
+/admin/clients/new          # Create new client (Phase 9)
+/admin/leads                # Cross-site leads inbox — all inquiries (Phase 10, planned)
 /admin/docs                 # Main documentation
 /admin/docs/audit           # Audit module documentation
 
@@ -69,7 +73,8 @@ Forensic website audit tool — enter any URL, get scores + issues + PDF report 
 /api/audit/[id]             # GET full audit + pages / POST re-run
 /api/checkout               # Stripe Checkout session
 /api/generate               # Gemini AI site generation
-/api/notify                 # Save booking + Resend email
+/api/inquire                # POST contact form inquiry → leads table (Phase 10, planned)
+/api/notify                 # Save booking + auto-upsert client + Resend email
 /api/track                  # Page view analytics tracking
 /api/upload-logo            # Image upload to Supabase Storage
 /api/webhook                # Stripe webhook → auto-generate site
@@ -115,11 +120,38 @@ Forensic website audit tool — enter any URL, get scores + issues + PDF report 
 `update_service_price` · `update_service_name` · `update_service_duration` · `add_service` · `delete_service` · `update_headline` · `update_subheadline` · `update_about` · `list_services`
 
 **Booking System**
-- Service selector, name, phone, date, time
+- Service selector, name, phone, email, date, time
 - Optional staff picker — customer selects preferred team member
 - Custom fields: car model (mechanic), pet name (pet clinic)
+- Real-time slot availability check + next available slot suggestion
+- Auto-fill returning customer details from localStorage
+- Self-service cancel and reschedule via tokenised links
+- Add to Google Calendar / Apple Calendar (.ics) on confirmation page
 - Staff name saved to booking + included in notification email
 - CSV export includes Staff column
+- Server-side race condition guard (HTTP 409 on simultaneous double-booking)
+
+**Contact Form & Leads (Phase 10 — planned)**
+- "Not ready to book? Send us a message" form on every client site
+- Inquiry saved to `leads` table — name, email, message, site_id, source
+- Owner notified by email via Resend on every new inquiry
+- Owner dashboard Inquiries tab — leads list with "Convert to Booking" action
+- `/admin/leads` cross-site leads inbox for operator
+- Opt-in checkbox on inquiry + booking forms for promotion consent
+
+**Smart Leads Engine (Phase 10 — planned)**
+- Aggregate opted-in leads across all KITA client sites by city + business type
+- Operator composes promotion blast — headline, offer, CTA URL, expiry
+- Sends targeted email via Resend to filtered audience segment
+- Delivery tracking: sent / opened / clicked per campaign
+- New revenue stream: charge clients $49/blast to reach the opted-in local network
+
+**Client Management (Phase 9)**
+- `/admin/clients` — full CRM: subscription plan, status, MRR contribution, notes
+- `/admin/clients/[id]` — profile edit, linked sites, revenue breakdown
+- `/admin/revenue` — "By Client" tab showing MRR per client with totals row
+- `/admin/sites` — Client column showing linked client per site
+- Auto-upsert client record when a booking is made with customer email
 
 **Payments (Stripe)**
 - `/onboard` — client fills business details + pays $150 setup fee
@@ -191,12 +223,16 @@ Forensic website audit tool — enter any URL, get scores + issues + PDF report 
 
 ```sql
 -- Run these in order in Supabase SQL Editor:
-supabase/schema.sql      -- sites, services, staff, bookings
-supabase/storage.sql     -- kita-assets storage bucket
-supabase/payments.sql    -- payment_status, stripe columns on sites
-supabase/analytics.sql   -- page_views table
-supabase/audit.sql       -- audits + audit_pages tables
-supabase/staff-booking.sql -- staff_id + staff_name on bookings
+supabase/schema.sql         -- sites, services, staff, bookings
+supabase/storage.sql        -- kita-assets storage bucket
+supabase/payments.sql       -- payment_status, stripe columns on sites
+supabase/analytics.sql      -- page_views table
+supabase/audit.sql          -- audits + audit_pages tables
+supabase/staff-booking.sql  -- staff_id + staff_name on bookings
+supabase/phase6.sql         -- sites.timezone, auto_confirm, blocked_dates, booking fields
+supabase/currency.sql       -- sites.currency column
+supabase/clients.sql        -- clients table + sites.client_id FK (Phase 9)
+supabase/leads.sql          -- leads table for contact form + promotions (Phase 10, run when building)
 ```
 
 ---

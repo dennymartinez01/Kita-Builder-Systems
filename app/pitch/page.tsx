@@ -18,6 +18,7 @@ const HOW_IT_WORKS = [
   { step: '1', title: 'Tell us about your business', desc: 'Just your business name, location, and what you do. Takes 30 seconds.' },
   { step: '2', title: 'AI builds your site', desc: 'Our AI generates your headline, services, staff, and copy — tailored to your location and business type.' },
   { step: '3', title: 'Go live instantly', desc: 'Your site is live with a booking form, email notifications, and an owner dashboard to manage everything.' },
+  { step: '4', title: 'Capture leads & grow', desc: 'A contact form catches customers who aren\'t ready to book yet. Every inquiry becomes a trackable lead — yours to follow up and convert.' },
 ]
 
 export default function PitchPage() {
@@ -161,7 +162,8 @@ export default function PitchPage() {
             {[
               '✅ AI-generated website copy & design',
               '✅ Online booking form (24/7)',
-              '✅ Email notification on every booking',
+              '✅ Contact / inquiry form to capture leads',
+              '✅ Email notification on every booking & inquiry',
               '✅ Mobile-friendly on all devices',
               '✅ Services & pricing page',
               '✅ Staff / team section',
@@ -169,6 +171,7 @@ export default function PitchPage() {
               '✅ Owner dashboard with PIN login',
               '✅ Edit your site by chatting with AI',
               '✅ Custom domain support (pro plan)',
+              '✅ Smart cross-business promotion network',
             ].map(feature => (
               <div key={feature} className="bg-gray-800 rounded-xl px-4 py-3 text-gray-300 text-sm">
                 {feature}
@@ -195,6 +198,40 @@ export default function PitchPage() {
             >
               Pay & Launch Now — $150 →
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── LEADS & PROMOTIONS ── */}
+      <section className="px-5 py-16 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gray-50 border border-gray-200 rounded-3xl p-8 sm:p-10">
+            <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-5">
+              🧠 Built-In Lead Capture + Smart Promotions
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+              Not every customer is ready to book.<br />
+              <span className="text-purple-600">Capture them anyway.</span>
+            </h2>
+            <p className="text-gray-500 mb-8 leading-relaxed max-w-2xl">
+              Every KITA site includes a contact form alongside the booking widget. Customers who want to ask a question first — instead of committing to a booking — can send a message. That inquiry becomes a lead in your dashboard, ready for follow-up.
+            </p>
+            <div className="grid sm:grid-cols-3 gap-4 mb-8">
+              {[
+                { icon: '📬', title: 'Contact Form', desc: '"Not ready to book? Send us a message." Sits next to the booking widget on every site.' },
+                { icon: '📋', title: 'Leads Dashboard', desc: 'See every inquiry in your owner dashboard — name, message, email. One click to convert to a booking.' },
+                { icon: '🎯', title: 'Smart Promotions', desc: 'Opted-in leads from across our client network can receive targeted local offers — your business, their neighbourhood.' },
+              ].map(card => (
+                <div key={card.title} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+                  <div className="text-3xl mb-3">{card.icon}</div>
+                  <h3 className="font-bold text-gray-900 mb-1 text-sm">{card.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{card.desc}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-gray-400 text-sm italic">
+              "You had 12 new bookings and 8 inquiries this week. 3 inquiries are still open — follow up now."
+            </p>
           </div>
         </div>
       </section>

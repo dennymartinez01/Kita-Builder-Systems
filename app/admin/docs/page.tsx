@@ -213,7 +213,9 @@ export default function DocsPage() {
 │   ├── payments.sql            ← payment_status, stripe columns
 │   ├── analytics.sql           ← page_views table
 │   ├── audit.sql               ← audits + audit_pages tables
-│   └── staff-booking.sql       ← staff_id + staff_name on bookings
+│   ├── staff-booking.sql       ← staff_id + staff_name on bookings
+│   ├── clients.sql             ← clients table (Phase 9)
+│   └── leads.sql               ← leads table (Phase 10 — planned)
 ├── types/
 │   └── database.ts             ← TypeScript types for all DB tables
 └── .env.local                  ← API keys (never commit)`}</pre>
@@ -308,6 +310,25 @@ export default function DocsPage() {
                 { name: 'scores', type: 'jsonb', note: '{ performance, seo, security, accessibility, tech, overall }' },
                 { name: 'raw_data', type: 'jsonb', note: 'Full data from all analyzers' },
                 { name: 'issues', type: 'jsonb', note: 'Array of AuditIssue objects sorted by severity' },
+              ],
+            },
+            {
+              table: 'leads',
+              color: 'text-pink-400',
+              desc: 'Contact form inquiries + opted-in booking customers (Phase 10)',
+              columns: [
+                { name: 'id', type: 'uuid', note: 'Primary key' },
+                { name: 'site_id', type: 'uuid', note: 'FK → sites.id (cascade delete)' },
+                { name: 'name', type: 'text', note: 'Customer name' },
+                { name: 'email', type: 'text', note: 'Primary contact for follow-up and promotions' },
+                { name: 'phone', type: 'text', note: 'Optional — captured if provided' },
+                { name: 'message', type: 'text', note: 'Free-text inquiry message' },
+                { name: 'source', type: 'text', note: 'contact_form | booking | audit_inquiry' },
+                { name: 'status', type: 'text', note: 'new | contacted | converted | closed' },
+                { name: 'opt_in', type: 'bool', note: 'Consented to promotions — default false' },
+                { name: 'city', type: 'text', note: 'Copied from site at capture — geo-segmentation' },
+                { name: 'business_type', type: 'text', note: 'Copied from site — interest-based segmentation' },
+                { name: 'created_at', type: 'timestamptz', note: 'Auto-set on creation' },
               ],
             },
           ].map(t => (
@@ -1011,6 +1032,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 { feature: 'Client Management System (Phase 9)', what: 'Track all your clients: subscription plan, status, MRR contribution, linked sites, and internal notes. Auto-creates client record when a customer books with email.', why: 'Without visibility into who your clients are, you cannot make retention, pricing, or scaling decisions. Client records link sites to people and enable proper MRR tracking.', status: '✅ Built — Phase 9' },
                 { feature: 'Stripe $29/mo Recurring Billing', what: 'Auto-charge clients monthly using Stripe subscriptions. No manual invoicing.', why: 'Manual billing does not scale. Without automated recurring billing, the business cannot grow beyond 5-10 clients.', status: '⏳ Backlog — needs Stripe live keys' },
                 { feature: 'Gemini Webhook Auto-Generation', what: 'After a client pays $150 via /onboard, Gemini auto-generates their site and they see it within 30 seconds.', why: 'The full value of the product is the magic moment when someone pays and instantly gets a live site. Currently blocked by Gemini 503 errors from Vercel IPs.', status: '⏳ Backlog — Gemini API issue' },
+                { feature: 'Smart Leads Engine', what: 'Aggregate all contact-form inquiries and booking emails across every KITA client site into a central leads database. Run intelligent cross-business promotions — e.g. a customer who booked a haircut at Salon A gets a targeted offer from Mechanic B, both KITA clients.', why: 'Most booking platforms capture a transaction and stop there. KITA sits across multiple local businesses and can connect their customer bases — creating a local loyalty network that none of them could build alone. This becomes a standalone revenue product.', who: 'Operator', status: '📋 Planned — Phase 10' },
                 { feature: 'Bulk Demo Site Generator', what: 'Generate 5 demo sites across different niches in one click for outreach purposes.', why: 'When pitching to a barbershop, showing a live barbershop demo is 10x more persuasive than a generic demo. Speed of demo creation = more outreach per day.', status: '📋 Planned — Phase 8' },
               ].map((item, i) => (
                 <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
@@ -1045,6 +1067,8 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 { feature: 'Business Logo Upload', what: 'Owner uploads their logo via the Settings tab. Stored in Supabase Storage, shows on the site header.', why: 'A business without its logo on its website looks amateur. This is a basic requirement for professional presentation.', status: '✅ Built' },
                 { feature: 'Gallery / Photo Upload', what: 'Owner uploads photos of their work via the Gallery tab. Shows as "Our Work" grid on the public site.', why: 'For salons, mechanics, and clinics — showing real photos of work builds trust faster than any text description.', status: '✅ Built' },
                 { feature: 'Site Analytics (14-day view)', what: 'Analytics tab shows page views per day for 14 days, weekly trend comparison, and booking status breakdown.', why: 'Clients need to see that their investment is working. "You had 47 site visits and 8 bookings this week" justifies the $29/mo fee.', status: '✅ Built' },
+                { feature: 'Contact / Inquiry Form Tab', what: 'A second tab on the public site alongside the booking form — "Not ready to book? Send us a message." Owner sees all inquiries in a new Inquiries tab on their dashboard.', why: 'Some customers are not ready to book but are interested. Without a contact form they either DM the business on Instagram (untracked) or leave. A contact form captures that warm lead before it disappears.', status: '📋 Planned — Phase 10' },
+                { feature: 'Leads Dashboard (Owner)', what: 'Owner sees all inquiry leads in their dashboard — name, message, email, timestamp, and a one-click "Convert to Booking" button.', why: 'An inquiry that is not followed up within 24 hours is a lost customer. A visible leads inbox with a clear next action prevents drop-off between interest and booking.', status: '📋 Planned — Phase 10' },
                 { feature: 'Booking Calendar View', what: 'Weekly/monthly calendar view of all bookings in the owner dashboard — not just a flat list.', why: 'A list of bookings is hard to scan. A calendar immediately shows gaps, busy periods, and patterns — how any service business thinks about their schedule.', status: '📋 Planned — Phase 7' },
                 { feature: 'Block Out Dates / Time Off ✅', what: 'Owner marks holidays, lunch breaks, or unavailable days — customers cannot book those slots.', why: 'Without this, customers book during Christmas, public holidays, or while the owner is on holiday. This is a day-one operational requirement.', status: '✅ Built — Phase 6 · Block Dates tab' },
                 { feature: 'Auto-Confirm vs Manual Confirm Toggle ✅', what: 'Toggle: auto-confirm all bookings OR review each one manually before confirming.', why: 'High-volume businesses (cafes, clinics) want auto-confirm. Premium services (consultants, specialists) want to review each booking first.', status: '✅ Built — Phase 6 · Settings tab' },
@@ -1082,6 +1106,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 { feature: 'Preferred Staff Picker ✅', what: 'Optional dropdown in the booking form — customer selects their preferred team member or chooses "No preference".', why: 'Loyalty to a specific stylist, vet, or mechanic is a primary driver of repeat bookings. Enabling this increases retention.', status: '✅ Built' },
                 { feature: 'Custom Notes Label Per Template ✅', what: '"Your Concern" for clinics, "Guests + Notes" for cafes, "Preferred Style" for salons — contextually relevant notes field.', why: 'A generic "Notes" field feels impersonal. A field labelled "Your Concern" tells clinic patients the right information to provide, improving service quality.', status: '✅ Built' },
                 { feature: 'Next Available Slot Suggestion ✅', what: 'Before the customer picks a date, show "Next available: Tomorrow 2pm" based on existing bookings.', why: 'Most customers do not know when the business is available. Showing the next open slot removes decision paralysis and speeds up the booking process.', status: '✅ Built — Phase 6' },
+                { feature: 'Contact / Inquiry Form (Before Booking)', what: '"Not ready to book? Send us a message" tab on the public site. Customer fills name, email, and message. Owner is notified by email. Lead is saved to the site\'s inquiries list.', why: 'Booking is a high-commitment action. Many customers want to ask a question first — price estimate, availability check, first-time nerves. Giving them a zero-friction way to make contact captures leads that would otherwise vanish. Inquiry → follow-up → booking is a proven conversion path.', status: '📋 Planned — Phase 10' },
                 { feature: 'Google Maps Link / Get Directions', what: 'Business address shown on the site with a "Get Directions" button that opens Google Maps.', why: 'A first-time customer who cannot find the location will not come back. Reducing friction in getting there directly impacts show-up rates.', status: '📋 Planned — Phase 7' },
               ].map((item, i) => (
                 <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
@@ -1285,6 +1310,219 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 <div key={item.task} className="flex items-center justify-between bg-gray-900 rounded-lg px-3 py-2">
                   <span>{item.task}</span>
                   <span className={`shrink-0 ml-3 ${item.status.startsWith('✅') ? 'text-green-500' : 'text-yellow-600'}`}>{item.status}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    // ─── PHASE 10 — CONTACT FORM + LEADS ENGINE ──────────────────
+    {
+      id: 'leads-engine',
+      title: 'Contact Form & Smart Leads Engine (Phase 10)',
+      icon: Users,
+      content: (
+        <div className="space-y-5">
+          <div className="bg-gray-950 border border-blue-800/50 rounded-xl p-4">
+            <p className="text-blue-400 font-bold text-sm mb-2">📋 Phase 10 — Planned</p>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Two connected features: a <strong className="text-white">Contact / Inquiry Form</strong> on every client site to capture warm leads before they book, and a <strong className="text-white">Smart Leads Engine</strong> that aggregates those leads across all KITA client sites for intelligent cross-business promotions.
+            </p>
+          </div>
+
+          {/* Feature 1 — Contact Form */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-white font-bold text-sm">📬 Feature 1 — Contact / Inquiry Form</p>
+              <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-gray-800 text-gray-400">📋 Phase 10</span>
+            </div>
+            <div className="space-y-3 text-sm text-gray-400">
+              <div>
+                <p className="text-white font-semibold mb-1">What</p>
+                <p>A second tab on the public client site — <span className="text-blue-300 italic">"Not ready to book? Send us a message."</span> Customer fills in name, email, and a free-text message. No commitment. Zero friction.</p>
+              </div>
+              <div>
+                <p className="text-white font-semibold mb-1">Why</p>
+                <p>Booking is a high-commitment action. Customers who are curious but unsure will leave rather than book if there is no middle option. A contact form captures that warm lead before it disappears. The conversion path <span className="text-green-400">inquiry → follow-up → booking</span> is well established in service sales.</p>
+              </div>
+              <div>
+                <p className="text-white font-semibold mb-1">Who</p>
+                <div className="flex gap-2 flex-wrap">
+                  <span className="bg-green-900/50 text-green-400 text-xs px-2 py-0.5 rounded-full">Customer</span>
+                  <span className="text-gray-500 text-xs mt-0.5">submits the inquiry</span>
+                  <span className="bg-blue-900/50 text-blue-400 text-xs px-2 py-0.5 rounded-full ml-2">Client (Owner)</span>
+                  <span className="text-gray-500 text-xs mt-0.5">sees it in their Inquiries tab</span>
+                  <span className="bg-purple-900/50 text-purple-400 text-xs px-2 py-0.5 rounded-full ml-2">Operator (You)</span>
+                  <span className="text-gray-500 text-xs mt-0.5">sees all leads across all sites</span>
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3 mt-2">
+                {[
+                  { area: 'Public Site', desc: 'New "Enquire" tab next to the Booking widget. Fields: Name, Email, Message. Submit → thank-you state.' },
+                  { area: 'Owner Dashboard', desc: 'New "Inquiries" tab — list of leads with name, email, message, timestamp. One-click "Convert to Booking".' },
+                  { area: 'Email Notification', desc: 'Owner receives email via Resend when a new inquiry arrives. Same flow as booking notification.' },
+                  { area: 'API Route', desc: 'POST /api/inquire — saves to leads table (site_id, name, email, message, source: "contact_form"). Returns 200.' },
+                  { area: 'Admin /admin/leads', desc: 'Cross-site leads view — all inquiries from all client sites in one table, searchable, filterable by site.' },
+                  { area: 'DB: leads table', desc: 'id, site_id FK, name, email, phone, message, source, status (new/contacted/converted/closed), created_at.' },
+                ].map(r => (
+                  <div key={r.area} className="bg-gray-900 rounded-lg p-3">
+                    <p className="text-white text-xs font-semibold mb-1">{r.area}</p>
+                    <p className="text-gray-500 text-xs">{r.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Feature 2 — Smart Leads Engine */}
+          <div className="bg-gray-950 border border-purple-800/50 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-white font-bold text-sm">🧠 Feature 2 — Smart Leads Engine</p>
+              <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-gray-800 text-gray-400">📋 Phase 10</span>
+            </div>
+            <div className="space-y-3 text-sm text-gray-400">
+              <div>
+                <p className="text-white font-semibold mb-1">What</p>
+                <p>Aggregate all leads (contact form inquiries + booking customer emails) across every KITA client site into a central leads database. Use this data to run intelligent cross-business promotions — e.g. a customer who booked a haircut at Salon A in Sydney gets a targeted offer from Mechanic B, also a KITA client in Sydney.</p>
+              </div>
+              <div>
+                <p className="text-white font-semibold mb-1">Why</p>
+                <p>KITA is uniquely positioned: it sits across multiple local businesses and their customer bases simultaneously. No individual business can build this network alone — but KITA can aggregate it automatically. This creates a <span className="text-purple-300">local loyalty network</span> and a new revenue product: paid promotions sold to KITA clients ("send your offer to 2,000 local customers across our network — $49/blast").</p>
+              </div>
+              <div>
+                <p className="text-white font-semibold mb-1">Who</p>
+                <div className="flex gap-2 flex-wrap">
+                  <span className="bg-purple-900/50 text-purple-400 text-xs px-2 py-0.5 rounded-full">Operator (You)</span>
+                  <span className="text-gray-500 text-xs mt-0.5">runs the promotions engine</span>
+                  <span className="bg-blue-900/50 text-blue-400 text-xs px-2 py-0.5 rounded-full ml-2">Client (Owner)</span>
+                  <span className="text-gray-500 text-xs mt-0.5">buys a promotion blast</span>
+                  <span className="bg-green-900/50 text-green-400 text-xs px-2 py-0.5 rounded-full ml-2">Customer</span>
+                  <span className="text-gray-500 text-xs mt-0.5">receives a relevant local offer</span>
+                </div>
+              </div>
+
+              {/* How it works */}
+              <div>
+                <p className="text-white font-semibold mb-2">How It Works — 3 Layers</p>
+                <div className="space-y-2">
+                  {[
+                    {
+                      layer: 'Layer 1 — Lead Aggregation',
+                      color: 'border-blue-700',
+                      badge: 'bg-blue-900/50 text-blue-400',
+                      points: [
+                        'Every contact-form submission → leads table (with site_id, business_type, city)',
+                        'Every booking with customer_email → also seeded into leads (source: "booking")',
+                        'Customers opt-in at inquiry/booking with a checkbox: "I\'d like to hear about local offers"',
+                        'opt_in: boolean on the leads row — promotions only go to opted-in leads',
+                      ],
+                    },
+                    {
+                      layer: 'Layer 2 — Segmentation',
+                      color: 'border-purple-700',
+                      badge: 'bg-purple-900/50 text-purple-400',
+                      points: [
+                        'Leads tagged by city, business_type of the originating site, and source',
+                        'Admin /admin/leads: filter by city + business_type to build a promotion audience',
+                        'Example: "All Sydney leads from salon + mechanic sites in the last 90 days"',
+                        'Audience size shown before sending — "you will reach 340 people"',
+                      ],
+                    },
+                    {
+                      layer: 'Layer 3 — Promotion Blast',
+                      color: 'border-green-700',
+                      badge: 'bg-green-900/50 text-green-400',
+                      points: [
+                        'Admin composes a promotion: headline, offer text, CTA URL, expiry date',
+                        'System sends personalised email via Resend to the filtered audience',
+                        'Promotion links back to the promoting client\'s KITA site',
+                        'Delivery stats tracked: sent / opened / clicked per campaign',
+                        'Future: SMS blast via Twilio, WhatsApp via WATI/360Dialog',
+                      ],
+                    },
+                  ].map(l => (
+                    <div key={l.layer} className={`bg-gray-900 border ${l.color} rounded-xl p-3`}>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${l.badge}`}>{l.layer}</span>
+                      </div>
+                      <ul className="space-y-1">
+                        {l.points.map((p, i) => (
+                          <li key={i} className="flex gap-2 text-xs text-gray-500">
+                            <span className="text-gray-700 shrink-0">→</span>{p}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Revenue angle */}
+              <div className="bg-purple-950/30 border border-purple-800/50 rounded-xl p-4 mt-2">
+                <p className="text-purple-300 font-semibold text-xs mb-2">💰 New Revenue Stream — Promotion Blasts</p>
+                <div className="space-y-1.5 text-xs text-gray-500">
+                  {[
+                    'Charge KITA clients $49/blast to reach the full opted-in network in their city',
+                    'Bundle: 2 blasts/month included in Growth plan ($49/mo) — creates plan upgrade incentive',
+                    'Sell audience segments: "send to 500 pet clinic customers in Manila" → $29',
+                    'At 20 paying KITA clients each buying 1 blast/mo → $980 additional MRR',
+                  ].map((p, i) => (
+                    <div key={i} className="flex gap-2">
+                      <span className="text-purple-500 shrink-0">→</span>{p}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* DB schema */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-gray-800">
+              <p className="text-white font-semibold text-sm">Database — <code className="text-blue-300 font-mono">leads</code> table</p>
+              <p className="text-gray-500 text-xs mt-0.5">Run <code className="font-mono text-yellow-300">supabase/leads.sql</code> when Phase 10 development begins</p>
+            </div>
+            <table className="w-full text-xs">
+              <tbody>
+                {[
+                  ['id', 'uuid', 'Primary key'],
+                  ['site_id', 'uuid FK', 'FK → sites.id (cascade delete)'],
+                  ['name', 'text', 'Customer name'],
+                  ['email', 'text', 'Primary contact for follow-up'],
+                  ['phone', 'text', 'Optional — captured if provided'],
+                  ['message', 'text', 'Free-text inquiry message'],
+                  ['source', 'text', 'contact_form | booking | audit_inquiry'],
+                  ['status', 'text', 'new | contacted | converted | closed'],
+                  ['opt_in', 'bool', 'Consented to receive promotions — default false'],
+                  ['city', 'text', 'Copied from site at capture time — for geo-segmentation'],
+                  ['business_type', 'text', 'Copied from site — for interest-based segmentation'],
+                  ['created_at', 'timestamptz', 'Auto-set on creation'],
+                ].map(([col, type, purpose]) => (
+                  <tr key={col} className="border-b border-gray-900 last:border-0">
+                    <td className="px-4 py-2 font-mono text-white w-36">{col}</td>
+                    <td className="px-4 py-2 font-mono text-blue-300 w-28">{type}</td>
+                    <td className="px-4 py-2 text-gray-500">{purpose}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Routes */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+            <p className="text-white font-semibold text-sm mb-3">New Routes — Phase 10</p>
+            <div className="space-y-2 text-xs font-mono">
+              {[
+                { method: 'POST', path: '/api/inquire', desc: 'Save contact form inquiry → leads table, send owner email notification' },
+                { method: 'GET', path: '/admin/leads', desc: 'Cross-site leads list — all inquiries from all client sites, search + filter' },
+                { method: 'POST', path: '/admin/leads/promote', desc: 'Compose and send a promotion blast to a filtered audience segment' },
+                { method: 'GET', path: '/[slug]/inquiries', desc: 'Owner dashboard Inquiries tab — leads for this site only' },
+              ].map(r => (
+                <div key={r.path} className="flex gap-3 bg-gray-900 rounded-lg px-3 py-2 items-center">
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded ${r.method === 'POST' ? 'bg-green-900/50 text-green-300' : 'bg-blue-900/50 text-blue-300'}`}>{r.method}</span>
+                  <span className="text-white">{r.path}</span>
+                  <span className="text-gray-600 hidden sm:inline">{r.desc}</span>
                 </div>
               ))}
             </div>
