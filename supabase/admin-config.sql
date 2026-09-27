@@ -17,7 +17,9 @@ on conflict (id) do nothing;
 -- RLS: only service_role can read/write (admin API calls use service role key)
 alter table admin_config enable row level security;
 
-create policy if not exists "service_role_all_admin_config"
+drop policy if exists "service_role_all_admin_config" on admin_config;
+
+create policy "service_role_all_admin_config"
   on admin_config
   for all
   to service_role
