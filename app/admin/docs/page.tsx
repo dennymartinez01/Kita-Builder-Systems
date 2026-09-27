@@ -1823,6 +1823,15 @@ if (count > 0) return 409 // Slot taken`}</pre>
               ],
             },
             {
+              date: '2026-09-27 · session 2',
+              entries: [
+                { hash: '601ace0', type: '🔧 Fix',       text: 'React.Fragment with key prop replacing bare <> fragment in pricing matrix — resolved React console warning' },
+                { hash: '58e10da', type: '📝 Docs',      text: 'Subscription Plans documented — full feature matrix table in client-management section; new standalone Pricing section (plan cards, comparison table, upgrade triggers, MRR projections); pricing comparison on /pitch; README updated' },
+                { hash: '01d4163', type: '✅ Complete',  text: 'Stripe webhook → client integration on payment — upsert client record, set subscription_status=active, plan=starter, onboarding_complete=true, link sites.client_id; docs integration point marked Done' },
+                { hash: 'b1e78e0', type: '✨ Feature',   text: 'Stripe test/live mode toggle — Admin Settings, admin_config Supabase table, lib/stripe-config.ts, /api/admin-config server route (service role), checkout + webhook updated' },
+              ],
+            },
+            {
               date: '2026-09-26',
               entries: [
                 { hash: 'b922dff', type: '📝 Docs',      text: 'Docs + README: full project overview updated — both products, Phases 5–8 roadmap, commercial pitch section' },
