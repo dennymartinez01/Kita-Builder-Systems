@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Settings, Upload, CheckCircle, AlertCircle, Loader2, ImageIcon, Trash2, RefreshCw } from 'lucide-react'
+import { Settings, Upload, CheckCircle, AlertCircle, Loader2, ImageIcon, Trash2, RefreshCw, CreditCard, FlaskConical, Zap } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 const LOGO_STORAGE_KEY = 'kita_logo_url'
@@ -16,10 +16,64 @@ export default function SettingsPage() {
   const [pinSaved, setPinSaved] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Load existing logo on mount
+  // Stripe mode state
+  const [stripeMode, setStripeMode] = useState<'test' | 'live'>('test')
+  const [stripeModeLoading, setStripeModeLoading] = useState(true)
+  const [stripeModeStatus, setStripeModeStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+  const [savingStripeMode, setSavingStripeMode] = useState(false)
+
   useEffect(() => {
     loadExistingLogo()
+    loadStripeMode()
   }, [])
+
+  // ── Stripe mode ───────────────────────────────────────────────
+  async function loadStripeMode() {
+    setStripeModeLoading(true)
+    try {
+      const { data } = await supabase
+        .from('admin_config')
+        .select('stripe_mode')
+        .eq('id', 'singleton')
+        .single()
+      if (data?.stripe_mode) setStripeMode(data.stripe_mode as 'test' | 'live')
+    } catch {
+      // Table not yet created — default stays 'test'
+    } finally {
+      setStripeModeLoading(false)
+    }
+  }
+
+  async function saveStripeMode(mode: 'test' | 'live') {
+    if (mode === 'live') {
+      const confirmed = confirm(
+        '⚠️ Switch to LIVE mode?\n\nThis will charge real money on the next payment. Make sure your live Stripe keys (STRIPE_SECRET_KEY_LIVE, STRIPE_WEBHOOK_SECRET_LIVE) are set in .env.local and Vercel. Continue?'
+      )
+      if (!confirmed) return
+    }
+    setSavingStripeMode(true)
+    setStripeModeStatus(null)
+    try {
+      const { error } = await supabase
+        .from('admin_config')
+        .upsert({ id: 'singleton', stripe_mode: mode, updated_at: new Date().toISOString() })
+      if (error) throw error
+      setStripeMode(mode)
+      setStripeModeStatus({
+        type: 'success',
+        message: `Switched to ${mode.toUpperCase()} mode. All new checkout sessions will use your ${mode} Stripe keys.`,
+      })
+    } catch (err: any) {
+      setStripeModeStatus({
+        type: 'error',
+        message: err.message?.includes('does not exist')
+          ? 'admin_config table not found. Run supabase/admin-config.sql in your Supabase SQL Editor first.'
+          : err.message || 'Failed to save. Try again.',
+      })
+    } finally {
+      setSavingStripeMode(false)
+    }
+  }
 
   async function loadExistingLogo() {
     try {
@@ -324,6 +378,125 @@ NEXT_PUBLIC_AGENCY_LOGO_URL=https://youragency.com/logo.png`}</pre>
   "custom_footer": "Powered by Sydney Web Co.",
   "hide_footer_brand": false
 }`}</pre>
+        </div>
+      </div>
+
+      {/* STRIPE MODE SECTION */}
+      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-6">
+        <div className="flex items-center gap-3 mb-1">
+          <CreditCard size={18} className="text-gray-400" />
+          <h2 className="text-white font-semibold">Stripe Payment Mode</h2>
+          {stripeModeLoading ? (
+            <Loader2 size={14} className="text-gray-600 animate-spin" />
+          ) : (
+            <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+              stripeMode === 'live'
+                ? 'bg-green-900/60 text-green-400 border border-green-700'
+                : 'bg-yellow-900/40 text-yellow-400 border border-yellow-800'
+            }`}>
+              {stripeMode === 'live' ? '🟢 LIVE' : '🧪 TEST'}
+            </span>
+          )}
+        </div>
+        <p className="text-gray-500 text-sm mb-5">
+          Toggle between Stripe test mode (safe, no real charges) and live mode (real payments). The active mode applies to all new checkout sessions immediately — no redeploy needed.
+        </p>
+
+        {/* Toggle buttons */}
+        <div className="flex gap-3 mb-5">
+          <button
+            onClick={() => saveStripeMode('test')}
+            disabled={savingStripeMode || stripeMode === 'test'}
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition border ${
+              stripeMode === 'test'
+                ? 'bg-yellow-900/30 border-yellow-700 text-yellow-300 cursor-default'
+                : 'bg-gray-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-500'
+            }`}
+          >
+            {savingStripeMode && stripeMode !== 'test' ? (
+              <Loader2 size={14} className="animate-spin" />
+            ) : (
+              <FlaskConical size={14} />
+            )}
+            Test Mode
+            {stripeMode === 'test' && <span className="text-xs opacity-60">(active)</span>}
+          </button>
+
+          <button
+            onClick={() => saveStripeMode('live')}
+            disabled={savingStripeMode || stripeMode === 'live'}
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition border ${
+              stripeMode === 'live'
+                ? 'bg-green-900/30 border-green-700 text-green-300 cursor-default'
+                : 'bg-gray-800 border-gray-700 text-gray-400 hover:text-green-400 hover:border-green-800'
+            }`}
+          >
+            {savingStripeMode && stripeMode !== 'live' ? (
+              <Loader2 size={14} className="animate-spin" />
+            ) : (
+              <Zap size={14} />
+            )}
+            Live Mode
+            {stripeMode === 'live' && <span className="text-xs opacity-60">(active)</span>}
+          </button>
+        </div>
+
+        {/* Status feedback */}
+        {stripeModeStatus && (
+          <div className={`mb-4 flex items-start gap-2 p-3 rounded-xl text-sm ${
+            stripeModeStatus.type === 'success'
+              ? 'bg-green-950/40 border border-green-900/50 text-green-300'
+              : 'bg-red-950/40 border border-red-900/50 text-red-300'
+          }`}>
+            {stripeModeStatus.type === 'success'
+              ? <CheckCircle size={15} className="shrink-0 mt-0.5" />
+              : <AlertCircle size={15} className="shrink-0 mt-0.5" />
+            }
+            {stripeModeStatus.message}
+          </div>
+        )}
+
+        {/* Live mode warning */}
+        {stripeMode === 'live' && (
+          <div className="bg-red-950/30 border border-red-800/60 rounded-xl p-4 mb-4">
+            <p className="text-red-400 text-xs font-bold mb-1">🔴 LIVE MODE IS ACTIVE — Real money will be charged</p>
+            <p className="text-red-300/60 text-xs">
+              Every checkout session created right now will charge real cards. Only use this when you have a paying client ready. Switch back to Test anytime — no data is lost.
+            </p>
+          </div>
+        )}
+
+        {/* Key reference */}
+        <div className="bg-gray-800 rounded-xl p-4">
+          <p className="text-gray-400 text-xs font-semibold mb-3">Required env vars for each mode</p>
+          <div className="space-y-2">
+            {[
+              { mode: 'test', vars: ['STRIPE_SECRET_KEY_TEST', 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST', 'STRIPE_WEBHOOK_SECRET_TEST'] },
+              { mode: 'live', vars: ['STRIPE_SECRET_KEY_LIVE', 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_LIVE', 'STRIPE_WEBHOOK_SECRET_LIVE'] },
+            ].map(row => (
+              <div key={row.mode} className={`rounded-lg p-3 border ${row.mode === stripeMode ? 'border-blue-800 bg-blue-950/20' : 'border-gray-700 bg-gray-900'}`}>
+                <p className={`text-xs font-bold mb-1.5 ${row.mode === stripeMode ? 'text-blue-400' : 'text-gray-500'}`}>
+                  {row.mode === stripeMode ? '▶ Active — ' : ''}{row.mode.toUpperCase()} keys
+                </p>
+                <div className="space-y-1">
+                  {row.vars.map(v => (
+                    <code key={v} className="block text-xs text-gray-500 font-mono">{v}</code>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-gray-600 text-xs mt-3">
+            Set these in <code className="text-blue-300">.env.local</code> (local) and in <strong className="text-gray-400">Vercel → Settings → Environment Variables</strong> (production). The app also reads the legacy <code className="text-blue-300">STRIPE_SECRET_KEY</code> as a fallback.
+          </p>
+        </div>
+
+        {/* Setup reminder */}
+        <div className="mt-4 bg-yellow-950/30 border border-yellow-900/40 rounded-xl p-3">
+          <p className="text-yellow-400 text-xs font-semibold mb-1">⚠️ First time setup</p>
+          <p className="text-yellow-200/50 text-xs">
+            Run <code className="font-mono text-yellow-300">supabase/admin-config.sql</code> in your Supabase SQL Editor once to enable this toggle. Until then, the app falls back to <code className="font-mono text-yellow-300">STRIPE_SECRET_KEY</code> from your env.
+          </p>
         </div>
       </div>
 
