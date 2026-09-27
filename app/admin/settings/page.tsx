@@ -31,14 +31,11 @@ export default function SettingsPage() {
   async function loadStripeMode() {
     setStripeModeLoading(true)
     try {
-      const { data } = await supabase
-        .from('admin_config')
-        .select('stripe_mode')
-        .eq('id', 'singleton')
-        .single()
+      const res = await fetch('/api/admin-config')
+      const data = await res.json()
       if (data?.stripe_mode) setStripeMode(data.stripe_mode as 'test' | 'live')
     } catch {
-      // Table not yet created — default stays 'test'
+      // API unavailable — default stays 'test'
     } finally {
       setStripeModeLoading(false)
     }
@@ -54,10 +51,13 @@ export default function SettingsPage() {
     setSavingStripeMode(true)
     setStripeModeStatus(null)
     try {
-      const { error } = await supabase
-        .from('admin_config')
-        .upsert({ id: 'singleton', stripe_mode: mode, updated_at: new Date().toISOString() })
-      if (error) throw error
+      const res = await fetch('/api/admin-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stripe_mode: mode }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to save')
       setStripeMode(mode)
       setStripeModeStatus({
         type: 'success',
@@ -66,9 +66,7 @@ export default function SettingsPage() {
     } catch (err: any) {
       setStripeModeStatus({
         type: 'error',
-        message: err.message?.includes('does not exist')
-          ? 'admin_config table not found. Run supabase/admin-config.sql in your Supabase SQL Editor first.'
-          : err.message || 'Failed to save. Try again.',
+        message: err.message || 'Failed to save. Try again.',
       })
     } finally {
       setSavingStripeMode(false)
