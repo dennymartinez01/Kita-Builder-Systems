@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo, Search } from 'lucide-react'
+import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo, Search, Shield } from 'lucide-react'
 
 interface DocSection {
   id: string
@@ -662,6 +662,109 @@ NEXT_PUBLIC_ADMIN_PIN`,
               <pre className="p-4 text-xs text-green-300 font-mono leading-5 overflow-x-auto">{item.code}</pre>
             </div>
           ))}
+        </div>
+      ),
+    },
+    {
+      id: 'booking-arch',
+      title: 'Booking System Architecture',
+      icon: Shield,
+      content: (
+        <div className="space-y-5">
+          <p className="text-gray-400 text-sm">
+            Critical technical decisions for the booking system. Every developer working on this project must read this section before touching bookings, availability, or timezone logic.
+          </p>
+
+          {/* Timezone Architecture */}
+          <div className="bg-gray-950 border border-blue-800/50 rounded-xl p-5">
+            <p className="text-blue-400 font-bold text-sm mb-3">🌏 Timezone Architecture</p>
+            <div className="space-y-3 text-sm text-gray-400">
+              <div>
+                <p className="text-white font-semibold mb-1">The Problem</p>
+                <p>A booking at "10:00" means completely different UTC times in Manila (UTC+8), Sydney (UTC+11), and Los Angeles (UTC-8). Without a timezone stored on each site, bookings appear at the wrong times when the owner and customer are in different zones. This is the #1 silent bug in booking apps — everything looks fine until a PH client serves AU customers.</p>
+              </div>
+              <div>
+                <p className="text-white font-semibold mb-1">Our Approach — Local Time Strings + IANA Timezone</p>
+                <p>We store <code className="text-blue-300 font-mono">booking_date</code> (YYYY-MM-DD) and <code className="text-blue-300 font-mono">booking_time</code> (HH:MM) as plain strings — NOT UTC timestamps. This is intentional:</p>
+                <ul className="mt-2 space-y-1 ml-4 list-disc text-gray-500">
+                  <li>Service businesses think in local time ("10am Monday") — UTC would confuse owners</li>
+                  <li>No DST conversion bugs on display — "10:00" always shows as "10:00"</li>
+                  <li>The <code className="text-blue-300 font-mono">sites.timezone</code> field (IANA e.g. "Australia/Sydney") provides context for calendar exports and cross-timezone calculations</li>
+                  <li>The <code className="text-blue-300 font-mono">bookings.site_timezone</code> column is a snapshot of the site timezone at booking time — immutable record</li>
+                </ul>
+              </div>
+              <div>
+                <p className="text-white font-semibold mb-1">What Changes Based on Timezone</p>
+                <div className="grid sm:grid-cols-2 gap-2 mt-2">
+                  {[
+                    { item: 'Minimum date in booking form', how: 'getTodayInTimezone(siteTimezone) — not browser date' },
+                    { item: 'Next available slot suggestion', how: 'getNextAvailableSlot() uses siteTimezone to skip past times' },
+                    { item: 'Calendar export (.ics / Google)', how: 'buildGoogleCalendarLink() uses siteTimezone for DTSTART' },
+                    { item: 'Booking display in dashboard', how: 'formatBookingDateTime(date, time, timezone)' },
+                  ].map(r => (
+                    <div key={r.item} className="bg-gray-900 rounded-lg p-2.5">
+                      <p className="text-white text-xs font-medium">{r.item}</p>
+                      <p className="text-gray-600 text-xs mt-0.5">{r.how}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="text-white font-semibold mb-1">Key Files</p>
+                <div className="space-y-1 font-mono text-xs text-gray-500">
+                  <p><span className="text-blue-300">lib/timezones.ts</span> — 18 IANA timezones, formatBookingDateTime(), getTodayInTimezone()</p>
+                  <p><span className="text-blue-300">lib/booking-utils.ts</span> — checkSlotAvailability(), getNextAvailableSlot()</p>
+                  <p><span className="text-blue-300">supabase/phase6.sql</span> — sites.timezone + bookings.site_timezone columns</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Race Condition */}
+          <div className="bg-gray-950 border border-red-800/50 rounded-xl p-5">
+            <p className="text-red-400 font-bold text-sm mb-3">⚡ Double-Booking Race Condition Prevention</p>
+            <div className="space-y-3 text-sm text-gray-400">
+              <div>
+                <p className="text-white font-semibold mb-1">The Problem</p>
+                <p>Two customers check the same slot at the same second. Both pass the client-side availability check. Both hit the server at the same time. Without a server-side guard, both get confirmed — a double-booking.</p>
+              </div>
+              <div>
+                <p className="text-white font-semibold mb-1">Two-Layer Defence</p>
+                <div className="space-y-2">
+                  <div className="bg-gray-900 rounded-lg p-3">
+                    <p className="text-yellow-400 text-xs font-bold mb-1">Layer 1 — Client-side (UX helper only)</p>
+                    <p className="text-gray-500 text-xs"><code className="text-blue-300">checkSlotAvailability()</code> in BookingForm queries Supabase before submit. Shows "This time is already booked" instantly. Fast but NOT race-condition safe.</p>
+                  </div>
+                  <div className="bg-gray-900 rounded-lg p-3">
+                    <p className="text-green-400 text-xs font-bold mb-1">Layer 2 — Server-side (the real guard) ✅</p>
+                    <p className="text-gray-500 text-xs"><code className="text-blue-300">/api/notify</code> queries bookings with a time window overlap check before inserting. Returns HTTP 409 if a conflict is found. This runs after the client check and is the authoritative gate. No two bookings can conflict regardless of simultaneous submissions.</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p className="text-white font-semibold mb-1">How the Overlap Check Works</p>
+                <pre className="bg-gray-900 rounded-lg p-3 text-xs text-green-300 font-mono overflow-x-auto">{`// In /api/notify — runs server-side before every insert
+const { count } = await supabase
+  .from('bookings')
+  .select('id', { count: 'exact', head: true })
+  .eq('site_id', site_id)
+  .eq('booking_date', booking_date)
+  .in('status', ['pending', 'confirmed'])
+  .gte('booking_time', addMinutesToTime(time, -duration + 1))
+  .lte('booking_time', addMinutesToTime(time, duration - 1))
+
+if (count > 0) return 409 // Slot taken`}</pre>
+              </div>
+              <div>
+                <p className="text-white font-semibold mb-1">What Happens on 409</p>
+                <p>BookingForm catches the 409 and shows: <span className="text-red-400 italic">"This time slot has just been booked by someone else. Please choose a different time."</span> The customer picks a new slot — no double-booking ever gets saved.</p>
+              </div>
+              <div className="bg-yellow-950/30 border border-yellow-900/50 rounded-lg p-3">
+                <p className="text-yellow-400 text-xs font-semibold mb-1">⚠️ Future Enhancement — Database Unique Constraint</p>
+                <p className="text-gray-500 text-xs">For even stronger guarantees under extreme load, add a Postgres unique index: <code className="text-yellow-300 font-mono">UNIQUE (site_id, booking_date, booking_time)</code> in Supabase. This makes double-booking impossible at the DB level. Not done yet — the server-side check is sufficient for MVP scale.</p>
+              </div>
+            </div>
+          </div>
         </div>
       ),
     },

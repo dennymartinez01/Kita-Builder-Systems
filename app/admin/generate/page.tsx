@@ -10,6 +10,7 @@ import { petDefaultServices } from '@/lib/templates/pet'
 import { cafeDefaultServices } from '@/lib/templates/cafe'
 import { mechanicDefaultServices } from '@/lib/templates/mechanic'
 import { CURRENCIES } from '@/lib/currencies'
+import { TIMEZONES, TIMEZONE_REGIONS } from '@/lib/timezones'
 import type { BusinessType } from '@/types/database'
 import { Zap, CheckCircle, ExternalLink, Loader2, Plus, Trash2, ChevronRight, ChevronLeft } from 'lucide-react'
 
@@ -66,6 +67,7 @@ function GenerateForm() {
     owner_email: '',
     extra_notes: '',
     currency: 'USD',
+    timezone: 'UTC',
   })
 
   const [services, setServices] = useState<ServiceItem[]>(() => buildServiceList(presetType || 'salon'))
@@ -140,7 +142,7 @@ function GenerateForm() {
   function reset() {
     setResult(null)
     setStep(1)
-    setForm({ business_name: '', business_type: presetType || 'salon', location: '', owner_email: '', extra_notes: '', currency: 'USD' })
+    setForm({ business_name: '', business_type: presetType || 'salon', location: '', owner_email: '', extra_notes: '', currency: 'USD', timezone: 'UTC' })
     setServices(buildServiceList(presetType || 'salon'))
   }
 
@@ -399,6 +401,32 @@ function GenerateForm() {
                 >
                   Next — Business Details <ChevronRight size={16} />
                 </button>
+              </div>
+
+              {/* Timezone */}
+              <div className="mt-4">
+                <label className="text-gray-400 text-xs font-medium block mb-2">
+                  Business Timezone <span className="text-red-400">*</span>
+                  <span className="text-gray-600 ml-1 font-normal">— All bookings display in this timezone</span>
+                </label>
+                <select
+                  value={form.timezone}
+                  onChange={e => setForm(f => ({ ...f, timezone: e.target.value }))}
+                  className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 transition"
+                >
+                  {TIMEZONE_REGIONS.map(region => (
+                    <optgroup key={region} label={region}>
+                      {TIMEZONES.filter(t => t.region === region).map(tz => (
+                        <option key={tz.value} value={tz.value}>
+                          {tz.label} (UTC {tz.offset})
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+                <p className="text-yellow-700 text-xs mt-1.5">
+                  ⚠️ Cannot be changed after generation. PH → Asia/Manila · AU → Australia/Sydney · US → America/New_York
+                </p>
               </div>
             </div>
           )}

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import type { Service, Staff } from '@/types/database'
 import { CheckCircle, Loader2, Calendar, Clock, Phone, User, Car, PawPrint, MessageSquare, Users, Mail, AlertCircle, Info } from 'lucide-react'
 import { checkSlotAvailability, getNextAvailableSlot, getSavedBookingDetails, saveBookingDetails } from '@/lib/booking-utils'
+import { getTodayInTimezone } from '@/lib/timezones'
 
 interface BookingFormProps {
   siteId: string
@@ -17,6 +18,7 @@ interface BookingFormProps {
   notesPlaceholder?: string
   notesRequired?: boolean
   currencySymbol?: string
+  siteTimezone?: string
 }
 
 export default function BookingForm({
@@ -31,6 +33,7 @@ export default function BookingForm({
   notesPlaceholder = 'Anything we should know...',
   notesRequired = false,
   currencySymbol = '$',
+  siteTimezone = 'UTC',
 }: BookingFormProps) {
   const [form, setForm] = useState({
     service_id: services[0]?.id || '',
@@ -78,7 +81,6 @@ export default function BookingForm({
         .finally(() => setLoadingNextSlot(false))
     }
   }, [siteId, services[0]?.id])
-
   function setField(key: string, value: string) {
     setForm(prev => ({ ...prev, [key]: value }))
   }
@@ -332,7 +334,7 @@ export default function BookingForm({
                 required
                 type="date"
                 value={form.booking_date}
-                min={new Date().toISOString().split('T')[0]}
+                min={getTodayInTimezone(siteTimezone)}
                 onChange={e => { setField('booking_date', e.target.value); setAvailabilityError('') }}
                 className="w-full border border-gray-200 rounded-xl pl-9 pr-3 py-3 text-sm focus:outline-none focus:ring-2"
               />

@@ -27,7 +27,7 @@ const DEFAULT_STAFF = {
 
 export async function POST(req: NextRequest) {
   try {
-    const { business_name, business_type, location, owner_email, extra_notes, custom_services, currency = 'USD' } = await req.json()
+    const { business_name, business_type, location, owner_email, extra_notes, custom_services, currency = 'USD', timezone = 'UTC' } = await req.json()
 
     if (!business_name || !business_type || !location) {
       return NextResponse.json(
@@ -162,6 +162,7 @@ ${!hasClientServices ? `- 3-5 services with realistic ${currency} pricing for ${
         theme_json: themeJson,
         published: true,
         currency: currency || 'USD',
+        timezone: timezone || 'UTC',
       } as any)
       .select()
       .single()

@@ -3,6 +3,13 @@ import { Resend } from 'resend'
 import { createServerClient } from '@/lib/supabase'
 import { generateCancelToken } from '@/lib/booking-utils'
 
+// Helper — add/subtract minutes from HH:MM string
+function addMinutesToTime(time: string, minutes: number): string {
+  const [h, m] = time.split(':').map(Number)
+  const total = Math.max(0, Math.min(1439, h * 60 + m + minutes))
+  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -29,16 +36,45 @@ export async function POST(req: NextRequest) {
 
     const supabase = createServerClient()
 
-    // Get site info (auto_confirm + owner email)
+    // Get site info (auto_confirm + owner email + timezone)
     const { data: site } = await supabase
       .from('sites')
-      .select('business_name, owner_email, auto_confirm, currency')
+      .select('business_name, owner_email, auto_confirm, currency, timezone')
       .eq('id', site_id)
       .single()
 
-    const autoConfirm = (site as any)?.auto_confirm !== false // default true
+    const autoConfirm = (site as any)?.auto_confirm !== false
+    const siteTimezone = (site as any)?.timezone || 'UTC'
     const status = autoConfirm ? 'confirmed' : 'pending'
     const cancelToken = generateCancelToken()
+
+    // ── SERVER-SIDE RACE CONDITION CHECK ─────────────────────────
+    // Prevents double-bookings even if two customers submit at the same second.
+    // Client-side check in BookingForm is a UX helper only — this is the real guard.
+    if (booking_date && booking_time) {
+      const selectedService = await supabase
+        .from('services')
+        .select('duration_minutes')
+        .eq('id', service_id || '')
+        .single()
+      const durationMins = selectedService.data?.duration_minutes || service_duration_minutes || 60
+
+      const { count } = await supabase
+        .from('bookings')
+        .select('id', { count: 'exact', head: true })
+        .eq('site_id', site_id)
+        .eq('booking_date', booking_date)
+        .in('status', ['pending', 'confirmed'])
+        .gte('booking_time', addMinutesToTime(booking_time, -durationMins + 1))
+        .lte('booking_time', addMinutesToTime(booking_time, durationMins - 1))
+
+      if (count && count > 0) {
+        return NextResponse.json(
+          { error: 'This time slot has just been booked by someone else. Please choose a different time.' },
+          { status: 409 }
+        )
+      }
+    }
 
     // Save booking
     const { data: booking, error: bookingError } = await supabase
@@ -58,6 +94,7 @@ export async function POST(req: NextRequest) {
         staff_id: staff_id || null,
         staff_name: staff_name || null,
         cancel_token: cancelToken,
+        site_timezone: siteTimezone,
         status,
       } as any)
       .select()

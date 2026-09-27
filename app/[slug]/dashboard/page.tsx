@@ -361,6 +361,7 @@ export default function OwnerDashboard({ params }: PageProps) {
   const primaryColor = (site?.theme_json as any)?.theme?.primary || '#1A1A2E'
   const pendingBookings = bookings.filter(b => b.status === 'pending').length
   const confirmedBookings = bookings.filter(b => b.status === 'confirmed').length
+  const siteTimezone = (site as any)?.timezone || 'UTC'
   const wl = getWhiteLabelConfig()
 
   // ─── PIN GATE ─────────────────────────────────────────────────
@@ -974,6 +975,21 @@ export default function OwnerDashboard({ params }: PageProps) {
                 </div>
                 <input ref={logoInputRef} type="file" accept="image/*" className="hidden"
                   onChange={e => handleLogoUpload(e.target.files?.[0] || null)} />
+              </div>
+            </div>
+
+            {/* Auto-confirm toggle */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-5">
+              <h3 className="font-semibold text-gray-900 mb-1">Timezone</h3>
+              <p className="text-gray-500 text-sm mb-3">
+                All bookings on this site display in this timezone.
+              </p>
+              <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3">
+                <span className="text-xl">🌏</span>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">{siteTimezone}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Set at site creation · contact support to change</p>
+                </div>
               </div>
             </div>
 

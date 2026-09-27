@@ -32,4 +32,16 @@ create index if not exists idx_blocked_dates_site_date on blocked_dates(site_id,
 
 -- RLS
 alter table blocked_dates enable row level security;
-create policy "public_all_blocked_dates" on blocked_dates for all using (true) with check (true);
+create policy if not exists "public_all_blocked_dates" on blocked_dates for all using (true) with check (true);
+
+-- ============================================================
+-- TIMEZONE SUPPORT
+-- ============================================================
+
+-- Add timezone to sites (IANA timezone string e.g. "Australia/Sydney")
+alter table sites
+  add column if not exists timezone text not null default 'UTC';
+
+-- Add timezone to bookings for immutable record (snapshot at booking time)
+alter table bookings
+  add column if not exists site_timezone text not null default 'UTC';

@@ -39,6 +39,7 @@ export default async function PublicSitePage({ params }: PageProps) {
   const primary = theme.theme?.primary || '#1A1A1A'
   const bg = theme.theme?.bg || '#FFFFFF'
   const currency = (site as any).currency || 'USD'
+  const siteTimezone = (site as any).timezone || 'UTC'
   const currencySymbol = (() => {
     const map: Record<string, string> = { USD: '$', AUD: '$', GBP: '£', CAD: '$', NZD: '$', PHP: '₱', EUR: '€', SGD: '$', MYR: 'RM', INR: '₹' }
     return map[currency] || '$'
@@ -238,6 +239,7 @@ export default async function PublicSitePage({ params }: PageProps) {
               notesPlaceholder={booking?.data.notes_placeholder || 'Anything we should know...'}
               notesRequired={booking?.data.notes_required || false}
               currencySymbol={currencySymbol}
+              siteTimezone={siteTimezone}
             />
           </div>
         </section>

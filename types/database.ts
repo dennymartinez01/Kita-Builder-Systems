@@ -14,6 +14,7 @@ export interface Site {
   theme_json: ThemeJson
   published: boolean
   currency: string
+  timezone: string
   auto_confirm: boolean
   payment_status: 'unpaid' | 'paid' | 'free'
   stripe_customer_id: string | null
@@ -131,6 +132,7 @@ export interface Booking {
   staff_name: string | null
   cancel_token: string | null
   rescheduled_from: string | null
+  site_timezone: string
   status: BookingStatus
   created_at: string
 }
