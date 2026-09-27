@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo, Search, Shield, Users } from 'lucide-react'
+import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo, Search, Shield, Users, GitCommit } from 'lucide-react'
 
 interface DocSection {
   id: string
@@ -1523,6 +1523,123 @@ if (count > 0) return 409 // Slot taken`}</pre>
                   <span className={`text-xs font-bold px-2 py-0.5 rounded ${r.method === 'POST' ? 'bg-green-900/50 text-green-300' : 'bg-blue-900/50 text-blue-300'}`}>{r.method}</span>
                   <span className="text-white">{r.path}</span>
                   <span className="text-gray-600 hidden sm:inline">{r.desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    // ─── CHANGELOG ────────────────────────────────────────────────
+    {
+      id: 'changelog',
+      title: 'Changelog',
+      icon: GitCommit,
+      content: (
+        <div className="space-y-6">
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Reverse-chronological log of every meaningful change to KITA Builder Systems. Each entry maps to a git commit. Run <code className="text-blue-300 font-mono">git log --oneline</code> to cross-reference. The full machine-readable version lives in <code className="text-blue-300 font-mono">CHANGELOG.md</code> in the repo root.
+            </p>
+          </div>
+
+          {[
+            {
+              date: '2026-09-27',
+              entries: [
+                { hash: 'e72f85f', type: '🔧 Fix',       text: 'Stripe mode toggle — settings page writes via /api/admin-config (service role) to bypass RLS' },
+                { hash: '8a1035e', type: '🔧 Fix',       text: 'admin-config.sql — replaced unsupported "create policy if not exists" with drop+create for Supabase Postgres compat' },
+                { hash: 'b1e78e0', type: '✨ Feature',   text: 'Stripe test/live mode toggle — Admin Settings, admin_config table, lib/stripe-config.ts, /api/admin-config route, checkout + webhook updated' },
+                { hash: '6bf5aaa', type: '📋 Plan',      text: 'Phase 10 documented — Contact Form + Smart Leads Engine: What/Why/Who/Status, leads table schema, new routes, pitch pages + README updated' },
+                { hash: '64667c8', type: '✅ Complete',  text: 'Phase 9 complete — /admin/clients list + profile + new, Client column in /admin/sites, By Client tab in /admin/revenue, auto-upsert client on booking' },
+                { hash: '5807265', type: '📋 Plan',      text: 'Phase 9 plan — clients.sql, sidebar nav, docs section, placeholder page' },
+                { hash: '0b4dc35', type: '🔧 Fix',       text: 'Timezone + race condition — IANA timezone on sites/bookings, server-side 409 check, getTodayInTimezone moved to lib/timezones.ts, booking architecture docs' },
+                { hash: 'c25cd1d', type: '✅ Complete',  text: 'Phase 6 complete — Smart Booking System: availability check, next slot, /booking/[id] confirmation, Add to Calendar, cancel/reschedule, Block Dates, auto-confirm toggle, email auto-fill' },
+                { hash: '82e1440', type: '📝 Docs',      text: 'Feature roadmap rewritten with What/Why/Who/Status standard across all features' },
+                { hash: '5dac1eb', type: '✅ Complete',  text: 'Phase 5 complete — 3-step generate form: service selector + custom pricing, currency picker (10 currencies), currency on public site + booking form' },
+              ],
+            },
+            {
+              date: '2026-09-26',
+              entries: [
+                { hash: 'b922dff', type: '📝 Docs',      text: 'Docs + README: full project overview updated — both products, Phases 5–8 roadmap, commercial pitch section' },
+                { hash: 'aeb80f0', type: '✨ Feature',   text: 'Template custom fields — notes_label/placeholder/required per template type; BookingForm updated' },
+                { hash: '2522aa1', type: '✨ Feature',   text: 'Audit pitch page /audit-pitch built; README updated to 27 routes' },
+                { hash: '9fa77cc', type: '✅ Complete',  text: 'Audit Phase 3 — PDF report via jsPDF, Forensic format, 8 sections, multi-page download' },
+                { hash: 'd6f2bb0', type: '✅ Complete',  text: 'Audit Phase 2 — Crawler (10 pages, 3 concurrent), Pages tab, broken links, History search/delete/score trend' },
+                { hash: 'a9af653', type: '✅ Complete',  text: 'Audit Phase 1 — Performance (PSI), SEO (cheerio), Security headers, Tech fingerprinting, Accessibility (WCAG 2.1), score rings, issue explorer' },
+              ],
+            },
+            {
+              date: '2026-09-25',
+              entries: [
+                { hash: '9c30201', type: '✨ Feature',   text: 'Gallery renders on public site — "Our Work" grid, 2-col mobile / 3-col desktop, hover zoom' },
+                { hash: 'cc38ce0', type: '✨ Feature',   text: 'Staff booking — preferred staff picker in booking form, staff_id + staff_name saved to booking and shown in dashboard + email' },
+                { hash: 'cd8f05b', type: '✨ Feature',   text: 'Site analytics — page_views table, /api/track, Analytics tab in owner dashboard (14-day chart, weekly trend), views in revenue page' },
+                { hash: 'f703e01', type: '✅ Complete',  text: 'No-blocker backlog complete — PIN change, logo upload, gallery, testimonials editor, MRR revenue dashboard, CSV export' },
+                { hash: 'cbd7ba1', type: '🔧 Fix',       text: 'Webhook maxDuration=60; respond to Stripe immediately then generate in background' },
+                { hash: '713e9bd', type: '🔧 Fix',       text: 'Stripe server-only import fixed; lib/pricing.ts split to client-safe module' },
+              ],
+            },
+            {
+              date: '2026-09-24',
+              entries: [
+                { hash: '50d34af', type: '✅ Complete',  text: 'Week 3 — Stripe payments: /api/checkout, /api/webhook, /onboard, /onboard/success, payments.sql, payment_status tracking, Pay & Launch CTA on pitch page' },
+              ],
+            },
+            {
+              date: '2026-09-23',
+              entries: [
+                { hash: 'b76b8c1', type: '✅ Complete',  text: 'Week 2 complete — Outreach pitch page /pitch, mobile responsive (sticky nav, responsive grids), Resend email fix' },
+                { hash: 'd648171', type: '✨ Feature',   text: 'Owner dashboard — Staff, Hours, About, AI Assistant tabs added (total 10 tabs)' },
+                { hash: 'ddc8bc3', type: '✅ Complete',  text: 'Week 1 complete — Templates marketplace (11 templates), Agentic AI assistant (9 tools via Gemini function-calling)' },
+                { hash: 'c9217bf', type: '🎉 Init',      text: 'KITA Builder Systems v1 — Initial commit: Next.js 16, Supabase schema, 5 templates, admin CMS, public site renderer, booking form, owner dashboard, Gemini AI generation' },
+              ],
+            },
+          ].map(day => (
+            <div key={day.date} className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
+              {/* Date header */}
+              <div className="px-4 py-3 border-b border-gray-800 flex items-center gap-3">
+                <GitCommit size={13} className="text-gray-600 shrink-0" />
+                <span className="text-white font-bold text-sm font-mono">{day.date}</span>
+                <span className="text-gray-600 text-xs">{day.entries.length} {day.entries.length === 1 ? 'change' : 'changes'}</span>
+              </div>
+              {/* Entries */}
+              <div className="divide-y divide-gray-900">
+                {day.entries.map(entry => (
+                  <div key={entry.hash} className="px-4 py-3 flex items-start gap-3 hover:bg-gray-900/40 transition">
+                    <code className="text-gray-700 font-mono text-xs shrink-0 mt-0.5 w-14">{entry.hash}</code>
+                    <span className={`text-xs shrink-0 font-medium w-24 ${
+                      entry.type.startsWith('✅') ? 'text-green-400' :
+                      entry.type.startsWith('✨') ? 'text-blue-400' :
+                      entry.type.startsWith('🔧') ? 'text-yellow-400' :
+                      entry.type.startsWith('📝') ? 'text-gray-400' :
+                      entry.type.startsWith('📋') ? 'text-purple-400' :
+                      entry.type.startsWith('🎉') ? 'text-pink-400' :
+                      'text-gray-500'
+                    }`}>{entry.type}</span>
+                    <span className="text-gray-400 text-xs leading-relaxed">{entry.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          {/* Legend */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+            <p className="text-gray-500 text-xs font-semibold mb-3">Legend</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {[
+                { icon: '🎉 Init',     color: 'text-pink-400',   desc: 'Project initialisation' },
+                { icon: '✅ Complete', color: 'text-green-400',  desc: 'Phase or feature fully shipped' },
+                { icon: '✨ Feature',  color: 'text-blue-400',   desc: 'New feature added' },
+                { icon: '🔧 Fix',      color: 'text-yellow-400', desc: 'Bug fix or correction' },
+                { icon: '📝 Docs',     color: 'text-gray-400',   desc: 'Documentation update only' },
+                { icon: '📋 Plan',     color: 'text-purple-400', desc: 'Planned, not yet built' },
+              ].map(l => (
+                <div key={l.icon} className="flex items-center gap-2">
+                  <span className={`text-xs font-medium w-24 shrink-0 ${l.color}`}>{l.icon}</span>
+                  <span className="text-gray-600 text-xs">{l.desc}</span>
                 </div>
               ))}
             </div>
