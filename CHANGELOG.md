@@ -7,6 +7,15 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 2)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| `b6c5280` | 📝 Docs | Changelog added — `CHANGELOG.md` + `/admin/docs` Changelog section with full history from project start |
+| *(pending)* | ✅ Complete | **Stripe webhook → client integration** — on `checkout.session.completed`: upsert client (email key), set `subscription_status=active`, `subscription_plan=starter`, `onboarding_complete=true`, link `sites.client_id`; docs integration point marked Done |
+
+---
+
 ## 2026-09-27
 
 | Commit | Area | What Changed |

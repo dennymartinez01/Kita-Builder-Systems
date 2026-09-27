@@ -1305,7 +1305,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 { task: 'Auto-upsert client record when customer books (email provided)', status: '✅ Done — /api/notify' },
                 { task: 'Client column in /admin/sites table (linked, clickable)', status: '✅ Done' },
                 { task: '"By Client" tab in /admin/revenue with MRR per client + totals row', status: '✅ Done' },
-                { task: 'Stripe webhook → update client.subscription_status on payment event', status: '⏳ Backlog (needs Stripe live keys)' },
+                { task: 'Stripe webhook → update client.subscription_status on payment event', status: '✅ Done — /api/webhook' },
               ].map(item => (
                 <div key={item.task} className="flex items-center justify-between bg-gray-900 rounded-lg px-3 py-2">
                   <span>{item.task}</span>

@@ -152,6 +152,66 @@ Use realistic ${location} pricing. 3-5 services, 2-3 staff, 3 testimonials.`
     ),
   ])
 
+  // ── CLIENT RECORD — upsert on payment ────────────────────────
+  // When a client pays $150 via /onboard, create or update their client record:
+  //   - email is the unique key (from Stripe customer_email / metadata.owner_email)
+  //   - subscription_status → active (they paid)
+  //   - subscription_plan   → starter (default on first payment)
+  //   - onboarding_complete → true
+  //   - stripe_customer_id  → linked from Stripe session
+  // Then link sites.client_id → the client's id so the site shows up on their profile.
+  if (owner_email) {
+    try {
+      // Derive city from location string (e.g. "Sydney, NSW" → "Sydney")
+      const city = location.split(',')[0]?.trim() || null
+
+      // Extract country hint from location (rough heuristic — good enough for segmentation)
+      const locationLower = location.toLowerCase()
+      const country =
+        locationLower.includes('australia') || locationLower.includes(' nsw') || locationLower.includes(' vic') || locationLower.includes(' qld') ? 'AU' :
+        locationLower.includes('philippines') || locationLower.includes(' ph') || locationLower.includes('manila') ? 'PH' :
+        locationLower.includes('united states') || locationLower.includes(' usa') || locationLower.includes(', ca') || locationLower.includes(', ny') || locationLower.includes(', tx') ? 'US' :
+        locationLower.includes('united kingdom') || locationLower.includes(' uk') || locationLower.includes('london') ? 'UK' :
+        locationLower.includes('canada') || locationLower.includes(' on') || locationLower.includes(' bc') ? 'CAN' : null
+
+      // Upsert client — create if new, update subscription fields if existing
+      const { data: client } = await supabase
+        .from('clients')
+        .upsert(
+          {
+            email: owner_email,
+            name: business_name, // use business name as fallback — owner can edit later
+            subscription_status: 'active',
+            subscription_plan: 'starter',
+            onboarding_complete: true,
+            stripe_customer_id: stripe_customer_id || null,
+            source: 'onboard',
+            city,
+            country,
+          },
+          {
+            onConflict: 'email',
+            ignoreDuplicates: false, // always update subscription fields on payment
+          }
+        )
+        .select('id')
+        .single()
+
+      // Link the new site → client
+      if (client?.id) {
+        await supabase
+          .from('sites')
+          .update({ client_id: client.id } as any)
+          .eq('id', site.id)
+
+        console.log(`[webhook] ✅ Client upserted (${owner_email}) → status=active, site linked`)
+      }
+    } catch (clientErr: any) {
+      // Non-fatal — site is already created, just log the failure
+      console.warn('[webhook] Client upsert skipped:', clientErr?.message)
+    }
+  }
+
   return slug
 }
 
