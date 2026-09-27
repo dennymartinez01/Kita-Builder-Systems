@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo, Search, Shield, Users, GitCommit, BadgeDollarSign } from 'lucide-react'
 
 interface DocSection {
@@ -1495,8 +1495,8 @@ if (count > 0) return 409 // Slot taken`}</pre>
                       { feature: 'Priority support', trial: '—', starter: '—', growth: '✓', agency: '✓' },
                     ]},
                   ].map(group => (
-                    <>
-                      <tr key={group.section} className="bg-gray-900/60 border-b border-gray-800">
+                    <React.Fragment key={group.section}>
+                      <tr className="bg-gray-900/60 border-b border-gray-800">
                         <td colSpan={5} className="px-4 py-2 text-gray-500 font-semibold text-xs">{group.section}</td>
                       </tr>
                       {group.rows.map((row, i) => (
@@ -1508,7 +1508,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
                           <td className="px-4 py-2 text-center text-purple-400">{row.agency}</td>
                         </tr>
                       ))}
-                    </>
+                    </React.Fragment>
                   ))}
                   <tr className="border-t-2 border-gray-700 bg-gray-900/40">
                     <td className="px-4 py-3 text-white font-bold">Monthly MRR contribution</td>
