@@ -82,7 +82,31 @@ Forensic website audit tool — enter any URL, get scores + issues + PDF report 
 
 ---
 
-## Product 1 — AI Website Builder
+## Subscription Plans
+
+All plans include a **$150 one-time setup fee** (AI generation, site build, launch). Monthly billing activates after setup.
+
+| Plan | Price | Sites | Key additions over previous |
+|---|---|---|---|
+| **Trial** | Free · 14 days | 1 | Full access, no credit card |
+| **Starter** | $29/mo | 1 | Booking system, AI assistant, analytics, contact form |
+| **Growth** | $49/mo | 3 | SMS reminders, 2 promotion blasts/mo, priority support |
+| **Agency** | $99/mo | 10 | White-label mode, custom domain, 5 blasts/mo, onboarding call |
+
+**MRR at 10 clients:**
+- All Starter → $290/mo ($3,480/yr)
+- Mixed (5S + 3G + 2A) → $490/mo ($5,880/yr)
+- All Agency → $990/mo ($11,880/yr)
+
+**Implementation status:**
+- ✅ Plan tiers defined in `types/database.ts` + tracked per client in `clients` table
+- ✅ MRR rates in `app/admin/clients/page.tsx` (MONTHLY_RATES constant)
+- ✅ Plan badge in `/admin/clients` + `/admin/revenue` By Client tab
+- ✅ Stripe webhook sets `subscription_status=active` + `plan=starter` on $150 payment
+- ⏳ Stripe recurring subscriptions — needs Stripe Products + Prices (Backlog)
+- ⏳ Auto-downgrade on `invoice.payment_failed` — Backlog
+
+---
 
 ### Features
 

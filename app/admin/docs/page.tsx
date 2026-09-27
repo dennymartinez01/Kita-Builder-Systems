@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo, Search, Shield, Users, GitCommit } from 'lucide-react'
+import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo, Search, Shield, Users, GitCommit, BadgeDollarSign } from 'lucide-react'
 
 interface DocSection {
   id: string
@@ -1275,25 +1275,75 @@ if (count > 0) return 409 // Slot taken`}</pre>
   add column if not exists client_id uuid references clients(id) on delete set null;`}</pre>
           </div>
 
-          {/* Subscription plans */}
-          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-            <p className="text-white font-semibold text-sm mb-3">Subscription Plans & MRR Rates</p>
-            <div className="grid sm:grid-cols-3 gap-3">
-              {[
-                { plan: 'Starter', price: '$29/mo', features: ['1 site', 'Bookings unlimited', 'Email notifications', 'Basic analytics'], color: 'border-blue-800' },
-                { plan: 'Growth', price: '$49/mo', features: ['3 sites', 'All Starter features', 'SMS reminders', 'Priority support'], color: 'border-green-800' },
-                { plan: 'Agency', price: '$99/mo', features: ['10 sites', 'All Growth features', 'White-label mode', 'Custom domain'], color: 'border-purple-800' },
-              ].map(p => (
-                <div key={p.plan} className={`border rounded-xl p-3 bg-gray-900/50 ${p.color}`}>
-                  <p className="text-white font-bold text-sm">{p.plan}</p>
-                  <p className="text-blue-400 font-mono text-sm mb-2">{p.price}</p>
-                  {p.features.map(f => (
-                    <div key={f} className="flex gap-1.5 text-xs text-gray-500 mt-1">
-                      <span className="text-green-500">✓</span>{f}
-                    </div>
+          {/* Subscription plans — full matrix */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-gray-800">
+              <p className="text-white font-semibold text-sm">Subscription Plans & MRR Rates</p>
+              <p className="text-gray-500 text-xs mt-0.5">All plans include a $150 one-time setup fee. Monthly billing activates after setup.</p>
+            </div>
+            {/* Plan comparison table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-gray-800">
+                    <th className="text-left text-gray-500 font-medium px-4 py-3">Feature</th>
+                    <th className="text-center text-gray-500 font-medium px-4 py-3">
+                      <span className="block text-gray-400 font-bold">Trial</span>
+                      <span className="text-gray-600">Free · 14 days</span>
+                    </th>
+                    <th className="text-center text-blue-400 font-medium px-4 py-3 bg-blue-950/10">
+                      <span className="block font-bold">Starter</span>
+                      <span className="text-blue-300 font-mono">$29/mo</span>
+                    </th>
+                    <th className="text-center text-green-400 font-medium px-4 py-3">
+                      <span className="block font-bold">Growth</span>
+                      <span className="text-green-300 font-mono">$49/mo</span>
+                    </th>
+                    <th className="text-center text-purple-400 font-medium px-4 py-3">
+                      <span className="block font-bold">Agency</span>
+                      <span className="text-purple-300 font-mono">$99/mo</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { feature: 'Client sites included', trial: '1', starter: '1', growth: '3', agency: '10' },
+                    { feature: 'Online booking widget', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { feature: 'AI site generation', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { feature: 'Owner dashboard (10 tabs)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { feature: 'Email booking notifications', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { feature: 'Site analytics (14-day)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { feature: 'Cancel / reschedule links', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { feature: 'Block dates / time off', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { feature: 'Gallery & logo upload', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { feature: 'AI assistant (9 tools)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { feature: 'Contact / inquiry form', trial: '—', starter: '✓', growth: '✓', agency: '✓' },
+                    { feature: 'SMS booking reminders', trial: '—', starter: '—', growth: '✓', agency: '✓' },
+                    { feature: 'Priority support', trial: '—', starter: '—', growth: '✓', agency: '✓' },
+                    { feature: 'Promotion blast (per mo)', trial: '—', starter: '—', growth: '2 blasts', agency: '5 blasts' },
+                    { feature: 'White-label mode', trial: '—', starter: '—', growth: '—', agency: '✓' },
+                    { feature: 'Custom domain', trial: '—', starter: '—', growth: '—', agency: '✓' },
+                    { feature: 'Dedicated onboarding call', trial: '—', starter: '—', growth: '—', agency: '✓' },
+                  ].map((row, i) => (
+                    <tr key={row.feature} className={`border-b border-gray-900 last:border-0 ${i % 2 === 0 ? '' : 'bg-gray-900/20'}`}>
+                      <td className="px-4 py-2 text-gray-400">{row.feature}</td>
+                      <td className="px-4 py-2 text-center text-gray-600">{row.trial}</td>
+                      <td className="px-4 py-2 text-center text-blue-400 bg-blue-950/5">{row.starter}</td>
+                      <td className="px-4 py-2 text-center text-green-400">{row.growth}</td>
+                      <td className="px-4 py-2 text-center text-purple-400">{row.agency}</td>
+                    </tr>
                   ))}
-                </div>
-              ))}
+                </tbody>
+                <tfoot>
+                  <tr className="border-t-2 border-gray-700">
+                    <td className="px-4 py-3 text-gray-500 font-semibold">Monthly MRR contribution</td>
+                    <td className="px-4 py-3 text-center text-gray-600 font-mono">$0</td>
+                    <td className="px-4 py-3 text-center text-blue-400 font-mono font-bold bg-blue-950/5">$29</td>
+                    <td className="px-4 py-3 text-center text-green-400 font-mono font-bold">$49</td>
+                    <td className="px-4 py-3 text-center text-purple-400 font-mono font-bold">$99</td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
           </div>
 
@@ -1312,6 +1362,219 @@ if (count > 0) return 409 // Slot taken`}</pre>
                   <span className={`shrink-0 ml-3 ${item.status.startsWith('✅') ? 'text-green-500' : 'text-yellow-600'}`}>{item.status}</span>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    // ─── SUBSCRIPTION PLANS ───────────────────────────────────────
+    {
+      id: 'pricing',
+      title: 'Subscription Plans & Pricing',
+      icon: BadgeDollarSign,
+      content: (
+        <div className="space-y-6">
+
+          {/* Intro */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+            <p className="text-gray-300 text-sm leading-relaxed">
+              KITA operates on a <strong className="text-white">$150 one-time setup fee</strong> + <strong className="text-white">monthly subscription</strong> model. The setup fee covers AI generation, initial configuration, and onboarding. The monthly fee covers hosting, the booking system, ongoing support, and feature access. Plans scale with the client's business size and needs.
+            </p>
+          </div>
+
+          {/* Plan cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                plan: 'Trial',
+                price: 'Free',
+                sub: '14 days',
+                color: 'border-gray-700',
+                badge: 'bg-gray-800 text-gray-400',
+                accent: 'text-gray-300',
+                desc: 'Full access for 14 days. No credit card. Converts to Starter automatically or cancels.',
+                ideal: 'New prospects evaluating KITA before committing.',
+              },
+              {
+                plan: 'Starter',
+                price: '$29',
+                sub: '/month + $150 setup',
+                color: 'border-blue-800 bg-blue-950/10',
+                badge: 'bg-blue-900/50 text-blue-400',
+                accent: 'text-blue-300',
+                desc: '1 client site, full booking system, AI assistant, analytics, email notifications.',
+                ideal: 'Solo service business — 1 location, 1 owner managing their own site.',
+              },
+              {
+                plan: 'Growth',
+                price: '$49',
+                sub: '/month + $150 setup',
+                color: 'border-green-800',
+                badge: 'bg-green-900/50 text-green-400',
+                accent: 'text-green-300',
+                desc: 'Everything in Starter + up to 3 sites, SMS reminders, 2 promotion blasts/mo, priority support.',
+                ideal: 'Growing business with multiple locations, or an agency managing a few clients.',
+              },
+              {
+                plan: 'Agency',
+                price: '$99',
+                sub: '/month + $150 setup',
+                color: 'border-purple-800',
+                badge: 'bg-purple-900/50 text-purple-400',
+                accent: 'text-purple-300',
+                desc: 'Everything in Growth + up to 10 sites, white-label mode, custom domain, 5 blasts/mo, dedicated onboarding call.',
+                ideal: 'Web agency or freelancer reselling KITA under their own brand to multiple clients.',
+              },
+            ].map(p => (
+              <div key={p.plan} className={`border rounded-xl p-4 bg-gray-950 ${p.color}`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${p.badge}`}>{p.plan}</span>
+                </div>
+                <div className={`text-2xl font-black mb-0.5 ${p.accent}`}>{p.price}</div>
+                <div className="text-gray-600 text-xs mb-3">{p.sub}</div>
+                <p className="text-gray-400 text-xs leading-relaxed mb-3">{p.desc}</p>
+                <div className="bg-gray-900 rounded-lg p-2">
+                  <p className="text-gray-600 text-xs font-semibold mb-1">Ideal for</p>
+                  <p className="text-gray-500 text-xs">{p.ideal}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Full feature matrix */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-gray-800">
+              <p className="text-white font-semibold text-sm">Full Feature Comparison</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-gray-800 bg-gray-900/50">
+                    <th className="text-left text-gray-500 font-medium px-4 py-3 w-48">Feature</th>
+                    <th className="text-center text-gray-500 font-medium px-4 py-3">Trial</th>
+                    <th className="text-center text-blue-400 font-medium px-4 py-3 bg-blue-950/10">Starter<br/><span className="font-mono text-blue-300">$29</span></th>
+                    <th className="text-center text-green-400 font-medium px-4 py-3">Growth<br/><span className="font-mono text-green-300">$49</span></th>
+                    <th className="text-center text-purple-400 font-medium px-4 py-3">Agency<br/><span className="font-mono text-purple-300">$99</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { section: '🌐 Sites', rows: [
+                      { feature: 'Client sites included', trial: '1', starter: '1', growth: '3', agency: '10' },
+                      { feature: 'Additional sites', trial: '—', starter: '+$29/ea', growth: '+$29/ea', agency: '+$29/ea' },
+                    ]},
+                    { section: '📅 Booking System', rows: [
+                      { feature: 'Online booking widget (24/7)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'Service selector + staff picker', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'Real-time availability check', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'Cancel / reschedule self-service', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'Block out dates / time off', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'Auto-confirm toggle', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    ]},
+                    { section: '🤖 AI & CMS', rows: [
+                      { feature: 'AI site generation (~10 sec)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'Owner dashboard (10 tabs)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'AI assistant (9 editing tools)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'Gallery + logo upload', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    ]},
+                    { section: '📊 Analytics & Notifications', rows: [
+                      { feature: 'Email booking notifications', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'Site analytics (14-day chart)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'SMS booking reminders (Twilio)', trial: '—', starter: '—', growth: '✓', agency: '✓' },
+                    ]},
+                    { section: '📬 Leads & Promotions (Phase 10)', rows: [
+                      { feature: 'Contact / inquiry form', trial: '—', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'Owner Inquiries dashboard', trial: '—', starter: '✓', growth: '✓', agency: '✓' },
+                      { feature: 'Promotion blasts per month', trial: '—', starter: '—', growth: '2', agency: '5' },
+                      { feature: 'Cross-network audience access', trial: '—', starter: '—', growth: '✓', agency: '✓' },
+                    ]},
+                    { section: '🏷️ Branding & Scale', rows: [
+                      { feature: 'White-label mode', trial: '—', starter: '—', growth: '—', agency: '✓' },
+                      { feature: 'Custom domain', trial: '—', starter: '—', growth: '—', agency: '✓' },
+                      { feature: 'Dedicated onboarding call', trial: '—', starter: '—', growth: '—', agency: '✓' },
+                      { feature: 'Priority support', trial: '—', starter: '—', growth: '✓', agency: '✓' },
+                    ]},
+                  ].map(group => (
+                    <>
+                      <tr key={group.section} className="bg-gray-900/60 border-b border-gray-800">
+                        <td colSpan={5} className="px-4 py-2 text-gray-500 font-semibold text-xs">{group.section}</td>
+                      </tr>
+                      {group.rows.map((row, i) => (
+                        <tr key={row.feature} className={`border-b border-gray-900 last:border-0 ${i % 2 === 0 ? '' : 'bg-gray-900/20'}`}>
+                          <td className="px-4 py-2 text-gray-400">{row.feature}</td>
+                          <td className="px-4 py-2 text-center text-gray-600">{row.trial}</td>
+                          <td className="px-4 py-2 text-center text-blue-400 bg-blue-950/5">{row.starter}</td>
+                          <td className="px-4 py-2 text-center text-green-400">{row.growth}</td>
+                          <td className="px-4 py-2 text-center text-purple-400">{row.agency}</td>
+                        </tr>
+                      ))}
+                    </>
+                  ))}
+                  <tr className="border-t-2 border-gray-700 bg-gray-900/40">
+                    <td className="px-4 py-3 text-white font-bold">Monthly MRR contribution</td>
+                    <td className="px-4 py-3 text-center text-gray-600 font-mono font-bold">$0</td>
+                    <td className="px-4 py-3 text-center text-blue-400 font-mono font-bold bg-blue-950/5">$29</td>
+                    <td className="px-4 py-3 text-center text-green-400 font-mono font-bold">$49</td>
+                    <td className="px-4 py-3 text-center text-purple-400 font-mono font-bold">$99</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Upgrade triggers */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-5">
+            <p className="text-white font-semibold text-sm mb-4">When to Upgrade — Sales Triggers</p>
+            <div className="space-y-3">
+              {[
+                { from: 'Trial', to: 'Starter', trigger: 'Trial period ends (14 days). Client is getting bookings and sees value. Conversion pitch: "You got X bookings this week — let\'s keep them coming at $29/mo."', color: 'border-blue-800' },
+                { from: 'Starter', to: 'Growth', trigger: 'Client opens a second location OR wants SMS reminders to reduce no-shows OR wants to run a promotion to their customers. At $49 it\'s $20 more for significantly more tools.', color: 'border-green-800' },
+                { from: 'Growth', to: 'Agency', trigger: 'Client is an agency/freelancer managing 4+ business sites, wants to remove KITA branding for their own clients, or needs a custom domain for white-label presentation.', color: 'border-purple-800' },
+              ].map(u => (
+                <div key={u.from} className={`border rounded-xl p-4 bg-gray-900/50 ${u.color}`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-gray-400 text-xs font-bold">{u.from}</span>
+                    <span className="text-gray-600">→</span>
+                    <span className="text-white text-xs font-bold">{u.to}</span>
+                  </div>
+                  <p className="text-gray-500 text-xs leading-relaxed">{u.trigger}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Revenue projections */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-5">
+            <p className="text-white font-semibold text-sm mb-4">MRR Projections by Mix</p>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {[
+                { scenario: 'All Starter (10 clients)', mrr: '$290/mo', arr: '$3,480/yr', setup: '+$1,500 setup', color: 'text-blue-400' },
+                { scenario: 'Mixed (5S + 3G + 2A)', mrr: '$490/mo', arr: '$5,880/yr', setup: '+$1,500 setup', color: 'text-green-400' },
+                { scenario: 'All Agency (10 clients)', mrr: '$990/mo', arr: '$11,880/yr', setup: '+$1,500 setup', color: 'text-purple-400' },
+              ].map(s => (
+                <div key={s.scenario} className="bg-gray-900 rounded-xl p-4">
+                  <p className="text-gray-500 text-xs mb-2">{s.scenario}</p>
+                  <p className={`text-2xl font-black ${s.color}`}>{s.mrr}</p>
+                  <p className="text-gray-600 text-xs mt-1">{s.arr} recurring</p>
+                  <p className="text-green-800 text-xs mt-0.5">{s.setup} one-time</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-gray-600 text-xs mt-4 italic">
+              These figures exclude promotion blast revenue ($49/blast), Stripe deposit fees, or custom enterprise deals.
+            </p>
+          </div>
+
+          {/* Status note */}
+          <div className="bg-yellow-950/30 border border-yellow-800/50 rounded-xl p-4">
+            <p className="text-yellow-400 text-xs font-semibold mb-1">⚠️ Implementation Status</p>
+            <div className="space-y-1 text-xs text-yellow-200/50">
+              <p>✅ Plan tiers defined in <code className="font-mono text-yellow-300">types/database.ts</code> + tracked per client in <code className="font-mono text-yellow-300">clients</code> table</p>
+              <p>✅ MRR rates in <code className="font-mono text-yellow-300">app/admin/clients/page.tsx</code> (MONTHLY_RATES constant)</p>
+              <p>✅ Plan badge shown in <code className="font-mono text-yellow-300">/admin/clients</code> + <code className="font-mono text-yellow-300">/admin/revenue</code></p>
+              <p>⏳ Stripe recurring subscriptions — needs Stripe Products + Prices + live keys (Backlog)</p>
+              <p>⏳ Auto-downgrade on payment failure — needs <code className="font-mono text-yellow-300">invoice.payment_failed</code> webhook handler</p>
+              <p>⏳ Client self-service plan upgrade page — planned Phase 11</p>
             </div>
           </div>
         </div>

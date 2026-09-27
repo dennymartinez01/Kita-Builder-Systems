@@ -13,6 +13,7 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 |---|---|---|
 | `b6c5280` | 📝 Docs | Changelog added — `CHANGELOG.md` + `/admin/docs` Changelog section with full history from project start |
 | `01d4163` | ✅ Complete | **Stripe webhook → client integration** — on `checkout.session.completed`: upsert client (email key), set `subscription_status=active`, `subscription_plan=starter`, `onboarding_complete=true`, link `sites.client_id`; docs integration point marked Done |
+| *(pending)* | 📝 Docs | **Subscription Plans documented** — full feature matrix in docs, standalone Pricing section in `/admin/docs`, pricing comparison section on `/pitch` page, Subscription Plans section in README |
 
 ---
 

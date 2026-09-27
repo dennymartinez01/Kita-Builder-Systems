@@ -179,12 +179,12 @@ export default function PitchPage() {
             ))}
           </div>
 
-          {/* Pricing */}
-          <div className="bg-blue-600 rounded-2xl p-6 sm:p-8">
-            <div className="text-white/70 text-sm mb-1">Simple pricing</div>
+          {/* Pricing — moved to dedicated section above */}
+          <div className="bg-blue-600 rounded-2xl p-6 sm:p-8 text-center">
+            <div className="text-white/70 text-sm mb-1">Starting from</div>
             <div className="text-white font-black text-4xl mb-1">$150 <span className="text-xl font-normal">setup</span></div>
             <div className="text-white font-bold text-xl">+ $29<span className="text-white/70 font-normal text-base">/month</span></div>
-            <p className="text-blue-100 text-sm mt-3 mb-6">Includes hosting, updates, and support. Cancel anytime.</p>
+            <p className="text-blue-100 text-sm mt-3 mb-6">Starter plan · Includes hosting, updates, and support. Cancel anytime.</p>
             <a
               href="https://wa.me/639XXXXXXXXX?text=Hi%20Denny%2C%20I%20want%20a%20website%20for%20my%20business."
               target="_blank"
@@ -199,6 +199,133 @@ export default function PitchPage() {
               Pay & Launch Now — $150 →
             </a>
           </div>
+        </div>
+      </section>
+
+      {/* ── PRICING ── */}
+      <section className="px-5 py-16 bg-gray-900">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+            Simple, Transparent Pricing
+          </h2>
+          <p className="text-gray-400 mb-10 max-w-xl mx-auto">
+            One setup fee. One monthly subscription. No hidden costs. Pick the plan that fits your business today — upgrade anytime.
+          </p>
+
+          {/* Setup fee note */}
+          <div className="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 rounded-full px-4 py-2 text-sm text-gray-300 mb-10">
+            <span className="text-yellow-400">★</span>
+            All plans include a <strong className="text-white">$150 one-time setup fee</strong> — AI generation, site build, and launch.
+          </div>
+
+          {/* Plan cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
+            {[
+              {
+                plan: 'Starter',
+                price: '$29',
+                period: '/month',
+                desc: 'Perfect for a single business owner who wants a professional booking site running 24/7.',
+                features: [
+                  '1 client site',
+                  'AI-generated website',
+                  'Online booking widget (24/7)',
+                  'Owner dashboard — 10 tabs',
+                  'AI assistant to edit by chat',
+                  'Email notification on every booking',
+                  'Cancel / reschedule self-service',
+                  'Site analytics (14-day)',
+                  'Contact / inquiry form',
+                ],
+                color: 'border-blue-700',
+                badge: 'bg-blue-600',
+                highlight: false,
+              },
+              {
+                plan: 'Growth',
+                price: '$49',
+                period: '/month',
+                desc: 'For businesses expanding to multiple locations, or agencies managing a few clients.',
+                features: [
+                  'Up to 3 client sites',
+                  'Everything in Starter',
+                  'SMS booking reminders',
+                  '2 promotion blasts / month',
+                  'Cross-network audience access',
+                  'Priority support',
+                ],
+                color: 'border-green-500',
+                badge: 'bg-green-600',
+                highlight: true,
+              },
+              {
+                plan: 'Agency',
+                price: '$99',
+                period: '/month',
+                desc: 'For web agencies and freelancers reselling KITA under their own brand.',
+                features: [
+                  'Up to 10 client sites',
+                  'Everything in Growth',
+                  'White-label mode (remove KITA branding)',
+                  'Custom domain support',
+                  '5 promotion blasts / month',
+                  'Dedicated onboarding call',
+                ],
+                color: 'border-purple-700',
+                badge: 'bg-purple-600',
+                highlight: false,
+              },
+            ].map(plan => (
+              <div
+                key={plan.plan}
+                className={`relative border-2 rounded-2xl p-6 text-left ${plan.color} ${plan.highlight ? 'bg-gray-800 scale-105 shadow-xl' : 'bg-gray-800/50'}`}
+              >
+                {plan.highlight && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">Most Popular</span>
+                  </div>
+                )}
+                <div className={`inline-block text-xs font-bold text-white px-2 py-0.5 rounded-full mb-3 ${plan.badge}`}>{plan.plan}</div>
+                <div className="flex items-end gap-1 mb-1">
+                  <span className="text-white font-black text-4xl">{plan.price}</span>
+                  <span className="text-gray-400 text-sm mb-1">{plan.period}</span>
+                </div>
+                <p className="text-gray-400 text-xs mb-5 leading-relaxed">{plan.desc}</p>
+                <ul className="space-y-2">
+                  {plan.features.map(f => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
+                      <span className="text-green-400 shrink-0 mt-0.5">✓</span>{f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {/* Setup fee reminder + CTA */}
+          <div className="bg-blue-600 rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto">
+            <p className="text-white/80 text-sm mb-1">Get started today</p>
+            <div className="text-white font-black text-3xl mb-1">$150 <span className="text-xl font-normal">one-time setup</span></div>
+            <div className="text-white font-bold text-xl mb-1">+ from <span className="font-black">$29</span><span className="text-white/70 font-normal text-base">/month</span></div>
+            <p className="text-blue-100 text-sm mt-2 mb-6">Includes hosting, the booking system, AI assistant, and ongoing updates. Cancel anytime.</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href="https://wa.me/639XXXXXXXXX?text=Hi%20Denny%2C%20I%20want%20a%20website%20for%20my%20business."
+                target="_blank"
+                className="inline-block bg-white text-blue-600 font-bold px-8 py-3 rounded-xl text-sm transition hover:opacity-90"
+              >
+                Message Us on WhatsApp
+              </a>
+              <a
+                href="/onboard"
+                className="inline-block bg-blue-500 hover:bg-blue-400 text-white font-bold px-8 py-3 rounded-xl text-sm transition"
+              >
+                Pay & Launch Now — $150 →
+              </a>
+            </div>
+          </div>
+
+          <p className="text-gray-600 text-xs mt-6">14-day free trial available · No credit card required to start</p>
         </div>
       </section>
 
