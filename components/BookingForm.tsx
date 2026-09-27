@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Service, Staff } from '@/types/database'
-import { CheckCircle, Loader2, Calendar, Clock, Phone, User, Car, PawPrint, MessageSquare, Users } from 'lucide-react'
+import { CheckCircle, Loader2, Calendar, Clock, Phone, User, Car, PawPrint, MessageSquare, Users, Mail, AlertCircle, Info } from 'lucide-react'
+import { checkSlotAvailability, getNextAvailableSlot, getSavedBookingDetails, saveBookingDetails } from '@/lib/booking-utils'
 
 interface BookingFormProps {
   siteId: string
@@ -38,6 +39,7 @@ export default function BookingForm({
     staff_name: '',
     customer_name: '',
     customer_phone: '',
+    customer_email: '',
     booking_date: '',
     booking_time: '',
     car_model: '',
@@ -46,7 +48,36 @@ export default function BookingForm({
   })
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
+  const [doneData, setDoneData] = useState<{ booking_id: string; cancel_token: string; status: string } | null>(null)
   const [error, setError] = useState('')
+  const [availabilityError, setAvailabilityError] = useState('')
+  const [checkingAvailability, setCheckingAvailability] = useState(false)
+  const [nextSlot, setNextSlot] = useState<{ date: string; time: string } | null>(null)
+  const [loadingNextSlot, setLoadingNextSlot] = useState(false)
+
+  // Auto-fill from localStorage on mount
+  useEffect(() => {
+    const saved = getSavedBookingDetails()
+    if (saved) {
+      setForm(prev => ({
+        ...prev,
+        customer_name: saved.customer_name || prev.customer_name,
+        customer_phone: saved.customer_phone || prev.customer_phone,
+        customer_email: saved.customer_email || prev.customer_email,
+      }))
+    }
+  }, [])
+
+  // Fetch next available slot on mount
+  useEffect(() => {
+    if (siteId && services[0]) {
+      setLoadingNextSlot(true)
+      getNextAvailableSlot(siteId, services[0].duration_minutes)
+        .then(slot => setNextSlot(slot))
+        .catch(() => {})
+        .finally(() => setLoadingNextSlot(false))
+    }
+  }, [siteId, services[0]?.id])
 
   function setField(key: string, value: string) {
     setForm(prev => ({ ...prev, [key]: value }))
@@ -81,15 +112,43 @@ export default function BookingForm({
     e.preventDefault()
     setLoading(true)
     setError('')
+    setAvailabilityError('')
+
+    // Check slot availability before submitting
+    if (form.booking_date && form.booking_time) {
+      setCheckingAvailability(true)
+      const selectedService = services.find(s => s.id === form.service_id)
+      const avail = await checkSlotAvailability(siteId, form.booking_date, form.booking_time, selectedService?.duration_minutes || 60)
+      setCheckingAvailability(false)
+      if (!avail.available) {
+        setAvailabilityError(avail.reason || 'This slot is not available.')
+        setLoading(false)
+        return
+      }
+    }
 
     try {
+      const selectedService = services.find(s => s.id === form.service_id)
       const res = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ site_id: siteId, ...form }),
+        body: JSON.stringify({
+          site_id: siteId,
+          ...form,
+          service_duration_minutes: selectedService?.duration_minutes || 60,
+        }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Booking failed')
+
+      // Save details to localStorage for auto-fill next time
+      saveBookingDetails({
+        customer_name: form.customer_name,
+        customer_phone: form.customer_phone,
+        customer_email: form.customer_email,
+      })
+
+      setDoneData({ booking_id: data.booking?.id, cancel_token: data.booking?.cancel_token, status: data.status })
       setDone(true)
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again.')
@@ -99,27 +158,41 @@ export default function BookingForm({
   }
 
   if (done) {
+    const confirmUrl = doneData?.booking_id ? `/booking/${doneData.booking_id}?token=${doneData.cancel_token}` : null
+    const isPending = doneData?.status === 'pending'
     return (
-      <div className="text-center py-8">
+      <div className="text-center py-6">
         <CheckCircle size={48} className="mx-auto mb-4" style={{ color: primaryColor }} />
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Booking Confirmed!</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">
+          {isPending ? 'Booking Request Received!' : 'Booking Confirmed!'}
+        </h3>
         <p className="text-gray-600 text-sm mb-1">
-          Thanks, <strong>{form.customer_name}</strong>! Your appointment for <strong>{form.service_name}</strong> is booked.
+          Thanks, <strong>{form.customer_name}</strong>! Your appointment for <strong>{form.service_name}</strong> {isPending ? 'is awaiting confirmation.' : 'is confirmed.'}
         </p>
-        {form.staff_name && (
-          <p className="text-gray-500 text-sm mb-1">With <strong>{form.staff_name}</strong></p>
+        {form.staff_name && <p className="text-gray-500 text-sm mb-1">With <strong>{form.staff_name}</strong></p>}
+        <p className="text-gray-500 text-sm mb-4">
+          {form.booking_date} at {form.booking_time}
+        </p>
+        {form.customer_email && <p className="text-gray-400 text-xs mb-4">Confirmation sent to {form.customer_email}</p>}
+        {confirmUrl && (
+          <a
+            href={confirmUrl}
+            className="inline-block text-sm font-semibold px-5 py-2.5 rounded-xl mb-3 transition hover:opacity-90"
+            style={{ backgroundColor: primaryColor, color: 'white' }}
+          >
+            View Booking Details →
+          </a>
         )}
-        <p className="text-gray-500 text-sm">
-          {form.booking_date} at {form.booking_time} · We'll be in touch at {form.customer_phone}.
-        </p>
+        <br />
         <button
           onClick={() => {
             setDone(false)
+            setDoneData(null)
             setForm({
               service_id: services[0]?.id || '',
               service_name: services[0]?.name || '',
               staff_id: '', staff_name: '',
-              customer_name: '', customer_phone: '',
+              customer_name: '', customer_phone: '', customer_email: '',
               booking_date: '', booking_time: '',
               car_model: '', pet_name: '', notes: '',
             })
@@ -137,6 +210,27 @@ export default function BookingForm({
   return (
     <div>
       <h2 className="text-xl font-bold text-gray-900 mb-5">{title}</h2>
+
+      {/* Next available slot suggestion */}
+      {nextSlot && !form.booking_date && (
+        <div
+          className="flex items-center justify-between bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 mb-4 cursor-pointer hover:bg-blue-100 transition"
+          onClick={() => setForm(prev => ({ ...prev, booking_date: nextSlot.date, booking_time: nextSlot.time }))}
+        >
+          <div className="flex items-center gap-2">
+            <Info size={14} className="text-blue-500 shrink-0" />
+            <p className="text-blue-700 text-xs">
+              <span className="font-semibold">Next available:</span> {new Date(nextSlot.date + 'T12:00:00').toLocaleDateString('en-AU', { weekday: 'short', month: 'short', day: 'numeric' })} at {nextSlot.time}
+            </p>
+          </div>
+          <span className="text-blue-600 text-xs font-medium">Use this →</span>
+        </div>
+      )}
+      {loadingNextSlot && (
+        <p className="text-gray-400 text-xs mb-4 flex items-center gap-1">
+          <Loader2 size={12} className="animate-spin" /> Checking availability...
+        </p>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Service select */}
@@ -211,6 +305,23 @@ export default function BookingForm({
           </div>
         </div>
 
+        {/* Email — optional, for confirmation email */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Email <span className="text-gray-400 font-normal">(optional — for booking confirmation)</span>
+          </label>
+          <div className="relative">
+            <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="email"
+              value={form.customer_email}
+              onChange={e => setField('customer_email', e.target.value)}
+              placeholder="your@email.com"
+              className="w-full border border-gray-200 rounded-xl pl-9 pr-4 py-3 text-sm focus:outline-none focus:ring-2"
+            />
+          </div>
+        </div>
+
         {/* Date + Time — full width on mobile, side by side on sm+ */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
@@ -222,7 +333,7 @@ export default function BookingForm({
                 type="date"
                 value={form.booking_date}
                 min={new Date().toISOString().split('T')[0]}
-                onChange={e => setField('booking_date', e.target.value)}
+                onChange={e => { setField('booking_date', e.target.value); setAvailabilityError('') }}
                 className="w-full border border-gray-200 rounded-xl pl-9 pr-3 py-3 text-sm focus:outline-none focus:ring-2"
               />
             </div>
@@ -235,12 +346,25 @@ export default function BookingForm({
                 required
                 type="time"
                 value={form.booking_time}
-                onChange={e => setField('booking_time', e.target.value)}
+                onChange={e => { setField('booking_time', e.target.value); setAvailabilityError('') }}
                 className="w-full border border-gray-200 rounded-xl pl-9 pr-3 py-3 text-sm focus:outline-none focus:ring-2"
               />
             </div>
           </div>
         </div>
+
+        {/* Availability error */}
+        {availabilityError && (
+          <div className="flex items-start gap-2 bg-red-50 border border-red-100 rounded-xl px-4 py-3 text-sm">
+            <AlertCircle size={15} className="text-red-500 shrink-0 mt-0.5" />
+            <p className="text-red-700">{availabilityError}</p>
+          </div>
+        )}
+        {checkingAvailability && (
+          <p className="text-gray-400 text-xs flex items-center gap-1">
+            <Loader2 size={12} className="animate-spin" /> Checking availability...
+          </p>
+        )}
 
         {/* Conditional fields */}
         {requiresField === 'car_model' && (

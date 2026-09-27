@@ -82,7 +82,7 @@ export default function DocsPage() {
             <div className="space-y-1.5 text-sm text-gray-400">
               {[
                 'Phase 5 — Service selector + currency picker on generate form ✅',
-                'Phase 6 — Smart Booking: real-time availability, Add to Calendar, block dates, self-service cancel',
+                'Phase 6 — Smart Booking System ✅',
                 'Phase 7 — Admin Power Tools: calendar view, peak analytics, promo codes',
                 'Phase 8 — Growth: Stripe subscriptions, deposits, WhatsApp booking, Google Calendar',
               ].map((item, i) => (
@@ -943,8 +943,8 @@ NEXT_PUBLIC_ADMIN_PIN`,
                 { feature: 'Gallery / Photo Upload', what: 'Owner uploads photos of their work via the Gallery tab. Shows as "Our Work" grid on the public site.', why: 'For salons, mechanics, and clinics — showing real photos of work builds trust faster than any text description.', status: '✅ Built' },
                 { feature: 'Site Analytics (14-day view)', what: 'Analytics tab shows page views per day for 14 days, weekly trend comparison, and booking status breakdown.', why: 'Clients need to see that their investment is working. "You had 47 site visits and 8 bookings this week" justifies the $29/mo fee.', status: '✅ Built' },
                 { feature: 'Booking Calendar View', what: 'Weekly/monthly calendar view of all bookings in the owner dashboard — not just a flat list.', why: 'A list of bookings is hard to scan. A calendar immediately shows gaps, busy periods, and patterns — how any service business thinks about their schedule.', status: '📋 Planned — Phase 7' },
-                { feature: 'Block Out Dates / Time Off', what: 'Owner marks holidays, lunch breaks, or unavailable days — customers cannot book those slots.', why: 'Without this, customers book during Christmas, public holidays, or while the owner is on holiday. This is a day-one operational requirement.', status: '📋 Planned — Phase 6' },
-                { feature: 'Auto-Confirm vs Manual Confirm Toggle', what: 'Toggle: auto-confirm all bookings OR review each one manually before confirming.', why: 'High-volume businesses (cafes, clinics) want auto-confirm. Premium services (consultants, specialists) want to review each booking first.', status: '📋 Planned — Phase 6' },
+                { feature: 'Block Out Dates / Time Off ✅', what: 'Owner marks holidays, lunch breaks, or unavailable days — customers cannot book those slots.', why: 'Without this, customers book during Christmas, public holidays, or while the owner is on holiday. This is a day-one operational requirement.', status: '✅ Built — Phase 6 · Block Dates tab' },
+                { feature: 'Auto-Confirm vs Manual Confirm Toggle ✅', what: 'Toggle: auto-confirm all bookings OR review each one manually before confirming.', why: 'High-volume businesses (cafes, clinics) want auto-confirm. Premium services (consultants, specialists) want to review each booking first.', status: '✅ Built — Phase 6 · Settings tab' },
                 { feature: 'Promo Codes / Discount System', what: 'Owner creates promo codes (e.g. FIRST10 = 10% off) that customers can enter at booking.', why: 'Promo codes are the #1 tool for first-time customer acquisition on social media. "DM us for your code" is a proven engagement tactic.', status: '📋 Planned — Phase 7' },
                 { feature: 'Google Calendar Integration', what: 'Confirmed bookings automatically block time in the owner\'s Google Calendar.', why: 'Most service business owners run their schedule from Google Calendar. Without this, they have to manually copy every booking — high friction.', status: '📋 Planned — Phase 8' },
                 { feature: 'Stripe Deposit on Booking', what: 'Owner sets a % deposit (e.g. 20%) that customers pay at booking time via Stripe.', why: 'No-shows cost service businesses 10-15% of revenue. A deposit creates skin in the game — customers who pay a deposit almost always show up.', status: '📋 Planned — Phase 8' },
@@ -975,11 +975,11 @@ NEXT_PUBLIC_ADMIN_PIN`,
             <p className="text-gray-500 text-xs mb-3 italic">Before Booking</p>
             <div className="space-y-3 mb-5">
               {[
-                { feature: 'Service Duration + Price Shown Clearly', what: 'Each service shows "45 min · $65" in the booking form dropdown so customers know exactly what they are committing to.', why: 'Customers abandon bookings when they do not know how long a service takes. Showing duration prevents surprises and sets expectations.', status: '✅ Built' },
-                { feature: 'Preferred Staff Picker', what: 'Optional dropdown in the booking form — customer selects their preferred team member or chooses "No preference".', why: 'Loyalty to a specific stylist, vet, or mechanic is a primary driver of repeat bookings. Enabling this increases retention.', status: '✅ Built' },
-                { feature: 'Custom Notes Label Per Template', what: '"Your Concern" for clinics, "Guests + Notes" for cafes, "Preferred Style" for salons — contextually relevant notes field.', why: 'A generic "Notes" field feels impersonal. A field labelled "Your Concern" tells clinic patients the right information to provide, improving service quality.', status: '✅ Built' },
-                { feature: 'Next Available Slot Suggestion', what: 'Before the customer picks a date, show "Next available: Tomorrow 2pm" based on existing bookings.', why: 'Most customers do not know when the business is available. Showing the next open slot removes decision paralysis and speeds up the booking process.', status: '📋 Planned — Phase 6' },
-                { feature: 'Google Maps Link / Get Directions', what: 'Business address shown on the site with a "Get Directions" button that opens Google Maps.', why: 'A first-time customer who cannot find the location will not come back. Reducing friction in getting there directly impacts show-up rates.', status: '📋 Planned — Phase 6' },
+                { feature: 'Service Duration + Price Shown Clearly ✅', what: 'Each service shows "45 min · $65" in the booking form dropdown so customers know exactly what they are committing to.', why: 'Customers abandon bookings when they do not know how long a service takes. Showing duration prevents surprises and sets expectations.', status: '✅ Built' },
+                { feature: 'Preferred Staff Picker ✅', what: 'Optional dropdown in the booking form — customer selects their preferred team member or chooses "No preference".', why: 'Loyalty to a specific stylist, vet, or mechanic is a primary driver of repeat bookings. Enabling this increases retention.', status: '✅ Built' },
+                { feature: 'Custom Notes Label Per Template ✅', what: '"Your Concern" for clinics, "Guests + Notes" for cafes, "Preferred Style" for salons — contextually relevant notes field.', why: 'A generic "Notes" field feels impersonal. A field labelled "Your Concern" tells clinic patients the right information to provide, improving service quality.', status: '✅ Built' },
+                { feature: 'Next Available Slot Suggestion ✅', what: 'Before the customer picks a date, show "Next available: Tomorrow 2pm" based on existing bookings.', why: 'Most customers do not know when the business is available. Showing the next open slot removes decision paralysis and speeds up the booking process.', status: '✅ Built — Phase 6' },
+                { feature: 'Google Maps Link / Get Directions', what: 'Business address shown on the site with a "Get Directions" button that opens Google Maps.', why: 'A first-time customer who cannot find the location will not come back. Reducing friction in getting there directly impacts show-up rates.', status: '📋 Planned — Phase 7' },
               ].map((item, i) => (
                 <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
                   <div className="flex items-start justify-between gap-2 mb-2">
@@ -997,8 +997,8 @@ NEXT_PUBLIC_ADMIN_PIN`,
             <p className="text-gray-500 text-xs mb-3 italic">During Booking</p>
             <div className="space-y-3 mb-5">
               {[
-                { feature: 'Real-Time Slot Availability Check', what: 'Before confirming a time, query existing bookings to prevent two customers from booking the same slot.', why: 'Double-bookings destroy client trust instantly. A customer who shows up and finds their slot taken will never return and will leave a bad review.', status: '📋 Planned — Phase 6' },
-                { feature: 'Save Booking Details (Auto-Fill)', what: 'Store name and phone in localStorage so returning customers do not need to re-enter their details.', why: 'Repeat customers are the backbone of service businesses. Reducing friction for their second booking directly increases lifetime value.', status: '📋 Planned — Phase 6' },
+                { feature: 'Real-Time Slot Availability Check ✅', what: 'Before confirming a time, query existing bookings to prevent two customers from booking the same slot.', why: 'Double-bookings destroy client trust instantly. A customer who shows up and finds their slot taken will never return and will leave a bad review.', status: '✅ Built — Phase 6' },
+                { feature: 'Save Booking Details (Auto-Fill) ✅', what: 'Store name, phone, and email in localStorage so returning customers do not need to re-enter their details.', why: 'Repeat customers are the backbone of service businesses. Reducing friction for their second booking directly increases lifetime value.', status: '✅ Built — Phase 6' },
                 { feature: '"Book for Someone Else" Option', what: 'A checkbox that lets the booker enter a different person\'s name — e.g. booking a haircut for their child or spouse.', why: 'Service businesses often receive bookings on behalf of family members. Without this, the booking shows the wrong name and creates confusion at check-in.', status: '📋 Planned — Phase 7' },
               ].map((item, i) => (
                 <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
@@ -1015,9 +1015,9 @@ NEXT_PUBLIC_ADMIN_PIN`,
             <p className="text-gray-500 text-xs mb-3 italic">After Booking</p>
             <div className="space-y-3">
               {[
-                { feature: 'Booking Confirmation Page', what: 'After submitting, customer is shown a full dedicated page with service, staff, date, time, address, and a cancel link.', why: 'A banner that disappears is not confirmation — it is anxiety. A permanent, shareable confirmation page gives customers something to reference and share.', status: '📋 Planned — Phase 6' },
-                { feature: 'Add to Calendar Button', what: '"Add to Google Calendar" and "Add to Apple Calendar" buttons appear on the confirmation page with one click.', why: 'Customers who add a booking to their calendar are 3x less likely to no-show. This is one of the highest-ROI features for reducing no-show rates.', status: '📋 Planned — Phase 6' },
-                { feature: 'Reschedule / Cancel Self-Service Link', what: 'Confirmation email includes a link where the customer can cancel or reschedule their own booking without calling.', why: 'Calling to cancel is friction many customers avoid — they simply do not show up instead. A self-service link converts no-shows into reschedules.', status: '📋 Planned — Phase 6' },
+                { feature: 'Booking Confirmation Page ✅', what: 'After submitting, customer is shown a full dedicated page with service, staff, date, time, address, and a cancel link.', why: 'A banner that disappears is not confirmation — it is anxiety. A permanent, shareable confirmation page gives customers something to reference and share.', status: '✅ Built — Phase 6 · /booking/[id]' },
+                { feature: 'Add to Calendar Button ✅', what: '"Add to Google Calendar" and "Add to Apple Calendar (.ics)" buttons on the confirmation page.', why: 'Customers who add a booking to their calendar are 3x less likely to no-show. This is one of the highest-ROI features for reducing no-show rates.', status: '✅ Built — Phase 6' },
+                { feature: 'Reschedule / Cancel Self-Service Link ✅', what: 'Confirmation email includes links where the customer can cancel or reschedule their own booking without calling.', why: 'Calling to cancel is friction many customers avoid — they simply do not show up instead. A self-service link converts no-shows into reschedules.', status: '✅ Built — Phase 6 · /booking/[id]/cancel + /reschedule' },
                 { feature: 'Booking Reminder Email / SMS', what: 'Auto-send a reminder to the customer 24 hours before their appointment via email (Resend) and SMS (Twilio).', why: 'Research shows 24h reminders reduce no-shows by 30-40%. For a salon with 20 bookings per week, that is potentially 6-8 saved appointments per week.', status: '⏳ Backlog — needs Twilio' },
                 { feature: 'WhatsApp Booking Option', what: 'A "Book via WhatsApp" button pre-filled with the service details opens a WhatsApp chat with the business.', why: 'In the Philippines, Australia, and Southeast Asia, WhatsApp is the primary communication channel. Meeting customers where they are increases conversion.', status: '📋 Planned — Phase 8' },
               ].map((item, i) => (
@@ -1185,21 +1185,27 @@ NEXT_PUBLIC_ADMIN_PIN`,
                 },
                 {
                   title: 'Real-time slot availability check (Phase 6)',
-                  status: 'Planned — query existing bookings before allowing a time slot',
-                  blocker: 'None — pure Supabase query logic in BookingForm.',
-                  effort: '2 hours',
+                  status: '✅ DONE — checkSlotAvailability() in lib/booking-utils.ts',
+                  blocker: 'None',
+                  effort: 'Complete',
                 },
                 {
                   title: 'Add to Calendar button after booking (Phase 6)',
-                  status: 'Planned — Google Calendar + Apple Calendar .ics link',
-                  blocker: 'None — pure client-side URL generation.',
-                  effort: '1 hour',
+                  status: '✅ DONE — Google Calendar link + Apple .ics on /booking/[id]',
+                  blocker: 'None',
+                  effort: 'Complete',
                 },
                 {
                   title: 'Block out dates / time off (Phase 6)',
-                  status: 'Planned — owner marks unavailable dates in dashboard',
-                  blocker: 'None — new DB table + dashboard tab.',
-                  effort: '2-3 hours',
+                  status: '✅ DONE — Block Dates tab in owner dashboard, blocked_dates table',
+                  blocker: 'None',
+                  effort: 'Complete',
+                },
+                {
+                  title: 'Reschedule / cancel self-service link (Phase 6)',
+                  status: '✅ DONE — /booking/[id]/cancel + /booking/[id]/reschedule with cancel_token',
+                  blocker: 'None',
+                  effort: 'Complete',
                 },
                 {
                   title: 'Booking calendar view in dashboard (Phase 7)',
@@ -1215,9 +1221,9 @@ NEXT_PUBLIC_ADMIN_PIN`,
                 },
                 {
                   title: 'Reschedule / cancel self-service link (Phase 6)',
-                  status: 'Planned — link in confirmation email, customer updates booking status',
-                  blocker: 'None — new route /booking/[id]/cancel + [id]/reschedule.',
-                  effort: '2 hours',
+                  status: '✅ DONE — /booking/[id]/cancel + /booking/[id]/reschedule with cancel_token',
+                  blocker: 'None',
+                  effort: 'Complete',
                 },
               ],
             },

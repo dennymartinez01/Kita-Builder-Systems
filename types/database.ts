@@ -14,6 +14,7 @@ export interface Site {
   theme_json: ThemeJson
   published: boolean
   currency: string
+  auto_confirm: boolean
   payment_status: 'unpaid' | 'paid' | 'free'
   stripe_customer_id: string | null
   stripe_session_id: string | null
@@ -119,6 +120,7 @@ export interface Booking {
   service_id: string | null
   customer_name: string
   customer_phone: string
+  customer_email: string | null
   service_name: string
   booking_date: string
   booking_time: string
@@ -127,7 +129,19 @@ export interface Booking {
   notes: string | null
   staff_id: string | null
   staff_name: string | null
+  cancel_token: string | null
+  rescheduled_from: string | null
   status: BookingStatus
+  created_at: string
+}
+
+export interface BlockedDate {
+  id: string
+  site_id: string
+  date: string
+  start_time: string | null
+  end_time: string | null
+  reason: string | null
   created_at: string
 }
 

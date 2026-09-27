@@ -4,15 +4,16 @@ import { useEffect, useState, useCallback, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Site, Service, Booking, Staff } from '@/types/database'
 import AgentChat from '@/components/AgentChat'
+import BlockedDatesTab from '@/components/BlockedDatesTab'
 import { getWhiteLabelConfig } from '@/lib/whitelabel'
 import {
   CalendarCheck, Wrench, ExternalLink, CheckCircle,
   XCircle, Plus, Trash2, Loader2, Lock, Zap,
   Users, Clock, FileText, Save, KeyRound, Image,
-  Star, Upload, X, Download, BarChart2,
+  Star, Upload, X, Download, BarChart2, Ban,
 } from 'lucide-react'
 
-type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'ai'
+type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'blocked' | 'ai'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -410,6 +411,7 @@ export default function OwnerDashboard({ params }: PageProps) {
     { id: 'testimonials' as Tab, label: 'Reviews', icon: Star, badge: null },
     { id: 'gallery' as Tab, label: 'Gallery', icon: Image, badge: null },
     { id: 'analytics' as Tab, label: 'Analytics', icon: BarChart2, badge: null },
+    { id: 'blocked' as Tab, label: 'Block Dates', icon: Ban, badge: null },
     { id: 'settings' as Tab, label: 'Settings', icon: KeyRound, badge: null },
     { id: 'ai' as Tab, label: 'AI Assistant', icon: Zap, badge: null },
   ]
@@ -975,6 +977,36 @@ export default function OwnerDashboard({ params }: PageProps) {
               </div>
             </div>
 
+            {/* Auto-confirm toggle */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-5">
+              <h3 className="font-semibold text-gray-900 mb-1">Booking Confirmation</h3>
+              <p className="text-gray-500 text-sm mb-4">
+                Choose how new bookings are handled when a customer submits.
+              </p>
+              <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
+                <div>
+                  <p className="text-sm font-medium text-gray-900">
+                    {(site as any).auto_confirm !== false ? 'Auto-confirm bookings' : 'Manual review required'}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    {(site as any).auto_confirm !== false
+                      ? 'Bookings are instantly confirmed. Best for high-volume businesses.'
+                      : 'You review each booking before confirming. Best for premium services.'}
+                  </p>
+                </div>
+                <div
+                  onClick={async () => {
+                    const newVal = (site as any).auto_confirm === false ? true : false
+                    await supabase.from('sites').update({ auto_confirm: newVal } as any).eq('id', site.id)
+                    setSite(prev => prev ? { ...prev, auto_confirm: newVal } as any : prev)
+                  }}
+                  className={`w-12 h-6 rounded-full cursor-pointer transition-colors relative shrink-0 ml-4 ${(site as any).auto_confirm !== false ? 'bg-green-500' : 'bg-gray-300'}`}
+                >
+                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform ${(site as any).auto_confirm !== false ? 'left-7' : 'left-1'}`} />
+                </div>
+              </div>
+            </div>
+
             {/* PIN change */}
             <div className="bg-white border border-gray-200 rounded-2xl p-5">
               <h3 className="font-semibold text-gray-900 mb-1">Change Dashboard PIN</h3>
@@ -1017,6 +1049,11 @@ export default function OwnerDashboard({ params }: PageProps) {
             </p>
             <AgentChat siteId={site.id} primaryColor={primaryColor} businessName={site.business_name} />
           </div>
+        )}
+
+        {/* ── BLOCKED DATES ── */}
+        {tab === 'blocked' && site && (
+          <BlockedDatesTab siteId={site.id} primaryColor={primaryColor} />
         )}
       </div>
     </div>
