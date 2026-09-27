@@ -174,3 +174,24 @@ export interface Database {
     }
   }
 }
+
+export type SubscriptionPlan = 'starter' | 'growth' | 'agency' | 'custom' | 'trial'
+export type SubscriptionStatus = 'trial' | 'active' | 'overdue' | 'cancelled' | 'paused'
+
+export interface Client {
+  id: string
+  name: string
+  email: string
+  phone: string | null
+  country: string | null
+  city: string | null
+  subscription_plan: SubscriptionPlan
+  subscription_status: SubscriptionStatus
+  trial_ends_at: string | null
+  stripe_customer_id: string | null
+  source: string | null
+  notes: string | null
+  onboarding_complete: boolean
+  created_at: string
+  updated_at: string
+}

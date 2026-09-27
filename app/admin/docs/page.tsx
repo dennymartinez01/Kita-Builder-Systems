@@ -534,8 +534,7 @@ export default function DocsPage() {
                 'Site analytics — page views tracking + Analytics tab ✅',
                 'White-label mode — agency branding via env vars ✅',
                 'Revenue dashboard — MRR tracker at /admin/revenue ✅',
-                'Custom PIN change + logo upload in owner dashboard ✅',
-                'README fully updated with all features and routes ✅',
+                'Client Management System (Phase 9) — clients table, list/profile/new pages, revenue by client tab, auto-upsert on booking ✅',
                 'Custom domain (kita.build or kitasystems.com)',
                 'Twilio SMS reminders for owners + customers',
                 '$29/mo recurring billing via Stripe subscriptions',
@@ -1009,6 +1008,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 { feature: 'Revenue Dashboard / MRR Tracker', what: 'Shows monthly recurring revenue, total setup fees, annual projection, and per-site breakdown with CSV export.', why: 'Without visibility into revenue, it is impossible to make decisions about pricing, scaling, or client retention.', status: '✅ Built' },
                 { feature: 'White-Label Mode', what: 'Removes all KITA branding and replaces with your agency name, logo, tagline, and URL across all client sites and dashboards.', why: 'Agencies reselling KITA need to present it as their own product. White-labelling is a standard requirement for B2B SaaS resellers.', status: '✅ Built' },
                 { feature: 'Website Audit Module (Phases 1-3)', what: 'Forensic audit of any URL — Performance, SEO, Security, Tech Stack, Accessibility, 10-page crawler, PDF report.', why: 'Auditing a prospect\'s existing site before a sales call is one of the most powerful sales tools. "Your SEO score is 42/100 — here\'s what we\'d fix" closes deals.', status: '✅ Built' },
+                { feature: 'Client Management System (Phase 9)', what: 'Track all your clients: subscription plan, status, MRR contribution, linked sites, and internal notes. Auto-creates client record when a customer books with email.', why: 'Without visibility into who your clients are, you cannot make retention, pricing, or scaling decisions. Client records link sites to people and enable proper MRR tracking.', status: '✅ Built — Phase 9' },
                 { feature: 'Stripe $29/mo Recurring Billing', what: 'Auto-charge clients monthly using Stripe subscriptions. No manual invoicing.', why: 'Manual billing does not scale. Without automated recurring billing, the business cannot grow beyond 5-10 clients.', status: '⏳ Backlog — needs Stripe live keys' },
                 { feature: 'Gemini Webhook Auto-Generation', what: 'After a client pays $150 via /onboard, Gemini auto-generates their site and they see it within 30 seconds.', why: 'The full value of the product is the magic moment when someone pays and instantly gets a live site. Currently blocked by Gemini 503 errors from Vercel IPs.', status: '⏳ Backlog — Gemini API issue' },
                 { feature: 'Bulk Demo Site Generator', what: 'Generate 5 demo sites across different niches in one click for outreach purposes.', why: 'When pitching to a barbershop, showing a live barbershop demo is 10x more persuasive than a generic demo. Speed of demo creation = more outreach per day.', status: '📋 Planned — Phase 8' },
@@ -1169,62 +1169,68 @@ if (count > 0) return 409 // Slot taken`}</pre>
       icon: Users,
       content: (
         <div className="space-y-5">
-          <div className="bg-gray-950 border border-orange-800/50 rounded-xl p-4">
-            <p className="text-orange-400 font-bold text-sm mb-2">⚠️ Critical Gap — Must Build Before Scaling</p>
+          <div className="bg-gray-950 border border-green-800/50 rounded-xl p-4">
+            <p className="text-green-400 font-bold text-sm mb-2">✅ Phase 9 — Complete</p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Currently the system tracks <strong className="text-white">sites</strong> but not <strong className="text-white">clients</strong>. There is no concept of who owns a site — no client profile, no subscription record, no way to see all businesses belonging to one person. As you grow beyond 5 clients, this becomes unmanageable. Build this before you have 10 paying clients.
+              Client Management System is fully built and integrated. You can track who your clients are, their subscription status, revenue contribution, all businesses they manage, and your internal notes. Booking auto-creates a client record when an email is provided. Sites table shows which client owns each site. Revenue dashboard has a "By Client" tab with MRR per client. Access via <strong className="text-white">Admin → Clients</strong> or <code className="text-blue-300 font-mono">/admin/clients</code>.
             </p>
           </div>
 
-          {/* Why it matters */}
+          {/* What was built */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-            <p className="text-white font-semibold text-sm mb-3">Why This Matters</p>
-            <div className="space-y-2 text-sm text-gray-400">
+            <p className="text-white font-semibold text-sm mb-3">✅ What Was Built</p>
+            <div className="space-y-3">
               {[
-                'You cannot tell which sites belong to the same person — a client with 2 businesses looks like 2 separate clients',
-                'No subscription tracking — you have to manually check Stripe to know who is paid vs overdue',
-                'No country/market data — you cannot see how many AU vs PH vs US clients you have',
-                'No client notes — you forget the context of each client relationship',
-                'No MRR per client — you cannot calculate lifetime value or churn risk',
-                'No source tracking — you cannot tell which outreach channel is working',
-              ].map((item, i) => (
-                <div key={i} className="flex gap-2">
-                  <span className="text-red-400 shrink-0">✗</span>
-                  <span>{item}</span>
+                {
+                  route: '/admin/clients',
+                  title: 'Client List ✅',
+                  desc: 'Searchable, filterable table of all clients. Shows name, email, country, plan badge, status badge, sites count, MRR contribution, source, joined date. Filter by status and country. CSV export.',
+                },
+                {
+                  route: '/admin/clients/[id]',
+                  title: 'Client Profile ✅',
+                  desc: 'Full editable profile: name, email, phone, country, city, subscription plan/status, source, notes, onboarding toggle. Revenue summary (MRR, setup fees paid, annual projection). All their sites with view/dashboard links.',
+                },
+                {
+                  route: '/admin/clients/new',
+                  title: 'Create Client ✅',
+                  desc: 'Manual client creation form. Fields: name, email, phone, country, city, plan, status, source, notes. Redirects to profile on creation.',
+                },
+              ].map(p => (
+                <div key={p.route} className="bg-gray-900 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <p className="text-white font-semibold text-sm">{p.title}</p>
+                    <code className="text-blue-300 text-xs font-mono shrink-0">{p.route}</code>
+                  </div>
+                  <p className="text-gray-500 text-xs">{p.desc}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Database Plan */}
+          {/* Database */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
             <div className="px-4 py-3 border-b border-gray-800">
-              <p className="text-white font-semibold text-sm">New Database Table: <code className="text-blue-300 font-mono">clients</code></p>
+              <p className="text-white font-semibold text-sm">Database — <code className="text-blue-300 font-mono">clients</code> table ✅</p>
+              <p className="text-gray-500 text-xs mt-0.5">Run <code className="font-mono text-yellow-300">supabase/clients.sql</code> — already executed</p>
             </div>
             <table className="w-full text-xs">
-              <thead>
-                <tr className="border-b border-gray-800">
-                  <th className="text-left text-gray-500 font-medium px-4 py-2">Column</th>
-                  <th className="text-left text-gray-500 font-medium px-4 py-2">Type</th>
-                  <th className="text-left text-gray-500 font-medium px-4 py-2">Purpose</th>
-                </tr>
-              </thead>
               <tbody>
                 {[
                   ['id', 'uuid', 'Primary key'],
-                  ['name', 'text', 'Full name of the business owner'],
-                  ['email', 'text unique', 'Primary contact + login identifier'],
-                  ['phone', 'text', 'WhatsApp / mobile for support'],
+                  ['name', 'text', 'Full name of business owner'],
+                  ['email', 'text unique', 'Primary contact — unique per client'],
+                  ['phone', 'text', 'WhatsApp / mobile'],
                   ['country', 'text', 'e.g. AU, PH, US, UK — market segmentation'],
-                  ['city', 'text', 'e.g. Sydney, Manila, Los Angeles'],
-                  ['subscription_plan', 'text', 'starter | growth | agency | custom'],
-                  ['subscription_status', 'text', 'trial | active | overdue | cancelled'],
+                  ['city', 'text', 'e.g. Sydney, Manila'],
+                  ['subscription_plan', 'text', 'trial | starter | growth | agency | custom'],
+                  ['subscription_status', 'text', 'trial | active | overdue | cancelled | paused'],
                   ['trial_ends_at', 'timestamptz', 'When their free trial expires'],
                   ['stripe_customer_id', 'text', 'Links to Stripe for billing history'],
-                  ['source', 'text', 'How they found you: outreach | referral | organic | audit'],
+                  ['source', 'text', 'outreach | referral | organic | audit | direct'],
                   ['notes', 'text', 'Your internal notes about this client'],
                   ['onboarding_complete', 'bool', 'Have they finished setup?'],
-                  ['created_at', 'timestamptz', 'When they signed up'],
+                  ['created_at', 'timestamptz', 'Auto-set on creation'],
                 ].map(([col, type, purpose]) => (
                   <tr key={col} className="border-b border-gray-900 last:border-0">
                     <td className="px-4 py-2 font-mono text-white">{col}</td>
@@ -1236,81 +1242,24 @@ if (count > 0) return 409 // Slot taken`}</pre>
             </table>
           </div>
 
-          {/* Sites table change */}
+          {/* Sites link */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-            <p className="text-white font-semibold text-sm mb-2">Sites Table Change</p>
-            <p className="text-gray-400 text-xs mb-2">Add <code className="text-blue-300 font-mono">client_id uuid references clients(id)</code> to the sites table. One client can own many sites.</p>
+            <p className="text-white font-semibold text-sm mb-2">Sites → Client Link ✅</p>
+            <p className="text-gray-400 text-xs mb-2"><code className="text-blue-300 font-mono">sites.client_id</code> FK added. One client can own many sites.</p>
             <pre className="bg-gray-900 rounded-lg p-3 text-xs text-green-300 font-mono">{`alter table sites
-  add column if not exists client_id uuid references clients(id) on delete set null;
-
-create index if not exists idx_sites_client_id on sites(client_id);`}</pre>
+  add column if not exists client_id uuid references clients(id) on delete set null;`}</pre>
           </div>
 
-          {/* Pages to build */}
+          {/* Subscription plans */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-            <p className="text-white font-semibold text-sm mb-3">Pages to Build</p>
-            <div className="space-y-3">
-              {[
-                {
-                  route: '/admin/clients',
-                  title: 'Client List',
-                  desc: 'Table of all clients — searchable by name/email, filterable by country/plan/status. Columns: Name, Email, Country, Plan, Status, Sites count, MRR contribution, Joined date.',
-                  priority: '🔥 Build first',
-                },
-                {
-                  route: '/admin/clients/[id]',
-                  title: 'Client Profile',
-                  desc: 'Full client detail: contact info, subscription status, all their sites with payment badges, total revenue from this client, your internal notes, source tracking.',
-                  priority: '🔥 Build second',
-                },
-                {
-                  route: '/admin/clients/new',
-                  title: 'Create Client (manual)',
-                  desc: 'Admin manually creates a client record. Used when a client contacts you directly instead of going through /onboard.',
-                  priority: '⚡ Build third',
-                },
-              ].map(p => (
-                <div key={p.route} className="bg-gray-900 rounded-xl p-4">
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <p className="text-white font-semibold text-sm">{p.title}</p>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-800 text-gray-400 shrink-0">{p.priority}</span>
-                  </div>
-                  <code className="text-blue-300 text-xs font-mono">{p.route}</code>
-                  <p className="text-gray-500 text-xs mt-2">{p.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Integration points */}
-          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-            <p className="text-white font-semibold text-sm mb-3">Integration Points</p>
-            <div className="space-y-2 text-xs text-gray-500">
-              {[
-                { trigger: '/onboard payment success', action: 'Auto-create client record from Stripe session metadata (email, business_name, location) and link site.client_id' },
-                { trigger: '/admin/generate', action: 'After generation, show "Link to client" dropdown — creates client or links to existing one' },
-                { trigger: '/admin/revenue', action: 'Add "By Client" tab showing revenue grouped per client, not per site' },
-                { trigger: '/admin/sites', action: 'Add "Client" column to sites table — click to open client profile' },
-                { trigger: 'Stripe webhook', action: 'Update client.subscription_status when payment succeeds, fails, or subscription cancels' },
-              ].map((item, i) => (
-                <div key={i} className="flex gap-3 bg-gray-900 rounded-lg p-2.5">
-                  <span className="text-blue-400 font-mono shrink-0">{item.trigger}</span>
-                  <span>→ {item.action}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Subscription Plans */}
-          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-            <p className="text-white font-semibold text-sm mb-3">Suggested Subscription Plans</p>
+            <p className="text-white font-semibold text-sm mb-3">Subscription Plans & MRR Rates</p>
             <div className="grid sm:grid-cols-3 gap-3">
               {[
-                { plan: 'Starter', price: '$29/mo', features: ['1 site', 'Bookings unlimited', 'Email notifications', 'Basic analytics'], color: 'border-gray-700' },
-                { plan: 'Growth', price: '$49/mo', features: ['3 sites', 'All Starter features', 'SMS reminders', 'Priority support'], color: 'border-blue-800' },
+                { plan: 'Starter', price: '$29/mo', features: ['1 site', 'Bookings unlimited', 'Email notifications', 'Basic analytics'], color: 'border-blue-800' },
+                { plan: 'Growth', price: '$49/mo', features: ['3 sites', 'All Starter features', 'SMS reminders', 'Priority support'], color: 'border-green-800' },
                 { plan: 'Agency', price: '$99/mo', features: ['10 sites', 'All Growth features', 'White-label mode', 'Custom domain'], color: 'border-purple-800' },
               ].map(p => (
-                <div key={p.plan} className={`border rounded-xl p-3 ${p.color}`}>
+                <div key={p.plan} className={`border rounded-xl p-3 bg-gray-900/50 ${p.color}`}>
                   <p className="text-white font-bold text-sm">{p.plan}</p>
                   <p className="text-blue-400 font-mono text-sm mb-2">{p.price}</p>
                   {p.features.map(f => (
@@ -1323,27 +1272,22 @@ create index if not exists idx_sites_client_id on sites(client_id);`}</pre>
             </div>
           </div>
 
-          {/* Build order */}
-          <div className="bg-blue-950/20 border border-blue-800 rounded-xl p-4">
-            <p className="text-blue-400 font-bold text-sm mb-3">📋 Build Order (No paid APIs required)</p>
-            <div className="space-y-2 text-xs">
+          {/* Integration status */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+            <p className="text-white font-semibold text-sm mb-3">Integration Points</p>
+            <div className="space-y-2 text-xs text-gray-500">
               {[
-                { step: '1', task: 'Run clients SQL migration + add client_id to sites table', effort: '5 min' },
-                { step: '2', task: 'Build /admin/clients — client list with search + filter', effort: '2-3 hours' },
-                { step: '3', task: 'Build /admin/clients/[id] — profile + sites + revenue', effort: '2-3 hours' },
-                { step: '4', task: 'Build /admin/clients/new — manual client creation form', effort: '1 hour' },
-                { step: '5', task: 'Update /onboard webhook to auto-create client record', effort: '30 min' },
-                { step: '6', task: 'Add Client column to /admin/sites table', effort: '30 min' },
-                { step: '7', task: 'Add "By Client" tab to /admin/revenue', effort: '1 hour' },
+                { task: 'Auto-upsert client record when customer books (email provided)', status: '✅ Done — /api/notify' },
+                { task: 'Client column in /admin/sites table (linked, clickable)', status: '✅ Done' },
+                { task: '"By Client" tab in /admin/revenue with MRR per client + totals row', status: '✅ Done' },
+                { task: 'Stripe webhook → update client.subscription_status on payment event', status: '⏳ Backlog (needs Stripe live keys)' },
               ].map(item => (
-                <div key={item.step} className="flex gap-3 bg-gray-900 rounded-lg p-2.5">
-                  <span className="text-blue-600 font-black w-5 shrink-0">{item.step}.</span>
-                  <span className="text-gray-300 flex-1">{item.task}</span>
-                  <span className="text-gray-600 shrink-0">{item.effort}</span>
+                <div key={item.task} className="flex items-center justify-between bg-gray-900 rounded-lg px-3 py-2">
+                  <span>{item.task}</span>
+                  <span className={`shrink-0 ml-3 ${item.status.startsWith('✅') ? 'text-green-500' : 'text-yellow-600'}`}>{item.status}</span>
                 </div>
               ))}
             </div>
-            <p className="text-gray-600 text-xs mt-3">Total estimated effort: ~10-12 hours. No paid accounts needed — pure Supabase + Next.js.</p>
           </div>
         </div>
       ),
@@ -1587,3 +1531,4 @@ create index if not exists idx_sites_client_id on sites(client_id);`}</pre>
     </div>
   )
 }
+

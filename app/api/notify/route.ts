@@ -76,6 +76,34 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // ── AUTO-UPSERT CLIENT RECORD ─────────────────────────────────
+    // When a customer provides their email at booking, we upsert a client record.
+    // Uses email as the unique key — creates on first booking, ignores duplicates.
+    // Non-blocking: never fails the booking if this errors.
+    if (customer_email) {
+      try {
+        await supabase
+          .from('clients')
+          .upsert(
+            {
+              email: customer_email,
+              name: customer_name,
+              phone: customer_phone || null,
+              subscription_plan: 'starter',
+              subscription_status: 'trial',
+              source: 'booking',
+              onboarding_complete: false,
+            },
+            {
+              onConflict: 'email',
+              ignoreDuplicates: true, // don't overwrite existing client data
+            }
+          )
+      } catch (clientErr: any) {
+        console.warn('[notify] client upsert skipped:', clientErr?.message)
+      }
+    }
+
     // Save booking
     const { data: booking, error: bookingError } = await supabase
       .from('bookings')
@@ -87,8 +115,7 @@ export async function POST(req: NextRequest) {
         customer_email: customer_email || null,
         service_name,
         booking_date,
-        booking_time,
-        car_model: car_model || null,
+        booking_time,        car_model: car_model || null,
         pet_name: pet_name || null,
         notes: notes || null,
         staff_id: staff_id || null,

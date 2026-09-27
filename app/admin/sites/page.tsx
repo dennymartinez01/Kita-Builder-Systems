@@ -3,12 +3,13 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
-import { BUSINESS_TYPE_ICONS, BUSINESS_TYPE_LABELS } from '@/lib/templates'
-import type { BusinessType, Site } from '@/types/database'
-import { Globe, ExternalLink, LayoutDashboard, Trash2, Search, RefreshCw } from 'lucide-react'
+import { BUSINESS_TYPE_ICONS } from '@/lib/templates'
+import type { BusinessType, Site, Client } from '@/types/database'
+import { Globe, ExternalLink, LayoutDashboard, Trash2, Search, RefreshCw, User } from 'lucide-react'
 
 export default function SitesPage() {
   const [sites, setSites] = useState<Site[]>([])
+  const [clients, setClients] = useState<Record<string, Pick<Client, 'id' | 'name' | 'email'>>>({})
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState<BusinessType | 'all'>('all')
@@ -17,11 +18,16 @@ export default function SitesPage() {
 
   async function loadSites() {
     setLoading(true)
-    const { data } = await supabase
-      .from('sites')
-      .select('*')
-      .order('created_at', { ascending: false })
-    setSites(data || [])
+    const [{ data: sitesData }, { data: clientsData }] = await Promise.all([
+      supabase.from('sites').select('*').order('created_at', { ascending: false }),
+      supabase.from('clients').select('id, name, email'),
+    ])
+
+    const clientMap: Record<string, Pick<Client, 'id' | 'name' | 'email'>> = {}
+    clientsData?.forEach((c: any) => { clientMap[c.id] = c })
+
+    setSites(sitesData || [])
+    setClients(clientMap)
     setLoading(false)
   }
 
@@ -32,7 +38,8 @@ export default function SitesPage() {
   }
 
   const filtered = sites.filter(s => {
-    const matchesSearch = s.business_name.toLowerCase().includes(search.toLowerCase()) ||
+    const matchesSearch =
+      s.business_name.toLowerCase().includes(search.toLowerCase()) ||
       s.slug.toLowerCase().includes(search.toLowerCase())
     const matchesFilter = filter === 'all' || s.business_type === filter
     return matchesSearch && matchesFilter
@@ -51,7 +58,10 @@ export default function SitesPage() {
           <p className="text-gray-400 text-sm mt-1">{sites.length} sites generated so far</p>
         </div>
         <div className="flex gap-2">
-          <button onClick={loadSites} className="p-2 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded-lg transition">
+          <button
+            onClick={loadSites}
+            className="p-2 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded-lg transition"
+          >
             <RefreshCw size={16} />
           </button>
           <Link
@@ -77,7 +87,9 @@ export default function SitesPage() {
         <div className="flex gap-1.5 flex-wrap">
           <button
             onClick={() => setFilter('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${filter === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+              filter === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'
+            }`}
           >
             All
           </button>
@@ -85,7 +97,9 @@ export default function SitesPage() {
             <button
               key={t}
               onClick={() => setFilter(t)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${filter === t ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                filter === t ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'
+              }`}
             >
               {BUSINESS_TYPE_ICONS[t]} {t}
             </button>
@@ -114,74 +128,87 @@ export default function SitesPage() {
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs">Business</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden sm:table-cell">Type</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden md:table-cell">Slug</th>
-                <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden lg:table-cell">Owner Email</th>
+                <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden lg:table-cell">Client</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden md:table-cell">Payment</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs hidden md:table-cell">Created</th>
                 <th className="text-left text-gray-500 font-medium px-4 py-3 text-xs">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filtered.map(site => (
-                <tr key={site.id} className="border-b border-gray-800 last:border-0 hover:bg-gray-800/40 transition">
-                  <td className="px-4 py-3">
-                    <span className="text-white font-medium">{site.business_name}</span>
-                  </td>
-                  <td className="px-4 py-3 hidden sm:table-cell">
-                    <span className="text-gray-400 text-xs">
-                      {BUSINESS_TYPE_ICONS[site.business_type as BusinessType]} {site.business_type}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 hidden md:table-cell">
-                    <span className="text-gray-500 font-mono text-xs">/{site.slug}</span>
-                  </td>
-                  <td className="px-4 py-3 hidden lg:table-cell">
-                    <span className="text-gray-600 text-xs">{site.owner_email || '—'}</span>
-                  </td>
-                  <td className="px-4 py-3 hidden md:table-cell">
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                      (site as any).payment_status === 'paid'
-                        ? 'bg-green-900/50 text-green-400'
-                        : (site as any).payment_status === 'free'
-                          ? 'bg-blue-900/50 text-blue-400'
-                          : 'bg-yellow-900/50 text-yellow-400'
-                    }`}>
-                      {(site as any).payment_status || 'free'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 hidden md:table-cell">
-                    <span className="text-gray-600 text-xs">
-                      {new Date(site.created_at).toLocaleDateString()}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <a
-                        href={`/${site.slug}`}
-                        target="_blank"
-                        className="text-blue-400 hover:text-blue-300 transition"
-                        title="View public site"
-                      >
-                        <ExternalLink size={14} />
-                      </a>
-                      <a
-                        href={`/${site.slug}/dashboard`}
-                        target="_blank"
-                        className="text-green-400 hover:text-green-300 transition"
-                        title="Owner dashboard"
-                      >
-                        <LayoutDashboard size={14} />
-                      </a>
-                      <button
-                        onClick={() => deleteSite(site.id, site.business_name)}
-                        className="text-gray-700 hover:text-red-400 transition"
-                        title="Delete site"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {filtered.map(site => {
+                const client = (site as any).client_id ? clients[(site as any).client_id] : null
+                return (
+                  <tr key={site.id} className="border-b border-gray-800 last:border-0 hover:bg-gray-800/40 transition">
+                    <td className="px-4 py-3">
+                      <span className="text-white font-medium">{site.business_name}</span>
+                    </td>
+                    <td className="px-4 py-3 hidden sm:table-cell">
+                      <span className="text-gray-400 text-xs">
+                        {BUSINESS_TYPE_ICONS[site.business_type as BusinessType]} {site.business_type}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 hidden md:table-cell">
+                      <span className="text-gray-500 font-mono text-xs">/{site.slug}</span>
+                    </td>
+                    <td className="px-4 py-3 hidden lg:table-cell">
+                      {client ? (
+                        <Link
+                          href={`/admin/clients/${client.id}`}
+                          className="flex items-center gap-1.5 text-blue-400 hover:text-blue-300 transition group"
+                        >
+                          <User size={11} className="shrink-0" />
+                          <span className="text-xs group-hover:underline">{client.name}</span>
+                        </Link>
+                      ) : (
+                        <span className="text-gray-700 text-xs">—</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 hidden md:table-cell">
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                        (site as any).payment_status === 'paid'
+                          ? 'bg-green-900/50 text-green-400'
+                          : (site as any).payment_status === 'free'
+                            ? 'bg-blue-900/50 text-blue-400'
+                            : 'bg-yellow-900/50 text-yellow-400'
+                      }`}>
+                        {(site as any).payment_status || 'free'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 hidden md:table-cell">
+                      <span className="text-gray-600 text-xs">
+                        {new Date(site.created_at).toLocaleDateString()}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={`/${site.slug}`}
+                          target="_blank"
+                          className="text-blue-400 hover:text-blue-300 transition"
+                          title="View public site"
+                        >
+                          <ExternalLink size={14} />
+                        </a>
+                        <a
+                          href={`/${site.slug}/dashboard`}
+                          target="_blank"
+                          className="text-green-400 hover:text-green-300 transition"
+                          title="Owner dashboard"
+                        >
+                          <LayoutDashboard size={14} />
+                        </a>
+                        <button
+                          onClick={() => deleteSite(site.id, site.business_name)}
+                          className="text-gray-700 hover:text-red-400 transition"
+                          title="Delete site"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>
