@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import React, { useState } from 'react'
 import { BookOpen, ChevronRight, ChevronDown, Database, Zap, Globe, Mail, Key, Code2, Calendar, Layers, ArrowRight, CheckSquare, Lightbulb, ListTodo, Search, Shield, Users, GitCommit, BadgeDollarSign } from 'lucide-react'
@@ -28,74 +28,78 @@ export default function DocsPage() {
             <strong className="text-white">KITA Builder Systems</strong> is a two-product platform built for web agencies, freelancers, and developers serving local service businesses across AU, US, UK, PH, and CAN.
           </p>
           <p className="text-gray-300 leading-relaxed">
-            <strong className="text-white">Product 1 — AI Website Builder:</strong> Generates a fully-functional booking website in ~10 seconds from a business name and location. Includes a 10-tab owner CMS, AI assistant for live edits, analytics, gallery, reviews, and a Stripe payment flow.
+            <strong className="text-white">Product 1 â€” AI Website Builder:</strong> Generates a fully-functional booking website in ~10 seconds from a business name and location. Includes a 10-tab owner CMS, AI assistant for live edits, analytics, gallery, reviews, and a Stripe payment flow.
           </p>
           <p className="text-gray-300 leading-relaxed">
-            <strong className="text-white">Product 2 — Website Intelligence & Audit:</strong> Forensic website audit tool — enter any URL to get scores + issues + PDF report covering Performance, SEO, Security, Tech Stack, Accessibility, and a 10-page internal crawler.
+            <strong className="text-white">Product 2 â€” Website Intelligence & Audit:</strong> Forensic website audit tool â€” enter any URL to get scores + issues + PDF report covering Performance, SEO, Security, Tech Stack, Accessibility, and a 10-page internal crawler.
           </p>
 
           {/* Product 1 value props */}
           <div className="bg-gray-950 rounded-xl p-4 border border-gray-800">
-            <p className="text-blue-400 font-semibold text-sm mb-3">⚡ Product 1 — AI Website Builder</p>
+            <p className="text-blue-400 font-semibold text-sm mb-3">âš¡ Product 1 â€” AI Website Builder</p>
             <div className="space-y-1.5 text-sm text-gray-400">
               {[
                 'AI generates copy, services, staff tailored to business type + location in ~10 seconds',
-                'Live booking widget — customers book 24/7, owner gets instant email notification',
-                'Owner dashboard with PIN — 10 tabs: Bookings, Services, Staff, Hours, About, Reviews, Gallery, Analytics, Settings, AI Assistant',
-                'AI Assistant — chat to edit live site: "change my haircut to $80" updates instantly',
-                'Preferred staff picker — customers choose their preferred team member',
-                'Custom notes labels per template — "Your Concern" for clinics, "Guests + Notes" for cafes',
-                'Site analytics — 14-day page view chart, weekly trends, booking status breakdown',
-                'Gallery — multi-photo upload, "Our Work" grid on public site',
-                'White-label mode — remove KITA branding, use your agency name and logo',
+                'Live booking widget â€” customers book 24/7, owner gets instant email notification',
+                'Owner dashboard with PIN â€” 10 tabs: Bookings, Services, Staff, Hours, About, Reviews, Gallery, Analytics, Settings, AI Assistant',
+                'AI Assistant â€” chat to edit live site: "change my haircut to $80" updates instantly',
+                'Preferred staff picker â€” customers choose their preferred team member',
+                'Custom notes labels per template â€” "Your Concern" for clinics, "Guests + Notes" for cafes',
+                'Site analytics â€” 14-day page view chart, weekly trends, booking status breakdown',
+                'Gallery â€” multi-photo upload, "Our Work" grid on public site',
+                'White-label mode â€” remove KITA branding, use your agency name and logo',
                 '11 templates across 5 business types: Salon, Clinic, Pet, Cafe, Mechanic',
-                'Stripe payment flow — $150 setup fee via Checkout, payment_status tracked per site',
-                'Deployed on Vercel — live at kita-builder-systems.vercel.app',
+                'Stripe payment flow â€” $150 setup fee via Checkout, payment_status tracked per site',
+                'Deployed on Vercel â€” live at kita-builder-systems.vercel.app',
               ].map((item, i) => (
-                <div key={i} className="flex gap-2"><span className="text-green-400">✓</span>{item}</div>
+                <div key={i} className="flex gap-2"><span className="text-green-400">âœ“</span>{item}</div>
               ))}
             </div>
           </div>
 
           {/* Product 2 value props */}
           <div className="bg-gray-950 rounded-xl p-4 border border-gray-800">
-            <p className="text-purple-400 font-semibold text-sm mb-3">🔍 Product 2 — Website Intelligence & Audit</p>
+            <p className="text-purple-400 font-semibold text-sm mb-3">ðŸ” Product 2 â€” Website Intelligence & Audit</p>
             <div className="space-y-1.5 text-sm text-gray-400">
               {[
                 'Forensic audit: Performance (PSI), SEO, Security headers, Tech Stack, Accessibility',
-                'Page crawler — crawls up to 10 internal pages, detects broken links + duplicate titles',
+                'Page crawler â€” crawls up to 10 internal pages, detects broken links + duplicate titles',
                 'Score rings per category (0-100) + weighted overall score',
-                'Issue explorer — filter by severity (critical/high/medium/low) + category',
-                'PDF report download — Forensic Website Audit Report format, multi-page',
-                'Audit history — search, delete, score trend comparison (↑↓—)',
-                'Audit pitch page at /audit-pitch — shareable outreach link for selling audit services',
-                'Dark admin theme — integrated into the admin panel',
+                'Issue explorer â€” filter by severity (critical/high/medium/low) + category',
+                'PDF report download â€” Forensic Website Audit Report format, multi-page',
+                'Audit history â€” search, delete, score trend comparison (â†‘â†“â€”)',
+                'Audit pitch page at /audit-pitch â€” shareable outreach link for selling audit services',
+                'Dark admin theme â€” integrated into the admin panel',
               ].map((item, i) => (
-                <div key={i} className="flex gap-2"><span className="text-green-400">✓</span>{item}</div>
+                <div key={i} className="flex gap-2"><span className="text-green-400">âœ“</span>{item}</div>
               ))}
             </div>
           </div>
 
           {/* Roadmap preview */}
           <div className="bg-gray-950 rounded-xl p-4 border border-gray-800">
-            <p className="text-yellow-400 font-semibold text-sm mb-3">🗺️ Upcoming Phases</p>
+            <p className="text-yellow-400 font-semibold text-sm mb-3">ðŸ—ºï¸ Roadmap â€” 7 Capability Groups</p>
             <div className="space-y-1.5 text-sm text-gray-400">
               {[
-                'Phase 5 — Service selector + currency picker on generate form ✅',
-                'Phase 6 — Smart Booking System ✅',
-                'Phase 7 — Admin Power Tools: calendar view, peak analytics, promo codes',
-                'Phase 8 — Growth: Stripe subscriptions, deposits, WhatsApp booking, Google Calendar',
+                'ðŸ”´ Foundation â€” Feature & Entitlement Engine, Universal Event Stream â† build first',
+                'ðŸŸ  Commerce â€” Subscription overrides, Trial workflow, Coupon Engine, Customer Accounts',
+                'ðŸŸ¡ CRM & Growth â€” Leads Master, Outreach Campaigns, Attribution Tracking',
+                'ðŸŸ¢ Intelligence â€” Business Rank + Badges, Heatmaps, Admin Impersonation',
+                'ðŸ“‹ Phase 10 â€” Contact Form + Smart Leads Engine (documented, not yet built)',
+                'ðŸ“‹ Phase 11 â€” Entitlement Engine + Trial Workflow + Admin Overrides + Customer DB',
+                'ðŸ“‹ Phase 12 â€” Outreach Campaigns + Attribution + Geographic Analytics',
+                'ðŸ“‹ Phase 13 â€” Business Rank + Badges + Heatmaps + Admin Impersonation',
               ].map((item, i) => (
-                <div key={i} className="flex gap-2"><span className="text-yellow-400">→</span>{item}</div>
+                <div key={i} className="flex gap-2"><span className="text-yellow-400">â†’</span>{item}</div>
               ))}
             </div>
           </div>
 
           {/* Commercial pitch box */}
           <div className="bg-blue-950/30 rounded-xl p-4 border border-blue-800">
-            <p className="text-blue-400 font-semibold text-sm mb-2">💼 The Pitch</p>
+            <p className="text-blue-400 font-semibold text-sm mb-2">ðŸ’¼ The Pitch</p>
             <p className="text-gray-300 text-sm leading-relaxed italic">
-              "Your customers can book you 24/7 — even while you sleep. AI builds your site in 10 seconds, your clients manage everything themselves, and you get notified every time someone books. $150 to launch. $29/month to keep it running. That's less than one booking to pay for itself."
+              "Your customers can book you 24/7 â€” even while you sleep. AI builds your site in 10 seconds, your clients manage everything themselves, and you get notified every time someone books. $150 to launch. $29/month to keep it running. That's less than one booking to pay for itself."
             </p>
           </div>
 
@@ -105,7 +109,7 @@ export default function DocsPage() {
               { label: 'Revenue Model', value: '$150 setup + $29/mo', sub: 'per client site' },
               { label: 'Target Market', value: 'AU / US / UK / PH / CAN', sub: 'local service businesses' },
               { label: 'Live URL', value: 'Vercel', sub: 'kita-builder-systems.vercel.app' },
-              { label: 'AI Engine', value: 'Gemini 3.6 Flash', sub: 'free tier · AQ. key format' },
+              { label: 'AI Engine', value: 'Gemini 3.6 Flash', sub: 'free tier Â· AQ. key format' },
             ].map(stat => (
               <div key={stat.label} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
                 <p className="text-gray-500 text-xs mb-1">{stat.label}</p>
@@ -156,69 +160,69 @@ export default function DocsPage() {
         <div>
           <p className="text-gray-400 text-sm mb-4">All source files live inside <code className="text-blue-300 font-mono">kita-builder/</code></p>
           <pre className="bg-gray-950 border border-gray-800 rounded-xl p-4 text-xs text-gray-400 font-mono leading-6 overflow-x-auto">{`kita-builder/
-├── app/
-│   ├── admin/                  ← Your internal CMS (PIN protected)
-│   │   ├── layout.tsx          ← Sidebar + PIN auth + logo loader
-│   │   ├── page.tsx            ← Dashboard + live stats
-│   │   ├── credentials/        ← API keys reference + .env template
-│   │   ├── generate/           ← AI site generator form
-│   │   ├── revenue/            ← MRR tracker + CSV export
-│   │   ├── sites/              ← All generated sites + payment status
-│   │   ├── templates/          ← 11-template marketplace grid
-│   │   ├── settings/           ← Logo, PIN, white-label, email config
-│   │   └── docs/               ← Documentation (this page)
-│   │       └── audit/          ← Audit module docs
-│   ├── api/
-│   │   ├── agent/route.ts      ← AI chat agent (9 tools)
-│   │   ├── audit/route.ts      ← Audit create/list/delete
-│   │   ├── audit/[id]/route.ts ← Audit fetch/re-run
-│   │   ├── checkout/route.ts   ← Stripe Checkout session
-│   │   ├── generate/route.ts   ← Gemini AI site generation
-│   │   ├── notify/route.ts     ← Save booking + Resend email
-│   │   ├── track/route.ts      ← Page view analytics
-│   │   ├── upload-logo/route.ts← Image upload to Supabase Storage
-│   │   └── webhook/route.ts    ← Stripe webhook handler
-│   ├── audit/                  ← Website Audit tool (dark admin theme)
-│   │   ├── layout.tsx          ← Audit layout with top bar
-│   │   ├── page.tsx            ← URL input + audit history
-│   │   └── [id]/page.tsx       ← Full results dashboard + PDF download
-│   ├── audit-pitch/page.tsx    ← Audit pitch/outreach page
-│   ├── [slug]/
-│   │   ├── page.tsx            ← Public client site (white-label aware)
-│   │   └── dashboard/page.tsx  ← Owner CMS (10 tabs, PIN protected)
-│   ├── onboard/
-│   │   ├── page.tsx            ← $150 client payment page
-│   │   └── success/page.tsx    ← Post-payment site polling
-│   ├── pitch/page.tsx          ← KITA Builder outreach pitch
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/
-│   ├── AgentChat.tsx           ← AI chat widget (owner dashboard)
-│   ├── BookingForm.tsx         ← Customer booking form
-│   └── PageTracker.tsx         ← Non-blocking page view tracker
-├── lib/
-│   ├── supabase.ts             ← Supabase client (server + anon)
-│   ├── stripe.ts               ← Stripe client (server-only)
-│   ├── pricing.ts              ← Client-safe pricing constants
-│   ├── whitelabel.ts           ← White-label config helpers
-│   ├── templates/              ← 11 template variants
-│   │   ├── index.ts, registry.ts
-│   │   └── salon/clinic/pet/cafe/mechanic.ts
-│   └── audit/                  ← Audit analyzers
-│       ├── types.ts, index.ts, crawler.ts, pdf.ts
-│       └── performance/seo/security/tech/accessibility.ts
-├── supabase/
-│   ├── schema.sql              ← sites, services, staff, bookings
-│   ├── storage.sql             ← kita-assets storage bucket
-│   ├── payments.sql            ← payment_status, stripe columns
-│   ├── analytics.sql           ← page_views table
-│   ├── audit.sql               ← audits + audit_pages tables
-│   ├── staff-booking.sql       ← staff_id + staff_name on bookings
-│   ├── clients.sql             ← clients table (Phase 9)
-│   └── leads.sql               ← leads table (Phase 10 — planned)
-├── types/
-│   └── database.ts             ← TypeScript types for all DB tables
-└── .env.local                  ← API keys (never commit)`}</pre>
+â”œâ”€â”€ app/
+â”‚   â”œâ”€â”€ admin/                  â† Your internal CMS (PIN protected)
+â”‚   â”‚   â”œâ”€â”€ layout.tsx          â† Sidebar + PIN auth + logo loader
+â”‚   â”‚   â”œâ”€â”€ page.tsx            â† Dashboard + live stats
+â”‚   â”‚   â”œâ”€â”€ credentials/        â† API keys reference + .env template
+â”‚   â”‚   â”œâ”€â”€ generate/           â† AI site generator form
+â”‚   â”‚   â”œâ”€â”€ revenue/            â† MRR tracker + CSV export
+â”‚   â”‚   â”œâ”€â”€ sites/              â† All generated sites + payment status
+â”‚   â”‚   â”œâ”€â”€ templates/          â† 11-template marketplace grid
+â”‚   â”‚   â”œâ”€â”€ settings/           â† Logo, PIN, white-label, email config
+â”‚   â”‚   â””â”€â”€ docs/               â† Documentation (this page)
+â”‚   â”‚       â””â”€â”€ audit/          â† Audit module docs
+â”‚   â”œâ”€â”€ api/
+â”‚   â”‚   â”œâ”€â”€ agent/route.ts      â† AI chat agent (9 tools)
+â”‚   â”‚   â”œâ”€â”€ audit/route.ts      â† Audit create/list/delete
+â”‚   â”‚   â”œâ”€â”€ audit/[id]/route.ts â† Audit fetch/re-run
+â”‚   â”‚   â”œâ”€â”€ checkout/route.ts   â† Stripe Checkout session
+â”‚   â”‚   â”œâ”€â”€ generate/route.ts   â† Gemini AI site generation
+â”‚   â”‚   â”œâ”€â”€ notify/route.ts     â† Save booking + Resend email
+â”‚   â”‚   â”œâ”€â”€ track/route.ts      â† Page view analytics
+â”‚   â”‚   â”œâ”€â”€ upload-logo/route.tsâ† Image upload to Supabase Storage
+â”‚   â”‚   â””â”€â”€ webhook/route.ts    â† Stripe webhook handler
+â”‚   â”œâ”€â”€ audit/                  â† Website Audit tool (dark admin theme)
+â”‚   â”‚   â”œâ”€â”€ layout.tsx          â† Audit layout with top bar
+â”‚   â”‚   â”œâ”€â”€ page.tsx            â† URL input + audit history
+â”‚   â”‚   â””â”€â”€ [id]/page.tsx       â† Full results dashboard + PDF download
+â”‚   â”œâ”€â”€ audit-pitch/page.tsx    â† Audit pitch/outreach page
+â”‚   â”œâ”€â”€ [slug]/
+â”‚   â”‚   â”œâ”€â”€ page.tsx            â† Public client site (white-label aware)
+â”‚   â”‚   â””â”€â”€ dashboard/page.tsx  â† Owner CMS (10 tabs, PIN protected)
+â”‚   â”œâ”€â”€ onboard/
+â”‚   â”‚   â”œâ”€â”€ page.tsx            â† $150 client payment page
+â”‚   â”‚   â””â”€â”€ success/page.tsx    â† Post-payment site polling
+â”‚   â”œâ”€â”€ pitch/page.tsx          â† KITA Builder outreach pitch
+â”‚   â”œâ”€â”€ layout.tsx
+â”‚   â””â”€â”€ page.tsx
+â”œâ”€â”€ components/
+â”‚   â”œâ”€â”€ AgentChat.tsx           â† AI chat widget (owner dashboard)
+â”‚   â”œâ”€â”€ BookingForm.tsx         â† Customer booking form
+â”‚   â””â”€â”€ PageTracker.tsx         â† Non-blocking page view tracker
+â”œâ”€â”€ lib/
+â”‚   â”œâ”€â”€ supabase.ts             â† Supabase client (server + anon)
+â”‚   â”œâ”€â”€ stripe.ts               â† Stripe client (server-only)
+â”‚   â”œâ”€â”€ pricing.ts              â† Client-safe pricing constants
+â”‚   â”œâ”€â”€ whitelabel.ts           â† White-label config helpers
+â”‚   â”œâ”€â”€ templates/              â† 11 template variants
+â”‚   â”‚   â”œâ”€â”€ index.ts, registry.ts
+â”‚   â”‚   â””â”€â”€ salon/clinic/pet/cafe/mechanic.ts
+â”‚   â””â”€â”€ audit/                  â† Audit analyzers
+â”‚       â”œâ”€â”€ types.ts, index.ts, crawler.ts, pdf.ts
+â”‚       â””â”€â”€ performance/seo/security/tech/accessibility.ts
+â”œâ”€â”€ supabase/
+â”‚   â”œâ”€â”€ schema.sql              â† sites, services, staff, bookings
+â”‚   â”œâ”€â”€ storage.sql             â† kita-assets storage bucket
+â”‚   â”œâ”€â”€ payments.sql            â† payment_status, stripe columns
+â”‚   â”œâ”€â”€ analytics.sql           â† page_views table
+â”‚   â”œâ”€â”€ audit.sql               â† audits + audit_pages tables
+â”‚   â”œâ”€â”€ staff-booking.sql       â† staff_id + staff_name on bookings
+â”‚   â”œâ”€â”€ clients.sql             â† clients table (Phase 9)
+â”‚   â””â”€â”€ leads.sql               â† leads table (Phase 10 â€” planned)
+â”œâ”€â”€ types/
+â”‚   â””â”€â”€ database.ts             â† TypeScript types for all DB tables
+â””â”€â”€ .env.local                  â† API keys (never commit)`}</pre>
         </div>
       ),
     },
@@ -241,7 +245,7 @@ export default function DocsPage() {
                 { name: 'business_type', type: 'text', note: 'salon | clinic | pet | cafe | mechanic' },
                 { name: 'owner_email', type: 'text', note: 'Booking notification destination' },
                 { name: 'owner_pin', type: 'text', note: 'PIN for owner dashboard login' },
-                { name: 'theme_json', type: 'jsonb', note: 'Full site structure — sections, colors, copy, hours, gallery, logo_url' },
+                { name: 'theme_json', type: 'jsonb', note: 'Full site structure â€” sections, colors, copy, hours, gallery, logo_url' },
                 { name: 'published', type: 'bool', note: 'Controls whether public site is visible' },
                 { name: 'payment_status', type: 'text', note: 'paid | free | unpaid' },
                 { name: 'stripe_session_id', type: 'text', note: 'Stripe Checkout session ID' },
@@ -254,7 +258,7 @@ export default function DocsPage() {
               color: 'text-green-400',
               desc: 'Services offered by a business',
               columns: [
-                { name: 'site_id', type: 'uuid', note: 'FK → sites.id (cascade delete)' },
+                { name: 'site_id', type: 'uuid', note: 'FK â†’ sites.id (cascade delete)' },
                 { name: 'name', type: 'text', note: 'e.g. "Oil Change"' },
                 { name: 'price', type: 'numeric', note: 'In local currency' },
                 { name: 'duration_minutes', type: 'int', note: 'Used in booking widget display' },
@@ -265,7 +269,7 @@ export default function DocsPage() {
               color: 'text-purple-400',
               desc: 'Team members shown on public site',
               columns: [
-                { name: 'site_id', type: 'uuid', note: 'FK → sites.id (cascade delete)' },
+                { name: 'site_id', type: 'uuid', note: 'FK â†’ sites.id (cascade delete)' },
                 { name: 'name', type: 'text', note: 'e.g. "Jim Reyes"' },
                 { name: 'role', type: 'text', note: 'e.g. "Head Mechanic"' },
                 { name: 'avatar_url', type: 'text', note: 'Optional photo URL' },
@@ -276,16 +280,16 @@ export default function DocsPage() {
               color: 'text-yellow-400',
               desc: 'Customer appointments',
               columns: [
-                { name: 'site_id', type: 'uuid', note: 'FK → sites.id' },
-                { name: 'service_id', type: 'uuid', note: 'FK → services.id (nullable)' },
+                { name: 'site_id', type: 'uuid', note: 'FK â†’ sites.id' },
+                { name: 'service_id', type: 'uuid', note: 'FK â†’ services.id (nullable)' },
                 { name: 'customer_name', type: 'text', note: '' },
                 { name: 'customer_phone', type: 'text', note: '' },
                 { name: 'service_name', type: 'text', note: 'Denormalized for display' },
                 { name: 'booking_date', type: 'date', note: '' },
                 { name: 'booking_time', type: 'text', note: 'HH:MM format' },
-                { name: 'car_model', type: 'text', note: 'Mechanic only — nullable' },
-                { name: 'pet_name', type: 'text', note: 'Pet clinic only — nullable' },
-                { name: 'staff_id', type: 'uuid', note: 'FK → staff.id (nullable) — preferred staff' },
+                { name: 'car_model', type: 'text', note: 'Mechanic only â€” nullable' },
+                { name: 'pet_name', type: 'text', note: 'Pet clinic only â€” nullable' },
+                { name: 'staff_id', type: 'uuid', note: 'FK â†’ staff.id (nullable) â€” preferred staff' },
                 { name: 'staff_name', type: 'text', note: 'Denormalized staff name for display' },
                 { name: 'status', type: 'text', note: 'pending | confirmed | cancelled' },
               ],
@@ -293,9 +297,9 @@ export default function DocsPage() {
             {
               table: 'page_views',
               color: 'text-blue-300',
-              desc: 'Analytics — tracks visits to client sites',
+              desc: 'Analytics â€” tracks visits to client sites',
               columns: [
-                { name: 'site_id', type: 'uuid', note: 'FK → sites.id (cascade delete)' },
+                { name: 'site_id', type: 'uuid', note: 'FK â†’ sites.id (cascade delete)' },
                 { name: 'viewed_at', type: 'timestamptz', note: 'When the visit occurred' },
                 { name: 'path', type: 'text', note: 'URL path visited' },
               ],
@@ -318,16 +322,16 @@ export default function DocsPage() {
               desc: 'Contact form inquiries + opted-in booking customers (Phase 10)',
               columns: [
                 { name: 'id', type: 'uuid', note: 'Primary key' },
-                { name: 'site_id', type: 'uuid', note: 'FK → sites.id (cascade delete)' },
+                { name: 'site_id', type: 'uuid', note: 'FK â†’ sites.id (cascade delete)' },
                 { name: 'name', type: 'text', note: 'Customer name' },
                 { name: 'email', type: 'text', note: 'Primary contact for follow-up and promotions' },
-                { name: 'phone', type: 'text', note: 'Optional — captured if provided' },
+                { name: 'phone', type: 'text', note: 'Optional â€” captured if provided' },
                 { name: 'message', type: 'text', note: 'Free-text inquiry message' },
                 { name: 'source', type: 'text', note: 'contact_form | booking | audit_inquiry' },
                 { name: 'status', type: 'text', note: 'new | contacted | converted | closed' },
-                { name: 'opt_in', type: 'bool', note: 'Consented to promotions — default false' },
-                { name: 'city', type: 'text', note: 'Copied from site at capture — geo-segmentation' },
-                { name: 'business_type', type: 'text', note: 'Copied from site — interest-based segmentation' },
+                { name: 'opt_in', type: 'bool', note: 'Consented to promotions â€” default false' },
+                { name: 'city', type: 'text', note: 'Copied from site at capture â€” geo-segmentation' },
+                { name: 'business_type', type: 'text', note: 'Copied from site â€” interest-based segmentation' },
                 { name: 'created_at', type: 'timestamptz', note: 'Auto-set on creation' },
               ],
             },
@@ -361,20 +365,20 @@ export default function DocsPage() {
         <div className="space-y-6">
           {[
             {
-              label: 'Workflow A — Site Generation',
+              label: 'Workflow A â€” Site Generation',
               color: 'border-blue-800 bg-blue-950/20',
               labelColor: 'text-blue-400',
               steps: [
-                { actor: 'You (Admin)', action: 'Fill form at /admin/generate — business name, type, location' },
+                { actor: 'You (Admin)', action: 'Fill form at /admin/generate â€” business name, type, location' },
                 { actor: 'Next.js', action: 'POST /api/generate with form data' },
                 { actor: 'Claude AI', action: 'Returns JSON: headline, sub, about, services, staff, testimonials' },
-                { actor: 'API Route', action: 'Merges AI copy into base template → builds full theme_json' },
+                { actor: 'API Route', action: 'Merges AI copy into base template â†’ builds full theme_json' },
                 { actor: 'Supabase', action: 'Inserts into sites, services, staff tables' },
-                { actor: 'Browser', action: 'Redirects you to /{slug} — site is live immediately' },
+                { actor: 'Browser', action: 'Redirects you to /{slug} â€” site is live immediately' },
               ],
             },
             {
-              label: 'Workflow B — Customer Booking',
+              label: 'Workflow B â€” Customer Booking',
               color: 'border-green-800 bg-green-950/20',
               labelColor: 'text-green-400',
               steps: [
@@ -387,15 +391,15 @@ export default function DocsPage() {
               ],
             },
             {
-              label: 'Workflow C — Owner CMS',
+              label: 'Workflow C â€” Owner CMS',
               color: 'border-purple-800 bg-purple-950/20',
               labelColor: 'text-purple-400',
               steps: [
                 { actor: 'Owner', action: 'Goes to /{slug}/dashboard, enters PIN' },
                 { actor: 'Dashboard', action: 'Loads all services and bookings from Supabase' },
-                { actor: 'Owner', action: 'Edits service name/price — saves instantly via Supabase update' },
+                { actor: 'Owner', action: 'Edits service name/price â€” saves instantly via Supabase update' },
                 { actor: 'Owner', action: 'Confirms or cancels bookings with one click' },
-                { actor: 'Public Site', action: 'Reflects changes immediately — no redeploy needed' },
+                { actor: 'Public Site', action: 'Reflects changes immediately â€” no redeploy needed' },
               ],
             },
           ].map(wf => (
@@ -424,12 +428,12 @@ export default function DocsPage() {
           {[
             { method: 'POST', path: '/api/generate', color: 'bg-green-900/50 text-green-300', desc: 'Generates a full site using Gemini AI and saves to Supabase' },
             { method: 'POST', path: '/api/notify', color: 'bg-green-900/50 text-green-300', desc: 'Saves a customer booking and sends Resend email notification' },
-            { method: 'POST', path: '/api/agent', color: 'bg-green-900/50 text-green-300', desc: 'AI chat agent — 9 tools for editing site content via natural language' },
+            { method: 'POST', path: '/api/agent', color: 'bg-green-900/50 text-green-300', desc: 'AI chat agent â€” 9 tools for editing site content via natural language' },
             { method: 'POST', path: '/api/checkout', color: 'bg-green-900/50 text-green-300', desc: 'Creates a Stripe Checkout session for $150 setup fee' },
-            { method: 'POST', path: '/api/webhook', color: 'bg-green-900/50 text-green-300', desc: 'Stripe webhook — handles payment.completed, auto-generates site' },
+            { method: 'POST', path: '/api/webhook', color: 'bg-green-900/50 text-green-300', desc: 'Stripe webhook â€” handles payment.completed, auto-generates site' },
             { method: 'POST', path: '/api/upload-logo', color: 'bg-green-900/50 text-green-300', desc: 'Uploads an image to Supabase Storage kita-assets bucket' },
             { method: 'POST', path: '/api/track', color: 'bg-green-900/50 text-green-300', desc: 'Records a page view for site analytics (non-blocking)' },
-            { method: 'POST', path: '/api/audit', color: 'bg-purple-900/50 text-purple-300', desc: 'Runs a full website audit — Performance, SEO, Security, Tech, Accessibility + Crawler' },
+            { method: 'POST', path: '/api/audit', color: 'bg-purple-900/50 text-purple-300', desc: 'Runs a full website audit â€” Performance, SEO, Security, Tech, Accessibility + Crawler' },
             { method: 'GET', path: '/api/audit', color: 'bg-blue-900/50 text-blue-300', desc: 'Lists recent audits with optional ?search= filter' },
             { method: 'GET', path: '/api/audit/[id]', color: 'bg-blue-900/50 text-blue-300', desc: 'Fetches full audit record + crawled pages' },
             { method: 'POST', path: '/api/audit/[id]', color: 'bg-green-900/50 text-green-300', desc: 'Re-runs an existing audit for the same URL' },
@@ -454,9 +458,9 @@ export default function DocsPage() {
         <div className="space-y-3">
           <p className="text-gray-400 text-sm">All accounts needed to run KITA Builder Systems end-to-end.</p>
           {[
-            { service: 'Supabase', url: 'https://supabase.com', phase: 'MVP', purpose: 'Database, Auth, Storage', envKey: 'NEXT_PUBLIC_SUPABASE_URL + ANON_KEY + SERVICE_ROLE_KEY', free: 'Free tier — 500MB DB, enough for 1000+ sites' },
-            { service: 'Google AI (Gemini)', url: 'https://aistudio.google.com/app/apikey', phase: 'MVP', purpose: 'AI site generation — gemini-3.6-flash', envKey: 'GEMINI_API_KEY', free: 'Free tier — ~500 generations/day, no billing required' },
-            { service: 'Resend', url: 'https://resend.com', phase: 'MVP', purpose: 'Booking email notifications', envKey: 'RESEND_API_KEY', free: 'Free — 100 emails/day, 3000/month' },
+            { service: 'Supabase', url: 'https://supabase.com', phase: 'MVP', purpose: 'Database, Auth, Storage', envKey: 'NEXT_PUBLIC_SUPABASE_URL + ANON_KEY + SERVICE_ROLE_KEY', free: 'Free tier â€” 500MB DB, enough for 1000+ sites' },
+            { service: 'Google AI (Gemini)', url: 'https://aistudio.google.com/app/apikey', phase: 'MVP', purpose: 'AI site generation â€” gemini-3.6-flash', envKey: 'GEMINI_API_KEY', free: 'Free tier â€” ~500 generations/day, no billing required' },
+            { service: 'Resend', url: 'https://resend.com', phase: 'MVP', purpose: 'Booking email notifications', envKey: 'RESEND_API_KEY', free: 'Free â€” 100 emails/day, 3000/month' },
             { service: 'Vercel', url: 'https://vercel.com', phase: 'MVP', purpose: 'Hosting + deployments', envKey: 'None (CLI only)', free: 'Free tier for personal projects' },
             { service: 'GitHub', url: 'https://github.com', phase: 'MVP', purpose: 'Code repository + Vercel integration', envKey: 'None', free: 'Free' },
             { service: 'Twilio', url: 'https://twilio.com', phase: 'V2', purpose: 'Real SMS reminders to owners + customers', envKey: 'TWILIO_AUTH_TOKEN', free: '$20 minimum deposit' },
@@ -468,7 +472,7 @@ export default function DocsPage() {
                   <span className="text-white font-semibold text-sm">{acct.service}</span>
                   <span className={`text-xs px-2 py-0.5 rounded-full ${acct.phase === 'MVP' ? 'bg-blue-900/50 text-blue-400' : 'bg-gray-800 text-gray-500'}`}>{acct.phase}</span>
                 </div>
-                <a href={acct.url} target="_blank" className="text-blue-400 text-xs hover:underline shrink-0">Login →</a>
+                <a href={acct.url} target="_blank" className="text-blue-400 text-xs hover:underline shrink-0">Login â†’</a>
               </div>
               <p className="text-gray-500 text-xs">{acct.purpose}</p>
               <p className="text-gray-700 text-xs mt-1 font-mono">{acct.envKey}</p>
@@ -486,76 +490,76 @@ export default function DocsPage() {
         <div className="space-y-4">
           {[
             {
-              week: 'Week 1 — Foundation (Days 1–7)',
+              week: 'Week 1 â€” Foundation (Days 1â€“7)',
               color: 'border-blue-800',
-              badge: '✅ COMPLETE',
+              badge: 'âœ… COMPLETE',
               badgeColor: 'bg-green-900/50 text-green-400',
               tasks: [
-                'Project scaffolded with Next.js 16 + TypeScript + Tailwind ✅',
-                'Supabase cloud schema deployed (sites, services, staff, bookings) ✅',
-                'All 5 templates built: Salon, Clinic, Pet, Cafe, Mechanic ✅',
-                'Admin CMS: dashboard, credentials, generate, sites, templates, docs, settings ✅',
-                'Logo uploader via Supabase Storage ✅',
-                'Documentation page (this page) ✅',
-                'Public site renderer + booking form ✅',
-                'Owner dashboard: services editor + bookings manager ✅',
-                'AI generation working via Gemini 3.6 Flash (free tier) ✅',
-                'First demo site generated: Edison Barber Shop, Portland ✅',
-                'Pushed to GitHub: github.com/dennymartinez01/Kita-Builder-Systems ✅',
+                'Project scaffolded with Next.js 16 + TypeScript + Tailwind âœ…',
+                'Supabase cloud schema deployed (sites, services, staff, bookings) âœ…',
+                'All 5 templates built: Salon, Clinic, Pet, Cafe, Mechanic âœ…',
+                'Admin CMS: dashboard, credentials, generate, sites, templates, docs, settings âœ…',
+                'Logo uploader via Supabase Storage âœ…',
+                'Documentation page (this page) âœ…',
+                'Public site renderer + booking form âœ…',
+                'Owner dashboard: services editor + bookings manager âœ…',
+                'AI generation working via Gemini 3.6 Flash (free tier) âœ…',
+                'First demo site generated: Edison Barber Shop, Portland âœ…',
+                'Pushed to GitHub: github.com/dennymartinez01/Kita-Builder-Systems âœ…',
               ],
             },
             {
-              week: 'Week 2 — Polish + First Client (Days 8–14)',
+              week: 'Week 2 â€” Polish + First Client (Days 8â€“14)',
               color: 'border-green-800',
-              badge: '✅ COMPLETE',
+              badge: 'âœ… COMPLETE',
               badgeColor: 'bg-green-900/50 text-green-400',
               tasks: [
-                'Mobile responsive — sticky nav, responsive grids, touch buttons ✅',
-                'Resend email notification confirmed end-to-end ✅',
-                'Owner dashboard — Staff, Hours, About, AI Assistant tabs ✅',
-                'Agentic AI editor — chat-based site editing (9 tools) ✅',
-                'Pitch / outreach page built at /pitch ✅',
-                'Deployed to Vercel — live at kita-builder-systems.vercel.app ✅',
+                'Mobile responsive â€” sticky nav, responsive grids, touch buttons âœ…',
+                'Resend email notification confirmed end-to-end âœ…',
+                'Owner dashboard â€” Staff, Hours, About, AI Assistant tabs âœ…',
+                'Agentic AI editor â€” chat-based site editing (9 tools) âœ…',
+                'Pitch / outreach page built at /pitch âœ…',
+                'Deployed to Vercel â€” live at kita-builder-systems.vercel.app âœ…',
               ],
             },
             {
-              week: 'Week 3 — Revenue (Days 15–21)',
+              week: 'Week 3 â€” Revenue (Days 15â€“21)',
               color: 'border-yellow-800',
-              badge: '🔄 CURRENT',
+              badge: 'ðŸ”„ CURRENT',
               badgeColor: 'bg-yellow-900/50 text-yellow-400',
               tasks: [
-                'Stripe SDK installed + lib/stripe.ts + lib/pricing.ts (client-safe split) ✅',
-                '/api/checkout — creates Stripe Checkout session with business metadata ✅',
-                '/api/webhook — handles payment, auto-generates site via Gemini ✅',
-                '/onboard — client-facing $150 setup payment page ✅',
-                '/onboard/success — polls Supabase until site appears after payment ✅',
-                'Supabase payments.sql — payment_status, stripe_session_id columns ✅',
-                'Stripe webhook endpoint configured on Vercel ✅',
-                'Admin /sites shows payment status badge (paid/free/unpaid) ✅',
-                'Pitch page updated with Pay & Launch Now → /onboard button ✅',
-                'Fix webhook: idempotency check + extended polling to 120s ✅',
-                'Debug Gemini timeout in webhook on Vercel cold start → moved to backlog (Gemini 503 on all models from Vercel IPs)',
+                'Stripe SDK installed + lib/stripe.ts + lib/pricing.ts (client-safe split) âœ…',
+                '/api/checkout â€” creates Stripe Checkout session with business metadata âœ…',
+                '/api/webhook â€” handles payment, auto-generates site via Gemini âœ…',
+                '/onboard â€” client-facing $150 setup payment page âœ…',
+                '/onboard/success â€” polls Supabase until site appears after payment âœ…',
+                'Supabase payments.sql â€” payment_status, stripe_session_id columns âœ…',
+                'Stripe webhook endpoint configured on Vercel âœ…',
+                'Admin /sites shows payment status badge (paid/free/unpaid) âœ…',
+                'Pitch page updated with Pay & Launch Now â†’ /onboard button âœ…',
+                'Fix webhook: idempotency check + extended polling to 120s âœ…',
+                'Debug Gemini timeout in webhook on Vercel cold start â†’ moved to backlog (Gemini 503 on all models from Vercel IPs)',
                 'Get 2 paying clients',
                 'Collect real feedback and fix actual issues',
               ],
             },
             {
-              week: 'Week 4 — Scale (Days 22–30)',
+              week: 'Week 4 â€” Scale (Days 22â€“30)',
               color: 'border-yellow-800',
-              badge: '🔄 CURRENT',
+              badge: 'ðŸ”„ CURRENT',
               badgeColor: 'bg-yellow-900/50 text-yellow-400',
               tasks: [
-                'Deploy to Vercel — kita-builder-systems.vercel.app ✅',
-                'Website Audit Module Phase 1 (Performance, SEO, Security, Tech, A11y) ✅',
-                'Website Audit Module Phase 2 (Crawler, Pages tab, History, Delete) ✅',
-                'Website Audit Module Phase 3 (PDF Report download) ✅',
-                'Audit pitch page at /audit-pitch ✅',
-                'Owner dashboard expanded to 10 tabs (Gallery, Reviews, Analytics, Settings) ✅',
-                'Staff booking — preferred staff picker in booking form ✅',
-                'Site analytics — page views tracking + Analytics tab ✅',
-                'White-label mode — agency branding via env vars ✅',
-                'Revenue dashboard — MRR tracker at /admin/revenue ✅',
-                'Client Management System (Phase 9) — clients table, list/profile/new pages, revenue by client tab, auto-upsert on booking ✅',
+                'Deploy to Vercel â€” kita-builder-systems.vercel.app âœ…',
+                'Website Audit Module Phase 1 (Performance, SEO, Security, Tech, A11y) âœ…',
+                'Website Audit Module Phase 2 (Crawler, Pages tab, History, Delete) âœ…',
+                'Website Audit Module Phase 3 (PDF Report download) âœ…',
+                'Audit pitch page at /audit-pitch âœ…',
+                'Owner dashboard expanded to 10 tabs (Gallery, Reviews, Analytics, Settings) âœ…',
+                'Staff booking â€” preferred staff picker in booking form âœ…',
+                'Site analytics â€” page views tracking + Analytics tab âœ…',
+                'White-label mode â€” agency branding via env vars âœ…',
+                'Revenue dashboard â€” MRR tracker at /admin/revenue âœ…',
+                'Client Management System (Phase 9) â€” clients table, list/profile/new pages, revenue by client tab, auto-upsert on booking âœ…',
                 'Custom domain (kita.build or kitasystems.com)',
                 'Twilio SMS reminders for owners + customers',
                 '$29/mo recurring billing via Stripe subscriptions',
@@ -573,11 +577,11 @@ export default function DocsPage() {
               <div className="space-y-1.5">
                 {week.tasks.map((task, i) => (
                   <div key={i} className="flex items-start gap-2 text-sm">
-                    <span className={task.includes('✅') ? 'text-green-400' : 'text-gray-600'}>
-                      {task.includes('✅') ? '✅' : '○'}
+                    <span className={task.includes('âœ…') ? 'text-green-400' : 'text-gray-600'}>
+                      {task.includes('âœ…') ? 'âœ…' : 'â—‹'}
                     </span>
-                    <span className={task.includes('✅') ? 'text-gray-500 line-through' : 'text-gray-300'}>
-                      {task.replace(' ✅', '')}
+                    <span className={task.includes('âœ…') ? 'text-gray-500 line-through' : 'text-gray-300'}>
+                      {task.replace(' âœ…', '')}
                     </span>
                   </div>
                 ))}
@@ -598,39 +602,39 @@ export default function DocsPage() {
       content: (
         <div className="space-y-4">
           <p className="text-gray-300 leading-relaxed">
-            A standalone website intelligence tool built inside the admin panel. Audits any public URL for performance, SEO, security, tech stack, and accessibility — all in one run.
+            A standalone website intelligence tool built inside the admin panel. Audits any public URL for performance, SEO, security, tech stack, and accessibility â€” all in one run.
           </p>
           <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
             <p className="text-blue-400 font-semibold text-sm mb-3">Phases 1 + 2 + 3 Complete</p>
             <div className="grid sm:grid-cols-2 gap-2 text-sm text-gray-400">
               {[
-                '⚡ Performance — Core Web Vitals via Google PSI',
-                '🔍 SEO — 12+ on-page checks via cheerio',
-                '🔒 Security — 8 HTTP security headers',
-                '🧩 Tech Stack — 30+ technology fingerprints',
-                '♿ Accessibility — WCAG 2.1 basic checks',
-                '📊 Score rings — animated 0-100 per category',
-                '🔎 Issue explorer — filter by severity + category',
-                '🕷️ Crawler — 10 internal pages, broken links, duplicate titles',
-                '📄 PDF Report — Forensic format, all sections, download button',
-                '🔍 History — search, delete, score trend comparison',
-                '🎨 Audit Pitch Page — /audit-pitch',
-                '🌑 Dark admin theme for /audit pages',
+                'âš¡ Performance â€” Core Web Vitals via Google PSI',
+                'ðŸ” SEO â€” 12+ on-page checks via cheerio',
+                'ðŸ”’ Security â€” 8 HTTP security headers',
+                'ðŸ§© Tech Stack â€” 30+ technology fingerprints',
+                'â™¿ Accessibility â€” WCAG 2.1 basic checks',
+                'ðŸ“Š Score rings â€” animated 0-100 per category',
+                'ðŸ”Ž Issue explorer â€” filter by severity + category',
+                'ðŸ•·ï¸ Crawler â€” 10 internal pages, broken links, duplicate titles',
+                'ðŸ“„ PDF Report â€” Forensic format, all sections, download button',
+                'ðŸ” History â€” search, delete, score trend comparison',
+                'ðŸŽ¨ Audit Pitch Page â€” /audit-pitch',
+                'ðŸŒ‘ Dark admin theme for /audit pages',
               ].map(item => (
-                <div key={item} className="flex gap-2"><span className="text-green-400">✓</span>{item}</div>
+                <div key={item} className="flex gap-2"><span className="text-green-400">âœ“</span>{item}</div>
               ))}
             </div>
           </div>
           <div className="flex gap-3">
             <a href="/audit" className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-2 rounded-lg transition">
-              Open Audit Tool →
+              Open Audit Tool â†’
             </a>
             <a href="/admin/docs/audit" className="flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium px-3 py-2 rounded-lg transition">
-              Full Audit Docs →
+              Full Audit Docs â†’
             </a>
           </div>
           <div className="bg-yellow-950/30 border border-yellow-900/50 rounded-xl p-3">
-            <p className="text-yellow-400 text-xs font-semibold mb-1">⚠️ Setup Required</p>
+            <p className="text-yellow-400 text-xs font-semibold mb-1">âš ï¸ Setup Required</p>
             <p className="text-yellow-200/60 text-xs">Run <code className="font-mono text-yellow-300">supabase/audit.sql</code> in Supabase SQL Editor before using.</p>
           </div>
         </div>
@@ -652,13 +656,13 @@ git push origin main`,
             },
             {
               step: '2. Connect to Vercel',
-              code: `# Go to vercel.com → New Project → Import GitHub repo
+              code: `# Go to vercel.com â†’ New Project â†’ Import GitHub repo
 # Framework: Next.js (auto-detected)
 # Click Deploy`,
             },
             {
               step: '3. Add Environment Variables in Vercel',
-              code: `# Vercel Dashboard → Your Project → Settings → Environment Variables
+              code: `# Vercel Dashboard â†’ Your Project â†’ Settings â†’ Environment Variables
 # Add all keys from your .env.local:
 NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -670,7 +674,7 @@ NEXT_PUBLIC_ADMIN_PIN`,
             },
             {
               step: '4. Redeploy + Test',
-              code: `# Vercel → Deployments → Redeploy
+              code: `# Vercel â†’ Deployments â†’ Redeploy
 # Test: yourdomain.vercel.app/admin
 # Generate a live site and test booking end-to-end`,
             },
@@ -697,27 +701,27 @@ NEXT_PUBLIC_ADMIN_PIN`,
 
           {/* Timezone Architecture */}
           <div className="bg-gray-950 border border-blue-800/50 rounded-xl p-5">
-            <p className="text-blue-400 font-bold text-sm mb-3">🌏 Timezone Architecture</p>
+            <p className="text-blue-400 font-bold text-sm mb-3">ðŸŒ Timezone Architecture</p>
             <div className="space-y-3 text-sm text-gray-400">
               <div>
                 <p className="text-white font-semibold mb-1">The Problem</p>
-                <p>A booking at "10:00" means completely different UTC times in Manila (UTC+8), Sydney (UTC+11), and Los Angeles (UTC-8). Without a timezone stored on each site, bookings appear at the wrong times when the owner and customer are in different zones. This is the #1 silent bug in booking apps — everything looks fine until a PH client serves AU customers.</p>
+                <p>A booking at "10:00" means completely different UTC times in Manila (UTC+8), Sydney (UTC+11), and Los Angeles (UTC-8). Without a timezone stored on each site, bookings appear at the wrong times when the owner and customer are in different zones. This is the #1 silent bug in booking apps â€” everything looks fine until a PH client serves AU customers.</p>
               </div>
               <div>
-                <p className="text-white font-semibold mb-1">Our Approach — Local Time Strings + IANA Timezone</p>
-                <p>We store <code className="text-blue-300 font-mono">booking_date</code> (YYYY-MM-DD) and <code className="text-blue-300 font-mono">booking_time</code> (HH:MM) as plain strings — NOT UTC timestamps. This is intentional:</p>
+                <p className="text-white font-semibold mb-1">Our Approach â€” Local Time Strings + IANA Timezone</p>
+                <p>We store <code className="text-blue-300 font-mono">booking_date</code> (YYYY-MM-DD) and <code className="text-blue-300 font-mono">booking_time</code> (HH:MM) as plain strings â€” NOT UTC timestamps. This is intentional:</p>
                 <ul className="mt-2 space-y-1 ml-4 list-disc text-gray-500">
-                  <li>Service businesses think in local time ("10am Monday") — UTC would confuse owners</li>
-                  <li>No DST conversion bugs on display — "10:00" always shows as "10:00"</li>
+                  <li>Service businesses think in local time ("10am Monday") â€” UTC would confuse owners</li>
+                  <li>No DST conversion bugs on display â€” "10:00" always shows as "10:00"</li>
                   <li>The <code className="text-blue-300 font-mono">sites.timezone</code> field (IANA e.g. "Australia/Sydney") provides context for calendar exports and cross-timezone calculations</li>
-                  <li>The <code className="text-blue-300 font-mono">bookings.site_timezone</code> column is a snapshot of the site timezone at booking time — immutable record</li>
+                  <li>The <code className="text-blue-300 font-mono">bookings.site_timezone</code> column is a snapshot of the site timezone at booking time â€” immutable record</li>
                 </ul>
               </div>
               <div>
                 <p className="text-white font-semibold mb-1">What Changes Based on Timezone</p>
                 <div className="grid sm:grid-cols-2 gap-2 mt-2">
                   {[
-                    { item: 'Minimum date in booking form', how: 'getTodayInTimezone(siteTimezone) — not browser date' },
+                    { item: 'Minimum date in booking form', how: 'getTodayInTimezone(siteTimezone) â€” not browser date' },
                     { item: 'Next available slot suggestion', how: 'getNextAvailableSlot() uses siteTimezone to skip past times' },
                     { item: 'Calendar export (.ics / Google)', how: 'buildGoogleCalendarLink() uses siteTimezone for DTSTART' },
                     { item: 'Booking display in dashboard', how: 'formatBookingDateTime(date, time, timezone)' },
@@ -732,9 +736,9 @@ NEXT_PUBLIC_ADMIN_PIN`,
               <div>
                 <p className="text-white font-semibold mb-1">Key Files</p>
                 <div className="space-y-1 font-mono text-xs text-gray-500">
-                  <p><span className="text-blue-300">lib/timezones.ts</span> — 18 IANA timezones, formatBookingDateTime(), getTodayInTimezone()</p>
-                  <p><span className="text-blue-300">lib/booking-utils.ts</span> — checkSlotAvailability(), getNextAvailableSlot()</p>
-                  <p><span className="text-blue-300">supabase/phase6.sql</span> — sites.timezone + bookings.site_timezone columns</p>
+                  <p><span className="text-blue-300">lib/timezones.ts</span> â€” 18 IANA timezones, formatBookingDateTime(), getTodayInTimezone()</p>
+                  <p><span className="text-blue-300">lib/booking-utils.ts</span> â€” checkSlotAvailability(), getNextAvailableSlot()</p>
+                  <p><span className="text-blue-300">supabase/phase6.sql</span> â€” sites.timezone + bookings.site_timezone columns</p>
                 </div>
               </div>
             </div>
@@ -742,28 +746,28 @@ NEXT_PUBLIC_ADMIN_PIN`,
 
           {/* Race Condition */}
           <div className="bg-gray-950 border border-red-800/50 rounded-xl p-5">
-            <p className="text-red-400 font-bold text-sm mb-3">⚡ Double-Booking Race Condition Prevention</p>
+            <p className="text-red-400 font-bold text-sm mb-3">âš¡ Double-Booking Race Condition Prevention</p>
             <div className="space-y-3 text-sm text-gray-400">
               <div>
                 <p className="text-white font-semibold mb-1">The Problem</p>
-                <p>Two customers check the same slot at the same second. Both pass the client-side availability check. Both hit the server at the same time. Without a server-side guard, both get confirmed — a double-booking.</p>
+                <p>Two customers check the same slot at the same second. Both pass the client-side availability check. Both hit the server at the same time. Without a server-side guard, both get confirmed â€” a double-booking.</p>
               </div>
               <div>
                 <p className="text-white font-semibold mb-1">Two-Layer Defence</p>
                 <div className="space-y-2">
                   <div className="bg-gray-900 rounded-lg p-3">
-                    <p className="text-yellow-400 text-xs font-bold mb-1">Layer 1 — Client-side (UX helper only)</p>
+                    <p className="text-yellow-400 text-xs font-bold mb-1">Layer 1 â€” Client-side (UX helper only)</p>
                     <p className="text-gray-500 text-xs"><code className="text-blue-300">checkSlotAvailability()</code> in BookingForm queries Supabase before submit. Shows "This time is already booked" instantly. Fast but NOT race-condition safe.</p>
                   </div>
                   <div className="bg-gray-900 rounded-lg p-3">
-                    <p className="text-green-400 text-xs font-bold mb-1">Layer 2 — Server-side (the real guard) ✅</p>
+                    <p className="text-green-400 text-xs font-bold mb-1">Layer 2 â€” Server-side (the real guard) âœ…</p>
                     <p className="text-gray-500 text-xs"><code className="text-blue-300">/api/notify</code> queries bookings with a time window overlap check before inserting. Returns HTTP 409 if a conflict is found. This runs after the client check and is the authoritative gate. No two bookings can conflict regardless of simultaneous submissions.</p>
                   </div>
                 </div>
               </div>
               <div>
                 <p className="text-white font-semibold mb-1">How the Overlap Check Works</p>
-                <pre className="bg-gray-900 rounded-lg p-3 text-xs text-green-300 font-mono overflow-x-auto">{`// In /api/notify — runs server-side before every insert
+                <pre className="bg-gray-900 rounded-lg p-3 text-xs text-green-300 font-mono overflow-x-auto">{`// In /api/notify â€” runs server-side before every insert
 const { count } = await supabase
   .from('bookings')
   .select('id', { count: 'exact', head: true })
@@ -777,11 +781,11 @@ if (count > 0) return 409 // Slot taken`}</pre>
               </div>
               <div>
                 <p className="text-white font-semibold mb-1">What Happens on 409</p>
-                <p>BookingForm catches the 409 and shows: <span className="text-red-400 italic">"This time slot has just been booked by someone else. Please choose a different time."</span> The customer picks a new slot — no double-booking ever gets saved.</p>
+                <p>BookingForm catches the 409 and shows: <span className="text-red-400 italic">"This time slot has just been booked by someone else. Please choose a different time."</span> The customer picks a new slot â€” no double-booking ever gets saved.</p>
               </div>
               <div className="bg-yellow-950/30 border border-yellow-900/50 rounded-lg p-3">
-                <p className="text-yellow-400 text-xs font-semibold mb-1">⚠️ Future Enhancement — Database Unique Constraint</p>
-                <p className="text-gray-500 text-xs">For even stronger guarantees under extreme load, add a Postgres unique index: <code className="text-yellow-300 font-mono">UNIQUE (site_id, booking_date, booking_time)</code> in Supabase. This makes double-booking impossible at the DB level. Not done yet — the server-side check is sufficient for MVP scale.</p>
+                <p className="text-yellow-400 text-xs font-semibold mb-1">âš ï¸ Future Enhancement â€” Database Unique Constraint</p>
+                <p className="text-gray-500 text-xs">For even stronger guarantees under extreme load, add a Postgres unique index: <code className="text-yellow-300 font-mono">UNIQUE (site_id, booking_date, booking_time)</code> in Supabase. This makes double-booking impossible at the DB level. Not done yet â€” the server-side check is sufficient for MVP scale.</p>
               </div>
             </div>
           </div>
@@ -803,10 +807,10 @@ if (count > 0) return 409 // Slot taken`}</pre>
             <div>
               <p className="text-white text-sm font-semibold mb-1">What's in the email?</p>
               <div className="text-gray-400 text-sm space-y-1">
-                <div>• Customer name + phone</div>
-                <div>• Service booked + date + time</div>
-                <div>• Car model (mechanic) or Pet name (pet clinic)</div>
-                <div>• Any notes from the customer</div>
+                <div>â€¢ Customer name + phone</div>
+                <div>â€¢ Service booked + date + time</div>
+                <div>â€¢ Car model (mechanic) or Pet name (pet clinic)</div>
+                <div>â€¢ Any notes from the customer</div>
               </div>
             </div>
             <div>
@@ -815,14 +819,14 @@ if (count > 0) return 409 // Slot taken`}</pre>
               <p className="text-gray-600 text-xs mt-1">Change to your own domain after adding it in Resend dashboard (free)</p>
             </div>
             <div>
-              <p className="text-white text-sm font-semibold mb-1">V2 — Twilio SMS</p>
+              <p className="text-white text-sm font-semibold mb-1">V2 â€” Twilio SMS</p>
               <p className="text-gray-400 text-sm">Add <code className="text-blue-300 font-mono">TWILIO_AUTH_TOKEN</code> + <code className="text-blue-300 font-mono">TWILIO_ACCOUNT_SID</code> to .env.local and the notify route will also fire an SMS to the owner's mobile.</p>
             </div>
           </div>
         </div>
       ),
     },
-    // ─── FEATURES COMPLETED ───────────────────────────────────────
+    // â”€â”€â”€ FEATURES COMPLETED â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     {
       id: 'features',
       title: 'Features Completed',
@@ -833,153 +837,153 @@ if (count > 0) return 409 // Slot taken`}</pre>
 
           {[
             {
-              category: '🔧 Admin CMS (Your Control Panel)',
+              category: 'ðŸ”§ Admin CMS (Your Control Panel)',
               items: [
-                'Dashboard with live stats — total sites, bookings, pending, templates ready',
-                'Generate Site — AI-powered form to create any client site in ~10 seconds',
-                'All Sites — table view with search, filter by type, payment status badge, delete',
-                'Revenue Dashboard (/admin/revenue) — MRR, setup revenue, annual projection, CSV export',
-                'Templates marketplace — 11 templates, gradient cards, slide-over detail preview',
-                'API Keys & Credentials — reference panel for all service accounts + .env template',
-                'Settings — logo uploader via Supabase Storage, admin PIN config',
-                'Documentation — this page (live, searchable, collapsible sections)',
-                'Pitch Page link — direct access to the client-facing outreach page',
+                'Dashboard with live stats â€” total sites, bookings, pending, templates ready',
+                'Generate Site â€” AI-powered form to create any client site in ~10 seconds',
+                'All Sites â€” table view with search, filter by type, payment status badge, delete',
+                'Revenue Dashboard (/admin/revenue) â€” MRR, setup revenue, annual projection, CSV export',
+                'Templates marketplace â€” 11 templates, gradient cards, slide-over detail preview',
+                'API Keys & Credentials â€” reference panel for all service accounts + .env template',
+                'Settings â€” logo uploader via Supabase Storage, admin PIN config',
+                'Documentation â€” this page (live, searchable, collapsible sections)',
+                'Pitch Page link â€” direct access to the client-facing outreach page',
                 'PIN-protected login with session persistence',
               ],
             },
             {
-              category: '🌐 Public Client Site (/{slug})',
+              category: 'ðŸŒ Public Client Site (/{slug})',
               items: [
                 'Sticky mobile nav with business name + Book Now CTA',
-                'Hero section — AI-generated headline, subtitle, CTA, background image',
-                'Services section — responsive grid, price displayed inline, Book Now per card',
-                'About section — AI-generated business description',
-                'Business hours display — shows Mon–Sun hours from owner dashboard',
-                'Staff / team section — avatar initials, name, role',
-                'Booking form — service selector, name, phone, date, time, conditional fields',
-                'Custom booking fields — car model (mechanic), pet name (pet clinic)',
-                'Testimonials section — AI-generated customer reviews with star ratings',
+                'Hero section â€” AI-generated headline, subtitle, CTA, background image',
+                'Services section â€” responsive grid, price displayed inline, Book Now per card',
+                'About section â€” AI-generated business description',
+                'Business hours display â€” shows Monâ€“Sun hours from owner dashboard',
+                'Staff / team section â€” avatar initials, name, role',
+                'Booking form â€” service selector, name, phone, date, time, conditional fields',
+                'Custom booking fields â€” car model (mechanic), pet name (pet clinic)',
+                'Testimonials section â€” AI-generated customer reviews with star ratings',
                 'Footer with KITA branding and owner login link',
-                'Mobile responsive — tested on 375px, works on all screen sizes',
+                'Mobile responsive â€” tested on 375px, works on all screen sizes',
               ],
             },
             {
-              category: '📋 Owner Dashboard (/{slug}/dashboard)',
+              category: 'ðŸ“‹ Owner Dashboard (/{slug}/dashboard)',
               items: [
-                'PIN login — secure access, default 1234',
-                'PIN change — Settings tab, validates match + min 4 chars',
-                'Stats bar — pending bookings, confirmed, services count, staff count',
-                'Bookings tab — full list, confirm/cancel buttons, CSV export',
-                'Services tab — inline edit name/price/duration, add/delete service, saves instantly',
-                'Staff tab — add/edit/remove team members with name and role',
-                'Hours tab — toggle open/closed per day, time pickers, Save button',
-                'About tab — edit section title and body text, live preview, Save button',
-                'Reviews tab — add/edit/remove testimonials, star rating picker, save',
-                'Gallery tab — multi-photo upload, delete, saves to Supabase Storage',
-                'Gallery renders on public site — "Our Work" section, 2-col mobile / 3-col desktop, hover zoom',
-                'Settings tab — business logo upload + PIN change',
-                'AI Assistant tab — chat-based site editor, 9 agent tools',
-                'View Site link — opens public site in new tab',
+                'PIN login â€” secure access, default 1234',
+                'PIN change â€” Settings tab, validates match + min 4 chars',
+                'Stats bar â€” pending bookings, confirmed, services count, staff count',
+                'Bookings tab â€” full list, confirm/cancel buttons, CSV export',
+                'Services tab â€” inline edit name/price/duration, add/delete service, saves instantly',
+                'Staff tab â€” add/edit/remove team members with name and role',
+                'Hours tab â€” toggle open/closed per day, time pickers, Save button',
+                'About tab â€” edit section title and body text, live preview, Save button',
+                'Reviews tab â€” add/edit/remove testimonials, star rating picker, save',
+                'Gallery tab â€” multi-photo upload, delete, saves to Supabase Storage',
+                'Gallery renders on public site â€” "Our Work" section, 2-col mobile / 3-col desktop, hover zoom',
+                'Settings tab â€” business logo upload + PIN change',
+                'AI Assistant tab â€” chat-based site editor, 9 agent tools',
+                'View Site link â€” opens public site in new tab',
               ],
             },
             {
-              category: '🤖 AI Assistant (Agent Tools)',
+              category: 'ðŸ¤– AI Assistant (Agent Tools)',
               items: [
-                'update_service_price — "change my haircut to $80"',
-                'update_service_name — "rename Beard Trim to Hot Towel Shave"',
-                'update_service_duration — "make oil change 45 minutes"',
-                'add_service — "add Deep Conditioning $45 45min"',
-                'delete_service — "remove the blowout service"',
-                'update_headline — "change the title to Portland\'s Best Barbers"',
-                'update_subheadline — "change subtitle to..."',
-                'update_about — "update our about section to..."',
-                'list_services — "show me my current services"',
-                'Changes apply to live site in real time — no reload needed',
+                'update_service_price â€” "change my haircut to $80"',
+                'update_service_name â€” "rename Beard Trim to Hot Towel Shave"',
+                'update_service_duration â€” "make oil change 45 minutes"',
+                'add_service â€” "add Deep Conditioning $45 45min"',
+                'delete_service â€” "remove the blowout service"',
+                'update_headline â€” "change the title to Portland\'s Best Barbers"',
+                'update_subheadline â€” "change subtitle to..."',
+                'update_about â€” "update our about section to..."',
+                'list_services â€” "show me my current services"',
+                'Changes apply to live site in real time â€” no reload needed',
               ],
             },
             {
-              category: '💳 Payments (Stripe)',
+              category: 'ðŸ’³ Payments (Stripe)',
               items: [
-                '/onboard — client-facing $150 setup payment page with features list',
-                '/onboard/success — polls Supabase until site appears after payment',
-                '/api/checkout — creates Stripe Checkout session with business metadata',
-                '/api/webhook — handles checkout.session.completed, auto-generates site',
-                'Idempotency check — prevents duplicate site creation for same session',
+                '/onboard â€” client-facing $150 setup payment page with features list',
+                '/onboard/success â€” polls Supabase until site appears after payment',
+                '/api/checkout â€” creates Stripe Checkout session with business metadata',
+                '/api/webhook â€” handles checkout.session.completed, auto-generates site',
+                'Idempotency check â€” prevents duplicate site creation for same session',
                 'maxDuration=60 on webhook to prevent Vercel timeout',
-                'payment_status column on sites table — paid / free / unpaid',
-                'Test mode active — use card 4242 4242 4242 4242',
-                'Pitch page has Pay & Launch Now → /onboard button',
+                'payment_status column on sites table â€” paid / free / unpaid',
+                'Test mode active â€” use card 4242 4242 4242 4242',
+                'Pitch page has Pay & Launch Now â†’ /onboard button',
               ],
             },
             {
-              category: '📧 Notifications (Resend)',
+              category: 'ðŸ“§ Notifications (Resend)',
               items: [
                 'Email sent to NOTIFICATION_EMAIL on every confirmed booking',
                 'Email includes: customer name, phone, service, date, time, notes, car/pet field',
                 'HTML email template with KITA branding',
                 'Works in test mode with resend.dev sender (no domain required)',
-                'NOTIFICATION_EMAIL is primary — bypasses domain restriction for testing',
+                'NOTIFICATION_EMAIL is primary â€” bypasses domain restriction for testing',
               ],
             },
             {
-              category: '🗄️ Database (Supabase)',
+              category: 'ðŸ—„ï¸ Database (Supabase)',
               items: [
-                'sites — slug, business_name, type, owner_email, pin, theme_json, payment_status, stripe fields',
-                'services — linked to site, name, price, duration',
-                'staff — linked to site, name, role, avatar_url',
-                'bookings — all customer booking fields including car_model, pet_name, notes, status',
-                'Storage bucket kita-assets — logo uploads via /api/upload-logo',
+                'sites â€” slug, business_name, type, owner_email, pin, theme_json, payment_status, stripe fields',
+                'services â€” linked to site, name, price, duration',
+                'staff â€” linked to site, name, role, avatar_url',
+                'bookings â€” all customer booking fields including car_model, pet_name, notes, status',
+                'Storage bucket kita-assets â€” logo uploads via /api/upload-logo',
                 'Row Level Security enabled on all tables (public access for MVP)',
               ],
             },
             {
-              category: '📅 Booking System',
+              category: 'ðŸ“… Booking System',
               items: [
-                'Booking form — service selector, name, phone, date, time, conditional fields',
-                'Preferred Staff picker — optional dropdown, "No preference" default',
-                'Custom fields — car model (mechanic), pet name (pet clinic)',
-                'Custom notes label per template — "Your Concern" (clinic), "Guests + Notes" (cafe), "Preferred Style" (salon), "Reason for Visit" (pet), "Additional Notes" (mechanic)',
-                'notes_required flag — clinic marks concern as required, others optional',
-                'Custom placeholder text per template — contextually relevant prompts',
-                'Staff selection saved to bookings — staff_id + staff_name columns',
-                'Staff name shown in owner dashboard bookings with 👤 icon',
+                'Booking form â€” service selector, name, phone, date, time, conditional fields',
+                'Preferred Staff picker â€” optional dropdown, "No preference" default',
+                'Custom fields â€” car model (mechanic), pet name (pet clinic)',
+                'Custom notes label per template â€” "Your Concern" (clinic), "Guests + Notes" (cafe), "Preferred Style" (salon), "Reason for Visit" (pet), "Additional Notes" (mechanic)',
+                'notes_required flag â€” clinic marks concern as required, others optional',
+                'Custom placeholder text per template â€” contextually relevant prompts',
+                'Staff selection saved to bookings â€” staff_id + staff_name columns',
+                'Staff name shown in owner dashboard bookings with ðŸ‘¤ icon',
                 'Staff name included in booking notification email',
-                'Booking confirmation — shows service, staff name, date, time',
+                'Booking confirmation â€” shows service, staff name, date, time',
                 'CSV export includes Staff column',
               ],
             },
             {
-              category: '📊 Site Analytics',
+              category: 'ðŸ“Š Site Analytics',
               items: [
-                'page_views table — tracks every visit to a client site (site_id, viewed_at, path)',
-                '/api/track — POST endpoint, records page views, silently fails if error',
-                'PageTracker component — client-side, fires on every public site load, non-blocking',
-                'Analytics tab in owner dashboard — 14-day page view bar chart, weekly comparison, booking status breakdown',
-                'Views trend — shows % change vs last week with ↑/↓ indicator',
-                'Admin Revenue page — Views (30d) column per site, total views stat card',
+                'page_views table â€” tracks every visit to a client site (site_id, viewed_at, path)',
+                '/api/track â€” POST endpoint, records page views, silently fails if error',
+                'PageTracker component â€” client-side, fires on every public site load, non-blocking',
+                'Analytics tab in owner dashboard â€” 14-day page view bar chart, weekly comparison, booking status breakdown',
+                'Views trend â€” shows % change vs last week with â†‘/â†“ indicator',
+                'Admin Revenue page â€” Views (30d) column per site, total views stat card',
                 'CSV export includes Views (30d) column',
-                'supabase/analytics.sql — run to create page_views table',
+                'supabase/analytics.sql â€” run to create page_views table',
               ],
             },
             {
-              category: '🏷️ White Label Mode',
+              category: 'ðŸ·ï¸ White Label Mode',
               items: [
-                'NEXT_PUBLIC_WHITE_LABEL_MODE=on/off — global toggle via .env.local or Vercel env vars',
-                'NEXT_PUBLIC_AGENCY_NAME — your agency name replaces "KITA Systems" everywhere',
-                'NEXT_PUBLIC_AGENCY_TAGLINE — your tagline in public site footer',
-                'NEXT_PUBLIC_AGENCY_URL — your website linked in footer',
-                'NEXT_PUBLIC_AGENCY_LOGO_URL — your logo URL for branding',
-                'Public site footer — shows agency brand when white-label on, KITA brand when off',
-                'Owner dashboard header subtitle — shows agency name when white-label on',
-                'Per-site override via theme_json.white_label — custom_footer, hide_footer_brand',
-                'Admin Settings page — full white-label config reference + env template',
+                'NEXT_PUBLIC_WHITE_LABEL_MODE=on/off â€” global toggle via .env.local or Vercel env vars',
+                'NEXT_PUBLIC_AGENCY_NAME â€” your agency name replaces "KITA Systems" everywhere',
+                'NEXT_PUBLIC_AGENCY_TAGLINE â€” your tagline in public site footer',
+                'NEXT_PUBLIC_AGENCY_URL â€” your website linked in footer',
+                'NEXT_PUBLIC_AGENCY_LOGO_URL â€” your logo URL for branding',
+                'Public site footer â€” shows agency brand when white-label on, KITA brand when off',
+                'Owner dashboard header subtitle â€” shows agency name when white-label on',
+                'Per-site override via theme_json.white_label â€” custom_footer, hide_footer_brand',
+                'Admin Settings page â€” full white-label config reference + env template',
               ],
             },
             {
-              category: '🚀 Deployment',
+              category: 'ðŸš€ Deployment',
               items: [
-                'Deployed to Vercel — kita-builder-systems.vercel.app',
-                'GitHub repo — github.com/dennymartinez01/Kita-Builder-Systems',
+                'Deployed to Vercel â€” kita-builder-systems.vercel.app',
+                'GitHub repo â€” github.com/dennymartinez01/Kita-Builder-Systems',
                 'All env vars configured in Vercel dashboard',
                 'Stripe webhook endpoint configured for production URL',
                 'Auto-deploys on every push to main branch',
@@ -993,7 +997,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
               <div className="p-4 space-y-2">
                 {group.items.map((item, i) => (
                   <div key={i} className="flex items-start gap-2 text-sm">
-                    <span className="text-green-400 shrink-0 mt-0.5">✅</span>
+                    <span className="text-green-400 shrink-0 mt-0.5">âœ…</span>
                     <span className="text-gray-400">{item}</span>
                   </div>
                 ))}
@@ -1003,161 +1007,442 @@ if (count > 0) return 409 // Slot taken`}</pre>
         </div>
       ),
     },
-    // ─── RECOMMENDATIONS ──────────────────────────────────────────
+    // â”€â”€â”€ RECOMMENDATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     {
       id: 'recommendations',
       title: 'Feature Roadmap & Recommendations',
       icon: Lightbulb,
       content: (
         <div className="space-y-8">
+
+          {/* Documentation standard */}
           <div className="bg-gray-950 border border-blue-900/50 rounded-xl p-4">
-            <p className="text-blue-400 font-semibold text-sm mb-2">📋 Documentation Standard</p>
+            <p className="text-blue-400 font-semibold text-sm mb-2">ðŸ“‹ Documentation Standard</p>
             <p className="text-gray-400 text-xs leading-relaxed">
-              Every feature below follows this format: <strong className="text-white">What</strong> (what it does), <strong className="text-white">Why</strong> (the business or user pain it solves), <strong className="text-white">Who</strong> (Operator / Client / Customer), <strong className="text-white">Status</strong>. This helps any developer, business partner, or investor understand the reasoning behind every decision.
+              Every feature follows: <strong className="text-white">What</strong> Â· <strong className="text-white">Why</strong> Â· <strong className="text-white">Who</strong> (Operator / Client / Customer) Â· <strong className="text-white">Status</strong>. This lets any developer, partner, or investor understand the reasoning behind every decision.
             </p>
           </div>
 
-          {/* ── FOR THE OPERATOR (You — Admin) ── */}
+          {/* Architecture principle */}
+          <div className="bg-yellow-950/30 border border-yellow-800/50 rounded-xl p-4">
+            <p className="text-yellow-400 font-semibold text-sm mb-2">â­ Core Architectural Principle</p>
+            <p className="text-gray-300 text-xs leading-relaxed mb-3">
+              <strong className="text-white">Plan defines default capabilities. Entitlements determine what a client actually has. Admin overrides modify those entitlements.</strong>
+            </p>
+            <div className="bg-gray-900 rounded-lg p-3 font-mono text-xs text-gray-400 leading-6">
+              <p>PLAN â†’ Default Entitlements â†’ Admin Overrides â†’ Effective Entitlements</p>
+              <p className="text-gray-600 mt-1">e.g. Growth plan sets WhatsApp=true Â· Admin override sets WhatsApp=false Â· Client gets WhatsApp=false</p>
+            </div>
+            <p className="text-gray-500 text-xs mt-2">This single decision solves Customer Accounts, WhatsApp, Coupons, White-Label, Leads, and every future plan-gated feature without scattering <code className="text-yellow-300 font-mono">if plan === "growth"</code> checks across hundreds of components.</p>
+          </div>
+
+          {/* Priority tiers legend */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+            <p className="text-white font-semibold text-sm mb-3">Priority Tiers</p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              {[
+                { tier: 'ðŸ”´ Foundation', desc: 'Architectural decisions that affect everything. Build these before adding new user-facing features.', color: 'border-red-800 bg-red-950/20' },
+                { tier: 'ðŸŸ  Commerce', desc: 'Next revenue-generating capabilities. Trial workflow, subscription overrides, coupons, customer accounts.', color: 'border-orange-800 bg-orange-950/20' },
+                { tier: 'ðŸŸ¡ CRM & Growth', desc: 'Leads master database, outreach campaigns, WhatsApp, attribution tracking.', color: 'border-yellow-800 bg-yellow-950/20' },
+                { tier: 'ðŸŸ¢ Intelligence', desc: 'Business ranking, geographic analytics, heatmaps, admin impersonation.', color: 'border-green-800 bg-green-950/20' },
+              ].map(t => (
+                <div key={t.tier} className={`border rounded-xl p-3 ${t.color}`}>
+                  <p className="font-bold text-white mb-1">{t.tier}</p>
+                  <p className="text-gray-500 leading-relaxed">{t.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* â”€â”€ GROUP 1 â€” Subscription, Trial & Entitlement â”€â”€ */}
           <div>
-            <h3 className="text-white font-bold text-sm mb-4 flex items-center gap-2">
-              <span className="bg-purple-900/50 text-purple-400 text-xs px-2 py-0.5 rounded-full">Operator</span>
-              For You — The Admin / Agency
+            <h3 className="text-white font-bold text-sm mb-1 flex items-center gap-2">
+              <span className="bg-red-900/50 text-red-400 text-xs px-2 py-0.5 rounded-full">ðŸ”´ Foundation</span>
+              Group 1 â€” Subscription, Trial & Entitlement Management
             </h3>
+            <p className="text-gray-600 text-xs mb-4">The engine that gates every plan-dependent feature. Build this before customer accounts, WhatsApp, coupons, or any other plan-gated capability.</p>
             <div className="space-y-3">
               {[
-                { feature: 'AI Site Generator (3-step form)', what: 'Client selects business type, configures services + currency, enters details — AI generates the full site in ~10 seconds.', why: 'Removes the need for manual site building. One person can generate 10 sites per day. Time = money.', status: '✅ Built' },
-                { feature: 'Revenue Dashboard / MRR Tracker', what: 'Shows monthly recurring revenue, total setup fees, annual projection, and per-site breakdown with CSV export.', why: 'Without visibility into revenue, it is impossible to make decisions about pricing, scaling, or client retention.', status: '✅ Built' },
-                { feature: 'White-Label Mode', what: 'Removes all KITA branding and replaces with your agency name, logo, tagline, and URL across all client sites and dashboards.', why: 'Agencies reselling KITA need to present it as their own product. White-labelling is a standard requirement for B2B SaaS resellers.', status: '✅ Built' },
-                { feature: 'Website Audit Module (Phases 1-3)', what: 'Forensic audit of any URL — Performance, SEO, Security, Tech Stack, Accessibility, 10-page crawler, PDF report.', why: 'Auditing a prospect\'s existing site before a sales call is one of the most powerful sales tools. "Your SEO score is 42/100 — here\'s what we\'d fix" closes deals.', status: '✅ Built' },
-                { feature: 'Client Management System (Phase 9)', what: 'Track all your clients: subscription plan, status, MRR contribution, linked sites, and internal notes. Auto-creates client record when a customer books with email.', why: 'Without visibility into who your clients are, you cannot make retention, pricing, or scaling decisions. Client records link sites to people and enable proper MRR tracking.', status: '✅ Built — Phase 9' },
-                { feature: 'Stripe $29/mo Recurring Billing', what: 'Auto-charge clients monthly using Stripe subscriptions. No manual invoicing.', why: 'Manual billing does not scale. Without automated recurring billing, the business cannot grow beyond 5-10 clients.', status: '⏳ Backlog — needs Stripe live keys' },
-                { feature: 'Gemini Webhook Auto-Generation', what: 'After a client pays $150 via /onboard, Gemini auto-generates their site and they see it within 30 seconds.', why: 'The full value of the product is the magic moment when someone pays and instantly gets a live site. Currently blocked by Gemini 503 errors from Vercel IPs.', status: '⏳ Backlog — Gemini API issue' },
-                { feature: 'Smart Leads Engine', what: 'Aggregate all contact-form inquiries and booking emails across every KITA client site into a central leads database. Run intelligent cross-business promotions — e.g. a customer who booked a haircut at Salon A gets a targeted offer from Mechanic B, both KITA clients.', why: 'Most booking platforms capture a transaction and stop there. KITA sits across multiple local businesses and can connect their customer bases — creating a local loyalty network that none of them could build alone. This becomes a standalone revenue product.', who: 'Operator', status: '📋 Planned — Phase 10' },
-                { feature: 'Bulk Demo Site Generator', what: 'Generate 5 demo sites across different niches in one click for outreach purposes.', why: 'When pitching to a barbershop, showing a live barbershop demo is 10x more persuasive than a generic demo. Speed of demo creation = more outreach per day.', status: '📋 Planned — Phase 8' },
+                {
+                  feature: 'Stripe $29/mo Recurring Billing',
+                  what: 'Auto-charge clients monthly via Stripe Subscriptions using a Price ID. No manual invoicing.',
+                  why: 'Manual billing does not scale past 10 clients. Recurring billing is the foundation of the entire revenue model.',
+                  who: 'Operator',
+                  status: 'â³ Backlog â€” needs Stripe Price IDs',
+                },
+                {
+                  feature: 'Feature & Entitlement Engine â­',
+                  what: 'A features table defines all gated capabilities (WhatsApp, coupons, customer accounts, white-label, leads, analytics, heatmaps, custom domains). A plan_features table maps defaults. An admin_overrides table allows per-client exceptions. Effective entitlements = plan defaults + admin overrides.',
+                  why: 'Without this, every new feature requires scattered if-plan checks across components and API routes. With it, adding a new gated feature is a single DB row.',
+                  who: 'Operator',
+                  status: 'ðŸ”´ Foundation â€” build before Phase 11',
+                },
+                {
+                  feature: 'Trial Duration Configuration',
+                  what: 'Store trial_duration_value + trial_duration_unit (or starts_at / expires_at) on the client record instead of hardcoding "14 days" in the application. Admin can set 7, 14, 21, 30, or 60-day trials without code changes.',
+                  why: 'Different prospects need different trial lengths. A hardcoded 14-day trial cannot be extended for a high-value prospect without a code change.',
+                  who: 'Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 11',
+                },
+                {
+                  feature: 'Trial Account Request System',
+                  what: 'Public form at /trial â€” prospect fills business info, contact, country, business type, intended use, accepts privacy notice. Admin sees Pending Trial Requests list with Approve/Reject. On approve: account created, trial plan applied, entitlements generated, welcome email sent with login link + expiry date.',
+                  why: 'A person requesting a trial is not yet a client. A structured request workflow separates interest from activation, enables screening, and creates an audit trail.',
+                  who: 'Operator + Customer',
+                  status: 'ðŸ“‹ Planned â€” Phase 11',
+                },
+                {
+                  feature: 'Admin Subscription Override',
+                  what: 'On /admin/clients/[id]: Upgrade / Downgrade / Extend / Pause / Cancel / Terminate buttons. Per-client feature toggle checkboxes (WhatsApp, coupons, customer accounts, white-label, leads, analytics) that override plan defaults. Every change logged to the event stream.',
+                  why: 'During startup, you need to manually adjust what each client can access â€” giving a trial client Growth features, or revoking a specific feature without downgrading their plan.',
+                  who: 'Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 11',
+                },
+                {
+                  feature: 'Site Creation Wizard (9-step)',
+                  what: 'Replace the current 3-step generate form with a full wizard: (1) Business Owner â€” existing or new client, (2) Business Info, (3) Business Type, (4) Subscription Plan, (5) Trial Duration, (6) Feature Entitlements, (7) Generate Site, (8) Review, (9) Activate. Admin profile pre-fills with a checkbox.',
+                  why: 'Site creation now involves a client record, subscription selection, and entitlement setup. A wizard enforces the correct order and prevents orphaned sites.',
+                  who: 'Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 11',
+                },
               ].map((item, i) => (
                 <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <p className="text-white font-semibold text-sm">{item.feature}</p>
                     <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 font-medium ${
-                      item.status.startsWith('✅') ? 'bg-green-900/50 text-green-400' :
-                      item.status.startsWith('⏳') ? 'bg-red-900/50 text-red-400' :
+                      item.status.startsWith('âœ…') ? 'bg-green-900/50 text-green-400' :
+                      item.status.startsWith('â³') ? 'bg-red-900/50 text-red-400' :
+                      item.status.startsWith('ðŸ”´') ? 'bg-red-900/50 text-red-400' :
                       'bg-gray-800 text-gray-500'
                     }`}>{item.status}</span>
                   </div>
-                  <p className="text-gray-400 text-xs mb-1.5"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
-                  <p className="text-gray-500 text-xs"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-400 text-xs mb-1"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs mb-1"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-600 text-xs"><span className="text-purple-400 font-medium">Who:</span> {item.who}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* ── FOR THE CLIENT (Business Owner) ── */}
+          {/* â”€â”€ GROUP 2 â€” CRM, Leads & Outreach â”€â”€ */}
           <div>
-            <h3 className="text-white font-bold text-sm mb-4 flex items-center gap-2">
-              <span className="bg-blue-900/50 text-blue-400 text-xs px-2 py-0.5 rounded-full">Client</span>
-              For Your Client — The Business Owner
+            <h3 className="text-white font-bold text-sm mb-1 flex items-center gap-2">
+              <span className="bg-orange-900/50 text-orange-400 text-xs px-2 py-0.5 rounded-full">ðŸŸ  Commerce</span>
+              Group 2 â€” CRM, Leads & Outreach
             </h3>
-
-            <p className="text-gray-500 text-xs mb-3 italic">Administration & Site Management</p>
-            <div className="space-y-3 mb-5">
+            <p className="text-gray-600 text-xs mb-4">Contact form, leads database, and outreach campaign center. Connects to the Smart Leads Engine planned in Phase 10.</p>
+            <div className="space-y-3">
               {[
-                { feature: '10-Tab Owner Dashboard', what: 'Bookings, Services, Staff, Hours, About, Reviews, Gallery, Analytics, Settings, AI Assistant — all in one PIN-protected dashboard.', why: 'Business owners do not want to call their developer to change a price. Full self-service CMS eliminates support requests and increases client retention.', status: '✅ Built' },
-                { feature: 'AI Assistant (Chat to Edit)', what: 'Owner types "change my haircut to $80" and the site updates instantly. 9 agent tools cover services, headlines, about text.', why: 'Most CMS tools require navigating menus. Natural language editing removes the learning curve entirely — any non-technical owner can use it.', status: '✅ Built' },
-                { feature: 'Service Selector + Currency on Generate', what: '3-step generation: client picks services, sets prices, chooses currency — before AI generates the site. 10 currencies supported.', why: 'Pre-set services and local currency means the site is ready to use immediately after generation with no editing required.', status: '✅ Built — Phase 5' },
-                { feature: 'Business Logo Upload', what: 'Owner uploads their logo via the Settings tab. Stored in Supabase Storage, shows on the site header.', why: 'A business without its logo on its website looks amateur. This is a basic requirement for professional presentation.', status: '✅ Built' },
-                { feature: 'Gallery / Photo Upload', what: 'Owner uploads photos of their work via the Gallery tab. Shows as "Our Work" grid on the public site.', why: 'For salons, mechanics, and clinics — showing real photos of work builds trust faster than any text description.', status: '✅ Built' },
-                { feature: 'Site Analytics (14-day view)', what: 'Analytics tab shows page views per day for 14 days, weekly trend comparison, and booking status breakdown.', why: 'Clients need to see that their investment is working. "You had 47 site visits and 8 bookings this week" justifies the $29/mo fee.', status: '✅ Built' },
-                { feature: 'Contact / Inquiry Form Tab', what: 'A second tab on the public site alongside the booking form — "Not ready to book? Send us a message." Owner sees all inquiries in a new Inquiries tab on their dashboard.', why: 'Some customers are not ready to book but are interested. Without a contact form they either DM the business on Instagram (untracked) or leave. A contact form captures that warm lead before it disappears.', status: '📋 Planned — Phase 10' },
-                { feature: 'Leads Dashboard (Owner)', what: 'Owner sees all inquiry leads in their dashboard — name, message, email, timestamp, and a one-click "Convert to Booking" button.', why: 'An inquiry that is not followed up within 24 hours is a lost customer. A visible leads inbox with a clear next action prevents drop-off between interest and booking.', status: '📋 Planned — Phase 10' },
-                { feature: 'Booking Calendar View', what: 'Weekly/monthly calendar view of all bookings in the owner dashboard — not just a flat list.', why: 'A list of bookings is hard to scan. A calendar immediately shows gaps, busy periods, and patterns — how any service business thinks about their schedule.', status: '📋 Planned — Phase 7' },
-                { feature: 'Block Out Dates / Time Off ✅', what: 'Owner marks holidays, lunch breaks, or unavailable days — customers cannot book those slots.', why: 'Without this, customers book during Christmas, public holidays, or while the owner is on holiday. This is a day-one operational requirement.', status: '✅ Built — Phase 6 · Block Dates tab' },
-                { feature: 'Auto-Confirm vs Manual Confirm Toggle ✅', what: 'Toggle: auto-confirm all bookings OR review each one manually before confirming.', why: 'High-volume businesses (cafes, clinics) want auto-confirm. Premium services (consultants, specialists) want to review each booking first.', status: '✅ Built — Phase 6 · Settings tab' },
-                { feature: 'Promo Codes / Discount System', what: 'Owner creates promo codes (e.g. FIRST10 = 10% off) that customers can enter at booking.', why: 'Promo codes are the #1 tool for first-time customer acquisition on social media. "DM us for your code" is a proven engagement tactic.', status: '📋 Planned — Phase 7' },
-                { feature: 'Google Calendar Integration', what: 'Confirmed bookings automatically block time in the owner\'s Google Calendar.', why: 'Most service business owners run their schedule from Google Calendar. Without this, they have to manually copy every booking — high friction.', status: '📋 Planned — Phase 8' },
-                { feature: 'Stripe Deposit on Booking', what: 'Owner sets a % deposit (e.g. 20%) that customers pay at booking time via Stripe.', why: 'No-shows cost service businesses 10-15% of revenue. A deposit creates skin in the game — customers who pay a deposit almost always show up.', status: '📋 Planned — Phase 8' },
+                {
+                  feature: 'Contact / Inquiry Form',
+                  what: '"Not ready to book? Send us a message" tab on every client site. Customer fills name, email, message. Lead saved to leads table. Owner notified by email. Owner sees Inquiries tab in dashboard with "Convert to Booking" button.',
+                  why: 'Booking is a high-commitment action. A contact form captures warm leads before they vanish. Inquiry â†’ follow-up â†’ booking is a proven conversion path.',
+                  who: 'Customer + Client + Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 10',
+                },
+                {
+                  feature: 'Leads Master Database',
+                  what: '/admin/leads cross-site view. Filter by country, business category, city, status, email status. Columns: business, website, email, phone, country, category, lead source, status, last contact. Exportable CSV.',
+                  why: 'KITA sits across multiple local businesses simultaneously. A unified leads database enables cross-business promotion and outreach at scale â€” something no individual business can build alone.',
+                  who: 'Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 10',
+                },
+                {
+                  feature: 'Outreach & Campaign Center',
+                  what: 'Full outreach pipeline: Prospects â†’ Lists â†’ Campaigns â†’ Email Templates â†’ Send Queue â†’ Delivery Status â†’ Replies â†’ Suppression List â†’ Unsubscribes â†’ Campaign Analytics. Lead progression: Prospect Found â†’ Qualified â†’ Added to Campaign â†’ Email Scheduled â†’ Sent â†’ Opened/Clicked/Replied â†’ Interested â†’ Trial Offered â†’ Trial Activated â†’ Converted Client.',
+                  why: 'Manual outreach via DMs does not scale. A structured campaign system with delivery tracking and reply management enables 10x outreach with the same effort.',
+                  who: 'Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 12',
+                },
+                {
+                  feature: 'Global Suppression List & Privacy Compliance',
+                  what: 'Do Not Contact registry keyed by email with reason, date_added, source. Any unsubscribe permanently prevents future campaign sends to that address. Each lead stores: source, country, legal_basis/outreach_basis, consent_status, email_status, unsubscribed_at, do_not_contact, last_contacted_at.',
+                  why: 'Marketing rules differ by country. PH Data Privacy Act, AU Spam Act, UK PECR, US CAN-SPAM all impose different obligations. Building compliance in from the start prevents legal exposure.',
+                  who: 'Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 12',
+                },
               ].map((item, i) => (
                 <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <p className="text-white font-semibold text-sm">{item.feature}</p>
                     <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 font-medium ${
-                      item.status.startsWith('✅') ? 'bg-green-900/50 text-green-400' :
-                      item.status.startsWith('⏳') ? 'bg-red-900/50 text-red-400' :
+                      item.status.startsWith('âœ…') ? 'bg-green-900/50 text-green-400' :
+                      item.status.startsWith('â³') ? 'bg-red-900/50 text-red-400' :
                       'bg-gray-800 text-gray-500'
                     }`}>{item.status}</span>
                   </div>
-                  <p className="text-gray-400 text-xs mb-1.5"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
-                  <p className="text-gray-500 text-xs"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-400 text-xs mb-1"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs mb-1"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-600 text-xs"><span className="text-purple-400 font-medium">Who:</span> {item.who}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* ── FOR THE CUSTOMER (End User) ── */}
+          {/* â”€â”€ GROUP 3 â€” Customer Accounts & Loyalty â”€â”€ */}
           <div>
-            <h3 className="text-white font-bold text-sm mb-4 flex items-center gap-2">
-              <span className="bg-green-900/50 text-green-400 text-xs px-2 py-0.5 rounded-full">Customer</span>
-              For the Customer — The End User Booking Experience
+            <h3 className="text-white font-bold text-sm mb-1 flex items-center gap-2">
+              <span className="bg-orange-900/50 text-orange-400 text-xs px-2 py-0.5 rounded-full">ðŸŸ  Commerce</span>
+              Group 3 â€” Customer Accounts & Loyalty
             </h3>
-
-            <p className="text-gray-500 text-xs mb-3 italic">Before Booking</p>
-            <div className="space-y-3 mb-5">
+            <p className="text-gray-600 text-xs mb-4">Optional customer registration per client site. Gated by plan (Growth+). Multi-tenant: Salon A customers never visible to Mechanic B.</p>
+            <div className="space-y-3">
               {[
-                { feature: 'Service Duration + Price Shown Clearly ✅', what: 'Each service shows "45 min · $65" in the booking form dropdown so customers know exactly what they are committing to.', why: 'Customers abandon bookings when they do not know how long a service takes. Showing duration prevents surprises and sets expectations.', status: '✅ Built' },
-                { feature: 'Preferred Staff Picker ✅', what: 'Optional dropdown in the booking form — customer selects their preferred team member or chooses "No preference".', why: 'Loyalty to a specific stylist, vet, or mechanic is a primary driver of repeat bookings. Enabling this increases retention.', status: '✅ Built' },
-                { feature: 'Custom Notes Label Per Template ✅', what: '"Your Concern" for clinics, "Guests + Notes" for cafes, "Preferred Style" for salons — contextually relevant notes field.', why: 'A generic "Notes" field feels impersonal. A field labelled "Your Concern" tells clinic patients the right information to provide, improving service quality.', status: '✅ Built' },
-                { feature: 'Next Available Slot Suggestion ✅', what: 'Before the customer picks a date, show "Next available: Tomorrow 2pm" based on existing bookings.', why: 'Most customers do not know when the business is available. Showing the next open slot removes decision paralysis and speeds up the booking process.', status: '✅ Built — Phase 6' },
-                { feature: 'Contact / Inquiry Form (Before Booking)', what: '"Not ready to book? Send us a message" tab on the public site. Customer fills name, email, and message. Owner is notified by email. Lead is saved to the site\'s inquiries list.', why: 'Booking is a high-commitment action. Many customers want to ask a question first — price estimate, availability check, first-time nerves. Giving them a zero-friction way to make contact captures leads that would otherwise vanish. Inquiry → follow-up → booking is a proven conversion path.', status: '📋 Planned — Phase 10' },
-                { feature: 'Google Maps Link / Get Directions', what: 'Business address shown on the site with a "Get Directions" button that opens Google Maps.', why: 'A first-time customer who cannot find the location will not come back. Reducing friction in getting there directly impacts show-up rates.', status: '📋 Planned — Phase 7' },
-              ].map((item, i) => (
-                <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <p className="text-white font-semibold text-sm">{item.feature}</p>
-                    <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 font-medium ${
-                      item.status.startsWith('✅') ? 'bg-green-900/50 text-green-400' : 'bg-gray-800 text-gray-500'
-                    }`}>{item.status}</span>
-                  </div>
-                  <p className="text-gray-400 text-xs mb-1.5"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
-                  <p className="text-gray-500 text-xs"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-gray-500 text-xs mb-3 italic">During Booking</p>
-            <div className="space-y-3 mb-5">
-              {[
-                { feature: 'Real-Time Slot Availability Check ✅', what: 'Before confirming a time, query existing bookings to prevent two customers from booking the same slot.', why: 'Double-bookings destroy client trust instantly. A customer who shows up and finds their slot taken will never return and will leave a bad review.', status: '✅ Built — Phase 6' },
-                { feature: 'Save Booking Details (Auto-Fill) ✅', what: 'Store name, phone, and email in localStorage so returning customers do not need to re-enter their details.', why: 'Repeat customers are the backbone of service businesses. Reducing friction for their second booking directly increases lifetime value.', status: '✅ Built — Phase 6' },
-                { feature: '"Book for Someone Else" Option', what: 'A checkbox that lets the booker enter a different person\'s name — e.g. booking a haircut for their child or spouse.', why: 'Service businesses often receive bookings on behalf of family members. Without this, the booking shows the wrong name and creates confusion at check-in.', status: '📋 Planned — Phase 7' },
+                {
+                  feature: 'Customer Registration + Client Customer Database',
+                  what: 'Owner settings: Guest Only / Guest + Optional Account / Account Required. Customers register per client site. Owner sees Customers tab: name, email, bookings count, last visit, status. Export CSV. Supabase RLS ensures strict multi-tenant isolation â€” client A cannot query client B\'s customers.',
+                  why: 'Repeat customers are the backbone of service businesses. A customer database enables loyalty programs, targeted promotions, and booking history â€” none of which are possible without persistent identity.',
+                  who: 'Client + Customer',
+                  status: 'ðŸ“‹ Planned â€” Phase 11',
+                },
+                {
+                  feature: 'Customer Profile (Owner View)',
+                  what: 'Per-customer page in owner dashboard: Booking History, Total Spend, Last Booking, Upcoming Booking, Promotions Used, Internal Notes.',
+                  why: 'An owner who can see "Maria has booked 12 times and spent $840" can personalise service and offers in ways that drive loyalty and referrals.',
+                  who: 'Client',
+                  status: 'ðŸ“‹ Planned â€” Phase 11',
+                },
+                {
+                  feature: 'Business Rank + Badges',
+                  what: 'Three-layer identity per client site: (1) Rank (Newcomer â†’ Starter â†’ Active â†’ Established â†’ Growing â†’ Pro â†’ Elite â†’ Premier â†’ Pioneer â†’ Legend) scored by weighted formula (Recent Bookings 20%, Booking Growth 15%, Recent Activity 15%, Customer Engagement 15%, Feature Adoption 10%, Site Completeness 10%, Tenure 10%, Reliability 5%). (2) Subscription badge. (3) Earned badges (Early Adopter, Booking Pro, AI Pioneer). Rank recalculated periodically using Lifetime + Rolling 90-day + Growth Score. Rank history tracked month by month.',
+                  why: 'Gamification drives product engagement. A visible rank progression gives owners a reason to keep using the platform actively. Rank history provides analytics on business health over time.',
+                  who: 'Client + Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 13',
+                },
               ].map((item, i) => (
                 <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <p className="text-white font-semibold text-sm">{item.feature}</p>
                     <span className="text-xs px-2 py-0.5 rounded-full shrink-0 font-medium bg-gray-800 text-gray-500">{item.status}</span>
                   </div>
-                  <p className="text-gray-400 text-xs mb-1.5"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
-                  <p className="text-gray-500 text-xs"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-400 text-xs mb-1"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs mb-1"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-600 text-xs"><span className="text-purple-400 font-medium">Who:</span> {item.who}</p>
                 </div>
               ))}
             </div>
+          </div>
 
-            <p className="text-gray-500 text-xs mb-3 italic">After Booking</p>
+          {/* â”€â”€ GROUP 4 â€” Promotions & Coupon Engine â”€â”€ */}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-1 flex items-center gap-2">
+              <span className="bg-orange-900/50 text-orange-400 text-xs px-2 py-0.5 rounded-full">ðŸŸ  Commerce</span>
+              Group 4 â€” Promotions & Coupon Engine
+            </h3>
+            <p className="text-gray-600 text-xs mb-4">WooCommerce-style coupon system per client site. Gated by plan. Feeds the Smart Leads promotion blasts.</p>
             <div className="space-y-3">
               {[
-                { feature: 'Booking Confirmation Page ✅', what: 'After submitting, customer is shown a full dedicated page with service, staff, date, time, address, and a cancel link.', why: 'A banner that disappears is not confirmation — it is anxiety. A permanent, shareable confirmation page gives customers something to reference and share.', status: '✅ Built — Phase 6 · /booking/[id]' },
-                { feature: 'Add to Calendar Button ✅', what: '"Add to Google Calendar" and "Add to Apple Calendar (.ics)" buttons on the confirmation page.', why: 'Customers who add a booking to their calendar are 3x less likely to no-show. This is one of the highest-ROI features for reducing no-show rates.', status: '✅ Built — Phase 6' },
-                { feature: 'Reschedule / Cancel Self-Service Link ✅', what: 'Confirmation email includes links where the customer can cancel or reschedule their own booking without calling.', why: 'Calling to cancel is friction many customers avoid — they simply do not show up instead. A self-service link converts no-shows into reschedules.', status: '✅ Built — Phase 6 · /booking/[id]/cancel + /reschedule' },
-                { feature: 'Booking Reminder Email / SMS', what: 'Auto-send a reminder to the customer 24 hours before their appointment via email (Resend) and SMS (Twilio).', why: 'Research shows 24h reminders reduce no-shows by 30-40%. For a salon with 20 bookings per week, that is potentially 6-8 saved appointments per week.', status: '⏳ Backlog — needs Twilio' },
-                { feature: 'WhatsApp Booking Option', what: 'A "Book via WhatsApp" button pre-filled with the service details opens a WhatsApp chat with the business.', why: 'In the Philippines, Australia, and Southeast Asia, WhatsApp is the primary communication channel. Meeting customers where they are increases conversion.', status: '📋 Planned — Phase 8' },
+                {
+                  feature: 'Coupon & Promotion Engine',
+                  what: 'Owner creates coupons in dashboard: Code, Percentage or Fixed discount, Start/End date, Minimum booking amount, Maximum discount, Usage limit, Per-customer limit, Applicable services, Applicable staff, Active/Inactive toggle. Customers enter code at booking. Types: first-booking, returning-customer, seasonal, service-specific, referral, automatic.',
+                  why: 'Promo codes are the #1 tool for first-time customer acquisition on social media. "DM us for your code" is a proven tactic. Growth/Agency plan feature creates a natural upgrade incentive.',
+                  who: 'Client + Customer',
+                  status: 'ðŸ“‹ Planned â€” Phase 11',
+                },
+                {
+                  feature: 'Smart Cross-Business Promotion Blasts',
+                  what: 'Operator aggregates opted-in leads from across all KITA client sites by city + business type. Compose a promotion: headline, offer text, CTA URL, expiry. Send targeted email via Resend to filtered audience. Track sent/opened/clicked per campaign. Revenue: $49/blast charged to promoting client.',
+                  why: 'KITA uniquely sits across multiple local businesses simultaneously. No individual business can build a local loyalty network alone â€” KITA can aggregate it automatically.',
+                  who: 'Operator + Client',
+                  status: 'ðŸ“‹ Planned â€” Phase 10',
+                },
+                {
+                  feature: 'Stripe Booking Deposit',
+                  what: 'Owner sets a % deposit (e.g. 20%) required at booking time via Stripe. Customer pays deposit when confirming. Remainder paid at service.',
+                  why: 'No-shows cost service businesses 10-15% of revenue. A deposit creates skin in the game â€” customers who pay almost always show up.',
+                  who: 'Client + Customer',
+                  status: 'ðŸ“‹ Planned â€” Phase 8',
+                },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-white font-semibold text-sm">{item.feature}</p>
+                    <span className="text-xs px-2 py-0.5 rounded-full shrink-0 font-medium bg-gray-800 text-gray-500">{item.status}</span>
+                  </div>
+                  <p className="text-gray-400 text-xs mb-1"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs mb-1"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-600 text-xs"><span className="text-purple-400 font-medium">Who:</span> {item.who}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* â”€â”€ GROUP 5 â€” Platform Events & Audit Center â”€â”€ */}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-1 flex items-center gap-2">
+              <span className="bg-red-900/50 text-red-400 text-xs px-2 py-0.5 rounded-full">ðŸ”´ Foundation</span>
+              Group 5 â€” Platform Events & Audit Center
+            </h3>
+            <p className="text-gray-600 text-xs mb-4">Universal structured event stream. Powers notifications, audit trail, admin impersonation logging, and future analytics.</p>
+            <div className="space-y-3">
+              {[
+                {
+                  feature: 'Universal Event Stream (Activity & Events)',
+                  what: 'Every meaningful platform action writes to an events table: event_id, timestamp, event_type, category, actor_type, actor_id, client_id, site_id, entity_type, entity_id, metadata, severity, ip_address. Event types include: booking.created, booking.cancelled, site.created, email.sent, lead.created, lead.converted, subscription.created, subscription.upgraded, subscription.cancelled, coupon.redeemed, customer.registered, admin.feature_granted, auth.login, auth.failed. Admin UI at /admin/events â€” filter by category, client, site, severity, date range.',
+                  why: 'Separate booking logs + email logs + subscription logs + site logs creates fragmented visibility. A universal event stream gives a single timeline of everything that happened, to anyone who needs it.',
+                  who: 'Operator',
+                  status: 'ðŸ”´ Foundation â€” Phase 11',
+                },
+                {
+                  feature: 'Notification Center',
+                  what: 'In-admin notification bell. Unread/All tabs. Notification types: New booking received, Trial request pending, Payment failed, Subscription expiring, New lead received, Site health issue detected, Coupon limit reached, Customer registered. Events trigger notifications where relevant â€” not every event creates a notification.',
+                  why: 'As KITA grows beyond 10 clients, the admin needs a single place to see what requires attention â€” not a flood of emails.',
+                  who: 'Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 11',
+                },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-white font-semibold text-sm">{item.feature}</p>
+                    <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 font-medium ${item.status.startsWith('ðŸ”´') ? 'bg-red-900/50 text-red-400' : 'bg-gray-800 text-gray-500'}`}>{item.status}</span>
+                  </div>
+                  <p className="text-gray-400 text-xs mb-1"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs mb-1"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-600 text-xs"><span className="text-purple-400 font-medium">Who:</span> {item.who}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* â”€â”€ GROUP 6 â€” Analytics, Attribution & Visitor Intelligence â”€â”€ */}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-1 flex items-center gap-2">
+              <span className="bg-yellow-900/50 text-yellow-400 text-xs px-2 py-0.5 rounded-full">ðŸŸ¡ CRM & Growth</span>
+              Group 6 â€” Analytics, Attribution & Visitor Intelligence
+            </h3>
+            <p className="text-gray-600 text-xs mb-4">Where do bookings actually come from? Goes beyond page view counts into source attribution, geographic breakdowns, and behavioral analysis.</p>
+            <div className="space-y-3">
+              {[
+                {
+                  feature: 'Lead Source / Attribution Tracking',
+                  what: 'Every lead, booking, inquiry, and registration captures: source, medium, campaign, referrer, landing_page, utm_source, utm_medium, utm_campaign, utm_content, utm_term. Standard sources: direct, organic, google, facebook, instagram, whatsapp, messenger, email, referral, paid_search, paid_social. Client analytics shows "WHERE BOOKINGS COME FROM" as a percentage breakdown.',
+                  why: '"You had 47 site visits" is weak. "34% of your bookings came from Google, 24% from Facebook" tells a business owner where to invest. Attribution transforms analytics from vanity to commercial intelligence.',
+                  who: 'Client + Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 12',
+                },
+                {
+                  feature: 'Geographic Visitor Analytics',
+                  what: 'Aggregate geography (country â†’ region â†’ city) from visitor data. Client analytics tab shows: Philippines 42%, Australia 28%, US 12%, CAN 7%. Does NOT store raw IP addresses â€” uses aggregated country/region-level data only.',
+                  why: 'A PH salon owner seeing "28% of my visitors are from Australia" is unexpected and actionable intelligence. Geographic data also powers cross-market pricing and expansion decisions.',
+                  who: 'Client + Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 12',
+                },
+                {
+                  feature: 'Behavioral Heatmaps',
+                  what: 'Click heatmap, scroll heatmap, engagement heatmap per client site. Shows Hero CTA (ðŸ”´ High), Services (ðŸŸ  Medium), Gallery (ðŸŸ¡ Medium), Footer (ðŸ”µ Low). Privacy-first: requires explicit opt-in consent from site visitors. Cookie/privacy banner configurable per site.',
+                  why: 'Knowing where visitors click and how far they scroll reveals whether the booking CTA is visible and whether the services section drives action. This data improves conversion without guesswork.',
+                  who: 'Client',
+                  status: 'ðŸŸ¢ Intelligence â€” Phase 13',
+                },
+                {
+                  feature: 'Client 360Â° Profile',
+                  what: 'Clicking a client from /admin/clients opens a full 360 view with tabs: Overview, Sites, Subscription, Billing, Bookings, Customers, Leads, Activities, Analytics, SEO & Health, Integrations, Features, Events, Notes. Header shows: Rank badge, Plan badge, Status, Member since, Country, Sites count, Bookings total, Customers total, Leads total, MRR.',
+                  why: 'The current client profile shows subscription + sites. A 360 view gives the operator everything needed to support, upsell, or troubleshoot any client in one place without switching tabs.',
+                  who: 'Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 11',
+                },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-white font-semibold text-sm">{item.feature}</p>
+                    <span className="text-xs px-2 py-0.5 rounded-full shrink-0 font-medium bg-gray-800 text-gray-500">{item.status}</span>
+                  </div>
+                  <p className="text-gray-400 text-xs mb-1"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs mb-1"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-600 text-xs"><span className="text-purple-400 font-medium">Who:</span> {item.who}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* â”€â”€ GROUP 7 â€” Administration & Environment Controls â”€â”€ */}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-1 flex items-center gap-2">
+              <span className="bg-green-900/50 text-green-400 text-xs px-2 py-0.5 rounded-full">ðŸŸ¢ Intelligence</span>
+              Group 7 â€” Administration & Environment Controls
+            </h3>
+            <p className="text-gray-600 text-xs mb-4">Operator tooling that makes KITA manageable at scale â€” environment visibility, client impersonation, and WhatsApp/messenger integrations.</p>
+            <div className="space-y-3">
+              {[
+                {
+                  feature: 'Environment Display Panel',
+                  what: 'Admin panel shows current environment status: Environment (LOCAL / STAGING / PRODUCTION ðŸŸ¢), Database (Production / Staging), Stripe (Live / Test), Email (Production / Test), AI (Enabled / Disabled). Read-only display â€” environment configuration lives in env vars and Vercel settings, not in the CMS.',
+                  why: 'Vercel provides separate Local, Preview, and Production environments each with different API keys. A visible environment panel prevents confusion about which environment is active. API secrets should never switch via CMS â€” only env vars.',
+                  who: 'Operator',
+                  status: 'âœ… Partially built â€” Stripe mode toggle exists in Admin Settings',
+                },
+                {
+                  feature: 'Admin Impersonation / "View as Client"',
+                  what: 'From /admin/clients/[id]: "View as Client" button opens the client\'s owner dashboard as if logged in as them. Every impersonation session is logged to the event stream (actor: admin, action: impersonation.started/ended, client_id). No password required. "Exit Client View" banner always visible.',
+                  why: 'When a client reports a bug, the fastest resolution is to see exactly what they see. Impersonation reduces support time from 20 minutes of back-and-forth to 2 minutes of direct observation.',
+                  who: 'Operator',
+                  status: 'ðŸŸ¢ Intelligence â€” Phase 13',
+                },
+                {
+                  feature: 'WhatsApp / Messenger / Third-Party Integrations',
+                  what: 'Client CMS Integrations tab: WhatsApp (Connected/Disabled + phone config), Messenger (Connect), Google Calendar (Configure). Behind the scenes, each integration is an entitlement: Feature + Plan default + Admin override = Effective state. Future integrations (TikTok, Instagram, Google Business, Zoom, Telegram, SMS) added as new entitlement rows â€” no subscription system rewrite needed.',
+                  why: 'In PH, AU, and Southeast Asia WhatsApp is the primary communication channel. Google Calendar prevents double-booking by blocking time across personal and professional schedules.',
+                  who: 'Client + Customer',
+                  status: 'ðŸ“‹ Planned â€” Phase 8',
+                },
+                {
+                  feature: 'Bulk Demo Site Generator',
+                  what: 'Generate 5 demo sites across different niches in one click for outreach purposes. Admin picks 5 business types â†’ AI generates one realistic demo site per type.',
+                  why: 'When pitching to a barbershop, showing a live barbershop demo is 10x more persuasive than a generic one. Speed of demo creation = more outreach per day.',
+                  who: 'Operator',
+                  status: 'ðŸ“‹ Planned â€” Phase 8',
+                },
               ].map((item, i) => (
                 <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <p className="text-white font-semibold text-sm">{item.feature}</p>
                     <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 font-medium ${
-                      item.status.startsWith('⏳') ? 'bg-red-900/50 text-red-400' : 'bg-gray-800 text-gray-500'
+                      item.status.startsWith('âœ…') ? 'bg-green-900/50 text-green-400' :
+                      'bg-gray-800 text-gray-500'
                     }`}>{item.status}</span>
                   </div>
-                  <p className="text-gray-400 text-xs mb-1.5"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
-                  <p className="text-gray-500 text-xs"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-400 text-xs mb-1"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs mb-1"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-600 text-xs"><span className="text-purple-400 font-medium">Who:</span> {item.who}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* â”€â”€ EXISTING FEATURES â€” RETAINED â”€â”€ */}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-4 flex items-center gap-2">
+              <span className="bg-gray-700 text-gray-300 text-xs px-2 py-0.5 rounded-full">âœ… Built</span>
+              Already Shipped â€” Core Platform
+            </h3>
+            <div className="space-y-3">
+              {[
+                { feature: 'AI Site Generator (3-step form)', what: 'Client selects business type, configures services + currency, enters details â€” AI generates the full site in ~10 seconds.', why: 'One person can generate 10 client sites per day. Time = money.', who: 'Operator', status: 'âœ… Built' },
+                { feature: 'Revenue Dashboard / MRR Tracker', what: 'Monthly recurring revenue, setup fees, annual projection, per-site breakdown, By Client tab â€” all with CSV export.', why: 'Without revenue visibility you cannot make pricing, scaling, or retention decisions.', who: 'Operator', status: 'âœ… Built' },
+                { feature: 'Client Management System (Phase 9)', what: 'CRM: subscription plan, status, MRR, linked sites, notes. Auto-upsert on booking. Stripe webhook sets active status on payment.', why: 'Client records link sites to people and enable proper MRR tracking.', who: 'Operator', status: 'âœ… Built' },
+                { feature: 'Stripe Test/Live Mode Toggle', what: 'Admin Settings toggle backed by admin_config Supabase table. Switches checkout and webhook keys without redeploy.', why: 'Safe development testing without ever touching production payments.', who: 'Operator', status: 'âœ… Built' },
+                { feature: 'White-Label Mode', what: 'Removes all KITA branding. Agency name, logo, tagline, URL via env vars. Per-site override via theme_json.', why: 'Agencies reselling KITA need to present it as their own product.', who: 'Operator', status: 'âœ… Built' },
+                { feature: 'Website Audit Module (Phases 1-3)', what: 'Performance (PSI), SEO (cheerio), Security headers, Tech Stack, Accessibility, 10-page crawler, PDF report.', why: '"Your SEO score is 42/100" closes more deals than any sales pitch.', who: 'Operator + Client', status: 'âœ… Built' },
+                { feature: '10-Tab Owner Dashboard', what: 'Bookings, Services, Staff, Hours, About, Reviews, Gallery, Analytics, Settings, AI Assistant.', why: 'Full self-service CMS eliminates support requests and increases client retention.', who: 'Client', status: 'âœ… Built' },
+                { feature: 'Smart Booking System (Phase 6)', what: 'Availability check, next slot suggestion, confirmation page, Add to Calendar, cancel/reschedule self-service, Block Dates, auto-confirm toggle, customer email auto-fill.', why: 'Reduces no-shows, eliminates double-bookings, gives customers control.', who: 'Client + Customer', status: 'âœ… Built' },
+                { feature: 'Booking Reminder Email / SMS', what: 'Auto-send reminder 24h before appointment via Resend (email) and Twilio (SMS).', why: '24h reminders reduce no-shows by 30-40%.', who: 'Customer', status: 'â³ Backlog â€” needs Twilio' },
+                { feature: 'Booking Calendar View', what: 'Weekly/monthly calendar view of bookings in owner dashboard.', why: 'A calendar shows gaps and busy periods instantly â€” how service businesses think about their schedule.', who: 'Client', status: 'ðŸ“‹ Planned â€” Phase 7' },
+                { feature: 'Google Calendar Integration', what: 'Confirmed bookings automatically block time in the owner\'s Google Calendar.', why: 'Most owners run their schedule from Google Calendar. Manual copying is high friction.', who: 'Client', status: 'ðŸ“‹ Planned â€” Phase 8' },
+                { feature: 'Google Maps Link / Get Directions', what: 'Business address with "Get Directions" button opening Google Maps.', why: 'A first-time customer who cannot find the location will not return.', who: 'Customer', status: 'ðŸ“‹ Planned â€” Phase 7' },
+                { feature: 'Gemini Webhook Auto-Generation', what: 'After $150 payment, Gemini auto-generates site â€” client sees it live within 30 seconds.', why: 'The magic moment that justifies the product. Currently blocked by Gemini 503 errors from Vercel IPs.', who: 'Operator + Client', status: 'â³ Backlog â€” Gemini API issue' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-white font-semibold text-sm">{item.feature}</p>
+                    <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 font-medium ${
+                      item.status.startsWith('âœ…') ? 'bg-green-900/50 text-green-400' :
+                      item.status.startsWith('â³') ? 'bg-red-900/50 text-red-400' :
+                      'bg-gray-800 text-gray-500'
+                    }`}>{item.status}</span>
+                  </div>
+                  <p className="text-gray-400 text-xs mb-1"><span className="text-gray-300 font-medium">What:</span> {item.what}</p>
+                  <p className="text-gray-500 text-xs mb-1"><span className="text-blue-400 font-medium">Why:</span> {item.why}</p>
+                  <p className="text-gray-600 text-xs"><span className="text-purple-400 font-medium">Who:</span> {item.who}</p>
                 </div>
               ))}
             </div>
@@ -1165,20 +1450,20 @@ if (count > 0) return 409 // Slot taken`}</pre>
 
           {/* Commercial Pitch */}
           <div className="bg-blue-950/20 border border-blue-800 rounded-xl p-5">
-            <p className="text-blue-400 font-bold text-sm mb-3">💼 Commercial Pitch — What to Tell Prospective Clients</p>
+            <p className="text-blue-400 font-bold text-sm mb-3">ðŸ’¼ Commercial Pitch â€” What to Tell Prospective Clients</p>
             <div className="space-y-2 text-sm text-gray-400">
               {[
-                '"Your customers can book you 24/7 — even while you sleep. No more missed bookings via Instagram DMs."',
-                '"They pick their preferred stylist, select a service, and get an instant confirmation — in under 60 seconds."',
-                '"You see all bookings in one place. Confirm, cancel, or let it auto-approve — your choice."',
-                '"Edit your services and prices anytime — just type it in chat: \'change my haircut to $80\'."',
-                '"Your site shows your hours, your team, your gallery, and your reviews — all managed from one dashboard."',
-                '"Customers get a reminder before their appointment — fewer no-shows, more revenue."',
-                '"Built for salons, clinics, mechanics, cafes, and pet clinics — across AU, US, UK, PH."',
+                '"Your customers can book you 24/7 â€” even while you sleep. No more missed bookings via Instagram DMs."',
+                '"They pick their preferred stylist, select a service, and get an instant confirmation â€” in under 60 seconds."',
+                '"You see all bookings in one place. Confirm, cancel, or let it auto-approve â€” your choice."',
+                '"Edit your services and prices anytime â€” just type it in chat: \'change my haircut to $80\'."',
+                '"Your site shows your hours, your team, your gallery, and your reviews â€” all managed from one dashboard."',
+                '"Customers get a reminder before their appointment â€” fewer no-shows, more revenue."',
+                '"Built for salons, clinics, mechanics, cafes, and pet clinics â€” across AU, US, UK, PH."',
                 '"$150 to launch. $29/month to keep it running. That\'s less than one booking per month to pay for itself."',
               ].map((pitch, i) => (
                 <div key={i} className="flex gap-2">
-                  <span className="text-blue-400 shrink-0">→</span>
+                  <span className="text-blue-400 shrink-0">â†’</span>
                   <p className="italic">{pitch}</p>
                 </div>
               ))}
@@ -1187,7 +1472,6 @@ if (count > 0) return 409 // Slot taken`}</pre>
         </div>
       ),
     },
-    // ─── CLIENT MANAGEMENT ───────────────────────────────────────
     {
       id: 'client-management',
       title: 'Client Management System (Phase 9)',
@@ -1195,30 +1479,30 @@ if (count > 0) return 409 // Slot taken`}</pre>
       content: (
         <div className="space-y-5">
           <div className="bg-gray-950 border border-green-800/50 rounded-xl p-4">
-            <p className="text-green-400 font-bold text-sm mb-2">✅ Phase 9 — Complete</p>
+            <p className="text-green-400 font-bold text-sm mb-2">âœ… Phase 9 â€” Complete</p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Client Management System is fully built and integrated. You can track who your clients are, their subscription status, revenue contribution, all businesses they manage, and your internal notes. Booking auto-creates a client record when an email is provided. Sites table shows which client owns each site. Revenue dashboard has a "By Client" tab with MRR per client. Access via <strong className="text-white">Admin → Clients</strong> or <code className="text-blue-300 font-mono">/admin/clients</code>.
+              Client Management System is fully built and integrated. You can track who your clients are, their subscription status, revenue contribution, all businesses they manage, and your internal notes. Booking auto-creates a client record when an email is provided. Sites table shows which client owns each site. Revenue dashboard has a "By Client" tab with MRR per client. Access via <strong className="text-white">Admin â†’ Clients</strong> or <code className="text-blue-300 font-mono">/admin/clients</code>.
             </p>
           </div>
 
           {/* What was built */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-            <p className="text-white font-semibold text-sm mb-3">✅ What Was Built</p>
+            <p className="text-white font-semibold text-sm mb-3">âœ… What Was Built</p>
             <div className="space-y-3">
               {[
                 {
                   route: '/admin/clients',
-                  title: 'Client List ✅',
+                  title: 'Client List âœ…',
                   desc: 'Searchable, filterable table of all clients. Shows name, email, country, plan badge, status badge, sites count, MRR contribution, source, joined date. Filter by status and country. CSV export.',
                 },
                 {
                   route: '/admin/clients/[id]',
-                  title: 'Client Profile ✅',
+                  title: 'Client Profile âœ…',
                   desc: 'Full editable profile: name, email, phone, country, city, subscription plan/status, source, notes, onboarding toggle. Revenue summary (MRR, setup fees paid, annual projection). All their sites with view/dashboard links.',
                 },
                 {
                   route: '/admin/clients/new',
-                  title: 'Create Client ✅',
+                  title: 'Create Client âœ…',
                   desc: 'Manual client creation form. Fields: name, email, phone, country, city, plan, status, source, notes. Redirects to profile on creation.',
                 },
               ].map(p => (
@@ -1236,17 +1520,17 @@ if (count > 0) return 409 // Slot taken`}</pre>
           {/* Database */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
             <div className="px-4 py-3 border-b border-gray-800">
-              <p className="text-white font-semibold text-sm">Database — <code className="text-blue-300 font-mono">clients</code> table ✅</p>
-              <p className="text-gray-500 text-xs mt-0.5">Run <code className="font-mono text-yellow-300">supabase/clients.sql</code> — already executed</p>
+              <p className="text-white font-semibold text-sm">Database â€” <code className="text-blue-300 font-mono">clients</code> table âœ…</p>
+              <p className="text-gray-500 text-xs mt-0.5">Run <code className="font-mono text-yellow-300">supabase/clients.sql</code> â€” already executed</p>
             </div>
             <table className="w-full text-xs">
               <tbody>
                 {[
                   ['id', 'uuid', 'Primary key'],
                   ['name', 'text', 'Full name of business owner'],
-                  ['email', 'text unique', 'Primary contact — unique per client'],
+                  ['email', 'text unique', 'Primary contact â€” unique per client'],
                   ['phone', 'text', 'WhatsApp / mobile'],
-                  ['country', 'text', 'e.g. AU, PH, US, UK — market segmentation'],
+                  ['country', 'text', 'e.g. AU, PH, US, UK â€” market segmentation'],
                   ['city', 'text', 'e.g. Sydney, Manila'],
                   ['subscription_plan', 'text', 'trial | starter | growth | agency | custom'],
                   ['subscription_status', 'text', 'trial | active | overdue | cancelled | paused'],
@@ -1269,13 +1553,13 @@ if (count > 0) return 409 // Slot taken`}</pre>
 
           {/* Sites link */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-            <p className="text-white font-semibold text-sm mb-2">Sites → Client Link ✅</p>
+            <p className="text-white font-semibold text-sm mb-2">Sites â†’ Client Link âœ…</p>
             <p className="text-gray-400 text-xs mb-2"><code className="text-blue-300 font-mono">sites.client_id</code> FK added. One client can own many sites.</p>
             <pre className="bg-gray-900 rounded-lg p-3 text-xs text-green-300 font-mono">{`alter table sites
   add column if not exists client_id uuid references clients(id) on delete set null;`}</pre>
           </div>
 
-          {/* Subscription plans — full matrix */}
+          {/* Subscription plans â€” full matrix */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
             <div className="px-4 py-3 border-b border-gray-800">
               <p className="text-white font-semibold text-sm">Subscription Plans & MRR Rates</p>
@@ -1289,7 +1573,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
                     <th className="text-left text-gray-500 font-medium px-4 py-3">Feature</th>
                     <th className="text-center text-gray-500 font-medium px-4 py-3">
                       <span className="block text-gray-400 font-bold">Trial</span>
-                      <span className="text-gray-600">Free · 14 days</span>
+                      <span className="text-gray-600">Free Â· 14 days</span>
                     </th>
                     <th className="text-center text-blue-400 font-medium px-4 py-3 bg-blue-950/10">
                       <span className="block font-bold">Starter</span>
@@ -1308,22 +1592,22 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 <tbody>
                   {[
                     { feature: 'Client sites included', trial: '1', starter: '1', growth: '3', agency: '10' },
-                    { feature: 'Online booking widget', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                    { feature: 'AI site generation', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                    { feature: 'Owner dashboard (10 tabs)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                    { feature: 'Email booking notifications', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                    { feature: 'Site analytics (14-day)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                    { feature: 'Cancel / reschedule links', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                    { feature: 'Block dates / time off', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                    { feature: 'Gallery & logo upload', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                    { feature: 'AI assistant (9 tools)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                    { feature: 'Contact / inquiry form', trial: '—', starter: '✓', growth: '✓', agency: '✓' },
-                    { feature: 'SMS booking reminders', trial: '—', starter: '—', growth: '✓', agency: '✓' },
-                    { feature: 'Priority support', trial: '—', starter: '—', growth: '✓', agency: '✓' },
-                    { feature: 'Promotion blast (per mo)', trial: '—', starter: '—', growth: '2 blasts', agency: '5 blasts' },
-                    { feature: 'White-label mode', trial: '—', starter: '—', growth: '—', agency: '✓' },
-                    { feature: 'Custom domain', trial: '—', starter: '—', growth: '—', agency: '✓' },
-                    { feature: 'Dedicated onboarding call', trial: '—', starter: '—', growth: '—', agency: '✓' },
+                    { feature: 'Online booking widget', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'AI site generation', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'Owner dashboard (10 tabs)', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'Email booking notifications', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'Site analytics (14-day)', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'Cancel / reschedule links', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'Block dates / time off', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'Gallery & logo upload', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'AI assistant (9 tools)', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'Contact / inquiry form', trial: 'â€”', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'SMS booking reminders', trial: 'â€”', starter: 'â€”', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'Priority support', trial: 'â€”', starter: 'â€”', growth: 'âœ“', agency: 'âœ“' },
+                    { feature: 'Promotion blast (per mo)', trial: 'â€”', starter: 'â€”', growth: '2 blasts', agency: '5 blasts' },
+                    { feature: 'White-label mode', trial: 'â€”', starter: 'â€”', growth: 'â€”', agency: 'âœ“' },
+                    { feature: 'Custom domain', trial: 'â€”', starter: 'â€”', growth: 'â€”', agency: 'âœ“' },
+                    { feature: 'Dedicated onboarding call', trial: 'â€”', starter: 'â€”', growth: 'â€”', agency: 'âœ“' },
                   ].map((row, i) => (
                     <tr key={row.feature} className={`border-b border-gray-900 last:border-0 ${i % 2 === 0 ? '' : 'bg-gray-900/20'}`}>
                       <td className="px-4 py-2 text-gray-400">{row.feature}</td>
@@ -1352,14 +1636,14 @@ if (count > 0) return 409 // Slot taken`}</pre>
             <p className="text-white font-semibold text-sm mb-3">Integration Points</p>
             <div className="space-y-2 text-xs text-gray-500">
               {[
-                { task: 'Auto-upsert client record when customer books (email provided)', status: '✅ Done — /api/notify' },
-                { task: 'Client column in /admin/sites table (linked, clickable)', status: '✅ Done' },
-                { task: '"By Client" tab in /admin/revenue with MRR per client + totals row', status: '✅ Done' },
-                { task: 'Stripe webhook → update client.subscription_status on payment event', status: '✅ Done — /api/webhook' },
+                { task: 'Auto-upsert client record when customer books (email provided)', status: 'âœ… Done â€” /api/notify' },
+                { task: 'Client column in /admin/sites table (linked, clickable)', status: 'âœ… Done' },
+                { task: '"By Client" tab in /admin/revenue with MRR per client + totals row', status: 'âœ… Done' },
+                { task: 'Stripe webhook â†’ update client.subscription_status on payment event', status: 'âœ… Done â€” /api/webhook' },
               ].map(item => (
                 <div key={item.task} className="flex items-center justify-between bg-gray-900 rounded-lg px-3 py-2">
                   <span>{item.task}</span>
-                  <span className={`shrink-0 ml-3 ${item.status.startsWith('✅') ? 'text-green-500' : 'text-yellow-600'}`}>{item.status}</span>
+                  <span className={`shrink-0 ml-3 ${item.status.startsWith('âœ…') ? 'text-green-500' : 'text-yellow-600'}`}>{item.status}</span>
                 </div>
               ))}
             </div>
@@ -1367,7 +1651,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
         </div>
       ),
     },
-    // ─── SUBSCRIPTION PLANS ───────────────────────────────────────
+    // â”€â”€â”€ SUBSCRIPTION PLANS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     {
       id: 'pricing',
       title: 'Subscription Plans & Pricing',
@@ -1403,7 +1687,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 badge: 'bg-blue-900/50 text-blue-400',
                 accent: 'text-blue-300',
                 desc: '1 client site, full booking system, AI assistant, analytics, email notifications.',
-                ideal: 'Solo service business — 1 location, 1 owner managing their own site.',
+                ideal: 'Solo service business â€” 1 location, 1 owner managing their own site.',
               },
               {
                 plan: 'Growth',
@@ -1459,40 +1743,40 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 </thead>
                 <tbody>
                   {[
-                    { section: '🌐 Sites', rows: [
+                    { section: 'ðŸŒ Sites', rows: [
                       { feature: 'Client sites included', trial: '1', starter: '1', growth: '3', agency: '10' },
-                      { feature: 'Additional sites', trial: '—', starter: '+$29/ea', growth: '+$29/ea', agency: '+$29/ea' },
+                      { feature: 'Additional sites', trial: 'â€”', starter: '+$29/ea', growth: '+$29/ea', agency: '+$29/ea' },
                     ]},
-                    { section: '📅 Booking System', rows: [
-                      { feature: 'Online booking widget (24/7)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'Service selector + staff picker', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'Real-time availability check', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'Cancel / reschedule self-service', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'Block out dates / time off', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'Auto-confirm toggle', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { section: 'ðŸ“… Booking System', rows: [
+                      { feature: 'Online booking widget (24/7)', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'Service selector + staff picker', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'Real-time availability check', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'Cancel / reschedule self-service', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'Block out dates / time off', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'Auto-confirm toggle', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
                     ]},
-                    { section: '🤖 AI & CMS', rows: [
-                      { feature: 'AI site generation (~10 sec)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'Owner dashboard (10 tabs)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'AI assistant (9 editing tools)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'Gallery + logo upload', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
+                    { section: 'ðŸ¤– AI & CMS', rows: [
+                      { feature: 'AI site generation (~10 sec)', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'Owner dashboard (10 tabs)', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'AI assistant (9 editing tools)', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'Gallery + logo upload', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
                     ]},
-                    { section: '📊 Analytics & Notifications', rows: [
-                      { feature: 'Email booking notifications', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'Site analytics (14-day chart)', trial: '✓', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'SMS booking reminders (Twilio)', trial: '—', starter: '—', growth: '✓', agency: '✓' },
+                    { section: 'ðŸ“Š Analytics & Notifications', rows: [
+                      { feature: 'Email booking notifications', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'Site analytics (14-day chart)', trial: 'âœ“', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'SMS booking reminders (Twilio)', trial: 'â€”', starter: 'â€”', growth: 'âœ“', agency: 'âœ“' },
                     ]},
-                    { section: '📬 Leads & Promotions (Phase 10)', rows: [
-                      { feature: 'Contact / inquiry form', trial: '—', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'Owner Inquiries dashboard', trial: '—', starter: '✓', growth: '✓', agency: '✓' },
-                      { feature: 'Promotion blasts per month', trial: '—', starter: '—', growth: '2', agency: '5' },
-                      { feature: 'Cross-network audience access', trial: '—', starter: '—', growth: '✓', agency: '✓' },
+                    { section: 'ðŸ“¬ Leads & Promotions (Phase 10)', rows: [
+                      { feature: 'Contact / inquiry form', trial: 'â€”', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'Owner Inquiries dashboard', trial: 'â€”', starter: 'âœ“', growth: 'âœ“', agency: 'âœ“' },
+                      { feature: 'Promotion blasts per month', trial: 'â€”', starter: 'â€”', growth: '2', agency: '5' },
+                      { feature: 'Cross-network audience access', trial: 'â€”', starter: 'â€”', growth: 'âœ“', agency: 'âœ“' },
                     ]},
-                    { section: '🏷️ Branding & Scale', rows: [
-                      { feature: 'White-label mode', trial: '—', starter: '—', growth: '—', agency: '✓' },
-                      { feature: 'Custom domain', trial: '—', starter: '—', growth: '—', agency: '✓' },
-                      { feature: 'Dedicated onboarding call', trial: '—', starter: '—', growth: '—', agency: '✓' },
-                      { feature: 'Priority support', trial: '—', starter: '—', growth: '✓', agency: '✓' },
+                    { section: 'ðŸ·ï¸ Branding & Scale', rows: [
+                      { feature: 'White-label mode', trial: 'â€”', starter: 'â€”', growth: 'â€”', agency: 'âœ“' },
+                      { feature: 'Custom domain', trial: 'â€”', starter: 'â€”', growth: 'â€”', agency: 'âœ“' },
+                      { feature: 'Dedicated onboarding call', trial: 'â€”', starter: 'â€”', growth: 'â€”', agency: 'âœ“' },
+                      { feature: 'Priority support', trial: 'â€”', starter: 'â€”', growth: 'âœ“', agency: 'âœ“' },
                     ]},
                   ].map(group => (
                     <React.Fragment key={group.section}>
@@ -1524,17 +1808,17 @@ if (count > 0) return 409 // Slot taken`}</pre>
 
           {/* Upgrade triggers */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl p-5">
-            <p className="text-white font-semibold text-sm mb-4">When to Upgrade — Sales Triggers</p>
+            <p className="text-white font-semibold text-sm mb-4">When to Upgrade â€” Sales Triggers</p>
             <div className="space-y-3">
               {[
-                { from: 'Trial', to: 'Starter', trigger: 'Trial period ends (14 days). Client is getting bookings and sees value. Conversion pitch: "You got X bookings this week — let\'s keep them coming at $29/mo."', color: 'border-blue-800' },
+                { from: 'Trial', to: 'Starter', trigger: 'Trial period ends (14 days). Client is getting bookings and sees value. Conversion pitch: "You got X bookings this week â€” let\'s keep them coming at $29/mo."', color: 'border-blue-800' },
                 { from: 'Starter', to: 'Growth', trigger: 'Client opens a second location OR wants SMS reminders to reduce no-shows OR wants to run a promotion to their customers. At $49 it\'s $20 more for significantly more tools.', color: 'border-green-800' },
                 { from: 'Growth', to: 'Agency', trigger: 'Client is an agency/freelancer managing 4+ business sites, wants to remove KITA branding for their own clients, or needs a custom domain for white-label presentation.', color: 'border-purple-800' },
               ].map(u => (
                 <div key={u.from} className={`border rounded-xl p-4 bg-gray-900/50 ${u.color}`}>
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-gray-400 text-xs font-bold">{u.from}</span>
-                    <span className="text-gray-600">→</span>
+                    <span className="text-gray-600">â†’</span>
                     <span className="text-white text-xs font-bold">{u.to}</span>
                   </div>
                   <p className="text-gray-500 text-xs leading-relaxed">{u.trigger}</p>
@@ -1567,20 +1851,20 @@ if (count > 0) return 409 // Slot taken`}</pre>
 
           {/* Status note */}
           <div className="bg-yellow-950/30 border border-yellow-800/50 rounded-xl p-4">
-            <p className="text-yellow-400 text-xs font-semibold mb-1">⚠️ Implementation Status</p>
+            <p className="text-yellow-400 text-xs font-semibold mb-1">âš ï¸ Implementation Status</p>
             <div className="space-y-1 text-xs text-yellow-200/50">
-              <p>✅ Plan tiers defined in <code className="font-mono text-yellow-300">types/database.ts</code> + tracked per client in <code className="font-mono text-yellow-300">clients</code> table</p>
-              <p>✅ MRR rates in <code className="font-mono text-yellow-300">app/admin/clients/page.tsx</code> (MONTHLY_RATES constant)</p>
-              <p>✅ Plan badge shown in <code className="font-mono text-yellow-300">/admin/clients</code> + <code className="font-mono text-yellow-300">/admin/revenue</code></p>
-              <p>⏳ Stripe recurring subscriptions — needs Stripe Products + Prices + live keys (Backlog)</p>
-              <p>⏳ Auto-downgrade on payment failure — needs <code className="font-mono text-yellow-300">invoice.payment_failed</code> webhook handler</p>
-              <p>⏳ Client self-service plan upgrade page — planned Phase 11</p>
+              <p>âœ… Plan tiers defined in <code className="font-mono text-yellow-300">types/database.ts</code> + tracked per client in <code className="font-mono text-yellow-300">clients</code> table</p>
+              <p>âœ… MRR rates in <code className="font-mono text-yellow-300">app/admin/clients/page.tsx</code> (MONTHLY_RATES constant)</p>
+              <p>âœ… Plan badge shown in <code className="font-mono text-yellow-300">/admin/clients</code> + <code className="font-mono text-yellow-300">/admin/revenue</code></p>
+              <p>â³ Stripe recurring subscriptions â€” needs Stripe Products + Prices + live keys (Backlog)</p>
+              <p>â³ Auto-downgrade on payment failure â€” needs <code className="font-mono text-yellow-300">invoice.payment_failed</code> webhook handler</p>
+              <p>â³ Client self-service plan upgrade page â€” planned Phase 11</p>
             </div>
           </div>
         </div>
       ),
     },
-    // ─── PHASE 10 — CONTACT FORM + LEADS ENGINE ──────────────────
+    // â”€â”€â”€ PHASE 10 â€” CONTACT FORM + LEADS ENGINE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     {
       id: 'leads-engine',
       title: 'Contact Form & Smart Leads Engine (Phase 10)',
@@ -1588,26 +1872,26 @@ if (count > 0) return 409 // Slot taken`}</pre>
       content: (
         <div className="space-y-5">
           <div className="bg-gray-950 border border-blue-800/50 rounded-xl p-4">
-            <p className="text-blue-400 font-bold text-sm mb-2">📋 Phase 10 — Planned</p>
+            <p className="text-blue-400 font-bold text-sm mb-2">ðŸ“‹ Phase 10 â€” Planned</p>
             <p className="text-gray-400 text-sm leading-relaxed">
               Two connected features: a <strong className="text-white">Contact / Inquiry Form</strong> on every client site to capture warm leads before they book, and a <strong className="text-white">Smart Leads Engine</strong> that aggregates those leads across all KITA client sites for intelligent cross-business promotions.
             </p>
           </div>
 
-          {/* Feature 1 — Contact Form */}
+          {/* Feature 1 â€” Contact Form */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-white font-bold text-sm">📬 Feature 1 — Contact / Inquiry Form</p>
-              <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-gray-800 text-gray-400">📋 Phase 10</span>
+              <p className="text-white font-bold text-sm">ðŸ“¬ Feature 1 â€” Contact / Inquiry Form</p>
+              <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-gray-800 text-gray-400">ðŸ“‹ Phase 10</span>
             </div>
             <div className="space-y-3 text-sm text-gray-400">
               <div>
                 <p className="text-white font-semibold mb-1">What</p>
-                <p>A second tab on the public client site — <span className="text-blue-300 italic">"Not ready to book? Send us a message."</span> Customer fills in name, email, and a free-text message. No commitment. Zero friction.</p>
+                <p>A second tab on the public client site â€” <span className="text-blue-300 italic">"Not ready to book? Send us a message."</span> Customer fills in name, email, and a free-text message. No commitment. Zero friction.</p>
               </div>
               <div>
                 <p className="text-white font-semibold mb-1">Why</p>
-                <p>Booking is a high-commitment action. Customers who are curious but unsure will leave rather than book if there is no middle option. A contact form captures that warm lead before it disappears. The conversion path <span className="text-green-400">inquiry → follow-up → booking</span> is well established in service sales.</p>
+                <p>Booking is a high-commitment action. Customers who are curious but unsure will leave rather than book if there is no middle option. A contact form captures that warm lead before it disappears. The conversion path <span className="text-green-400">inquiry â†’ follow-up â†’ booking</span> is well established in service sales.</p>
               </div>
               <div>
                 <p className="text-white font-semibold mb-1">Who</p>
@@ -1622,11 +1906,11 @@ if (count > 0) return 409 // Slot taken`}</pre>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 mt-2">
                 {[
-                  { area: 'Public Site', desc: 'New "Enquire" tab next to the Booking widget. Fields: Name, Email, Message. Submit → thank-you state.' },
-                  { area: 'Owner Dashboard', desc: 'New "Inquiries" tab — list of leads with name, email, message, timestamp. One-click "Convert to Booking".' },
+                  { area: 'Public Site', desc: 'New "Enquire" tab next to the Booking widget. Fields: Name, Email, Message. Submit â†’ thank-you state.' },
+                  { area: 'Owner Dashboard', desc: 'New "Inquiries" tab â€” list of leads with name, email, message, timestamp. One-click "Convert to Booking".' },
                   { area: 'Email Notification', desc: 'Owner receives email via Resend when a new inquiry arrives. Same flow as booking notification.' },
-                  { area: 'API Route', desc: 'POST /api/inquire — saves to leads table (site_id, name, email, message, source: "contact_form"). Returns 200.' },
-                  { area: 'Admin /admin/leads', desc: 'Cross-site leads view — all inquiries from all client sites in one table, searchable, filterable by site.' },
+                  { area: 'API Route', desc: 'POST /api/inquire â€” saves to leads table (site_id, name, email, message, source: "contact_form"). Returns 200.' },
+                  { area: 'Admin /admin/leads', desc: 'Cross-site leads view â€” all inquiries from all client sites in one table, searchable, filterable by site.' },
                   { area: 'DB: leads table', desc: 'id, site_id FK, name, email, phone, message, source, status (new/contacted/converted/closed), created_at.' },
                 ].map(r => (
                   <div key={r.area} className="bg-gray-900 rounded-lg p-3">
@@ -1638,20 +1922,20 @@ if (count > 0) return 409 // Slot taken`}</pre>
             </div>
           </div>
 
-          {/* Feature 2 — Smart Leads Engine */}
+          {/* Feature 2 â€” Smart Leads Engine */}
           <div className="bg-gray-950 border border-purple-800/50 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-white font-bold text-sm">🧠 Feature 2 — Smart Leads Engine</p>
-              <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-gray-800 text-gray-400">📋 Phase 10</span>
+              <p className="text-white font-bold text-sm">ðŸ§  Feature 2 â€” Smart Leads Engine</p>
+              <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-gray-800 text-gray-400">ðŸ“‹ Phase 10</span>
             </div>
             <div className="space-y-3 text-sm text-gray-400">
               <div>
                 <p className="text-white font-semibold mb-1">What</p>
-                <p>Aggregate all leads (contact form inquiries + booking customer emails) across every KITA client site into a central leads database. Use this data to run intelligent cross-business promotions — e.g. a customer who booked a haircut at Salon A in Sydney gets a targeted offer from Mechanic B, also a KITA client in Sydney.</p>
+                <p>Aggregate all leads (contact form inquiries + booking customer emails) across every KITA client site into a central leads database. Use this data to run intelligent cross-business promotions â€” e.g. a customer who booked a haircut at Salon A in Sydney gets a targeted offer from Mechanic B, also a KITA client in Sydney.</p>
               </div>
               <div>
                 <p className="text-white font-semibold mb-1">Why</p>
-                <p>KITA is uniquely positioned: it sits across multiple local businesses and their customer bases simultaneously. No individual business can build this network alone — but KITA can aggregate it automatically. This creates a <span className="text-purple-300">local loyalty network</span> and a new revenue product: paid promotions sold to KITA clients ("send your offer to 2,000 local customers across our network — $49/blast").</p>
+                <p>KITA is uniquely positioned: it sits across multiple local businesses and their customer bases simultaneously. No individual business can build this network alone â€” but KITA can aggregate it automatically. This creates a <span className="text-purple-300">local loyalty network</span> and a new revenue product: paid promotions sold to KITA clients ("send your offer to 2,000 local customers across our network â€” $49/blast").</p>
               </div>
               <div>
                 <p className="text-white font-semibold mb-1">Who</p>
@@ -1667,33 +1951,33 @@ if (count > 0) return 409 // Slot taken`}</pre>
 
               {/* How it works */}
               <div>
-                <p className="text-white font-semibold mb-2">How It Works — 3 Layers</p>
+                <p className="text-white font-semibold mb-2">How It Works â€” 3 Layers</p>
                 <div className="space-y-2">
                   {[
                     {
-                      layer: 'Layer 1 — Lead Aggregation',
+                      layer: 'Layer 1 â€” Lead Aggregation',
                       color: 'border-blue-700',
                       badge: 'bg-blue-900/50 text-blue-400',
                       points: [
-                        'Every contact-form submission → leads table (with site_id, business_type, city)',
-                        'Every booking with customer_email → also seeded into leads (source: "booking")',
+                        'Every contact-form submission â†’ leads table (with site_id, business_type, city)',
+                        'Every booking with customer_email â†’ also seeded into leads (source: "booking")',
                         'Customers opt-in at inquiry/booking with a checkbox: "I\'d like to hear about local offers"',
-                        'opt_in: boolean on the leads row — promotions only go to opted-in leads',
+                        'opt_in: boolean on the leads row â€” promotions only go to opted-in leads',
                       ],
                     },
                     {
-                      layer: 'Layer 2 — Segmentation',
+                      layer: 'Layer 2 â€” Segmentation',
                       color: 'border-purple-700',
                       badge: 'bg-purple-900/50 text-purple-400',
                       points: [
                         'Leads tagged by city, business_type of the originating site, and source',
                         'Admin /admin/leads: filter by city + business_type to build a promotion audience',
                         'Example: "All Sydney leads from salon + mechanic sites in the last 90 days"',
-                        'Audience size shown before sending — "you will reach 340 people"',
+                        'Audience size shown before sending â€” "you will reach 340 people"',
                       ],
                     },
                     {
-                      layer: 'Layer 3 — Promotion Blast',
+                      layer: 'Layer 3 â€” Promotion Blast',
                       color: 'border-green-700',
                       badge: 'bg-green-900/50 text-green-400',
                       points: [
@@ -1712,7 +1996,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
                       <ul className="space-y-1">
                         {l.points.map((p, i) => (
                           <li key={i} className="flex gap-2 text-xs text-gray-500">
-                            <span className="text-gray-700 shrink-0">→</span>{p}
+                            <span className="text-gray-700 shrink-0">â†’</span>{p}
                           </li>
                         ))}
                       </ul>
@@ -1723,16 +2007,16 @@ if (count > 0) return 409 // Slot taken`}</pre>
 
               {/* Revenue angle */}
               <div className="bg-purple-950/30 border border-purple-800/50 rounded-xl p-4 mt-2">
-                <p className="text-purple-300 font-semibold text-xs mb-2">💰 New Revenue Stream — Promotion Blasts</p>
+                <p className="text-purple-300 font-semibold text-xs mb-2">ðŸ’° New Revenue Stream â€” Promotion Blasts</p>
                 <div className="space-y-1.5 text-xs text-gray-500">
                   {[
                     'Charge KITA clients $49/blast to reach the full opted-in network in their city',
-                    'Bundle: 2 blasts/month included in Growth plan ($49/mo) — creates plan upgrade incentive',
-                    'Sell audience segments: "send to 500 pet clinic customers in Manila" → $29',
-                    'At 20 paying KITA clients each buying 1 blast/mo → $980 additional MRR',
+                    'Bundle: 2 blasts/month included in Growth plan ($49/mo) â€” creates plan upgrade incentive',
+                    'Sell audience segments: "send to 500 pet clinic customers in Manila" â†’ $29',
+                    'At 20 paying KITA clients each buying 1 blast/mo â†’ $980 additional MRR',
                   ].map((p, i) => (
                     <div key={i} className="flex gap-2">
-                      <span className="text-purple-500 shrink-0">→</span>{p}
+                      <span className="text-purple-500 shrink-0">â†’</span>{p}
                     </div>
                   ))}
                 </div>
@@ -1743,23 +2027,23 @@ if (count > 0) return 409 // Slot taken`}</pre>
           {/* DB schema */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
             <div className="px-4 py-3 border-b border-gray-800">
-              <p className="text-white font-semibold text-sm">Database — <code className="text-blue-300 font-mono">leads</code> table</p>
+              <p className="text-white font-semibold text-sm">Database â€” <code className="text-blue-300 font-mono">leads</code> table</p>
               <p className="text-gray-500 text-xs mt-0.5">Run <code className="font-mono text-yellow-300">supabase/leads.sql</code> when Phase 10 development begins</p>
             </div>
             <table className="w-full text-xs">
               <tbody>
                 {[
                   ['id', 'uuid', 'Primary key'],
-                  ['site_id', 'uuid FK', 'FK → sites.id (cascade delete)'],
+                  ['site_id', 'uuid FK', 'FK â†’ sites.id (cascade delete)'],
                   ['name', 'text', 'Customer name'],
                   ['email', 'text', 'Primary contact for follow-up'],
-                  ['phone', 'text', 'Optional — captured if provided'],
+                  ['phone', 'text', 'Optional â€” captured if provided'],
                   ['message', 'text', 'Free-text inquiry message'],
                   ['source', 'text', 'contact_form | booking | audit_inquiry'],
                   ['status', 'text', 'new | contacted | converted | closed'],
-                  ['opt_in', 'bool', 'Consented to receive promotions — default false'],
-                  ['city', 'text', 'Copied from site at capture time — for geo-segmentation'],
-                  ['business_type', 'text', 'Copied from site — for interest-based segmentation'],
+                  ['opt_in', 'bool', 'Consented to receive promotions â€” default false'],
+                  ['city', 'text', 'Copied from site at capture time â€” for geo-segmentation'],
+                  ['business_type', 'text', 'Copied from site â€” for interest-based segmentation'],
                   ['created_at', 'timestamptz', 'Auto-set on creation'],
                 ].map(([col, type, purpose]) => (
                   <tr key={col} className="border-b border-gray-900 last:border-0">
@@ -1774,13 +2058,13 @@ if (count > 0) return 409 // Slot taken`}</pre>
 
           {/* Routes */}
           <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
-            <p className="text-white font-semibold text-sm mb-3">New Routes — Phase 10</p>
+            <p className="text-white font-semibold text-sm mb-3">New Routes â€” Phase 10</p>
             <div className="space-y-2 text-xs font-mono">
               {[
-                { method: 'POST', path: '/api/inquire', desc: 'Save contact form inquiry → leads table, send owner email notification' },
-                { method: 'GET', path: '/admin/leads', desc: 'Cross-site leads list — all inquiries from all client sites, search + filter' },
+                { method: 'POST', path: '/api/inquire', desc: 'Save contact form inquiry â†’ leads table, send owner email notification' },
+                { method: 'GET', path: '/admin/leads', desc: 'Cross-site leads list â€” all inquiries from all client sites, search + filter' },
                 { method: 'POST', path: '/admin/leads/promote', desc: 'Compose and send a promotion blast to a filtered audience segment' },
-                { method: 'GET', path: '/[slug]/inquiries', desc: 'Owner dashboard Inquiries tab — leads for this site only' },
+                { method: 'GET', path: '/[slug]/inquiries', desc: 'Owner dashboard Inquiries tab â€” leads for this site only' },
               ].map(r => (
                 <div key={r.path} className="flex gap-3 bg-gray-900 rounded-lg px-3 py-2 items-center">
                   <span className={`text-xs font-bold px-2 py-0.5 rounded ${r.method === 'POST' ? 'bg-green-900/50 text-green-300' : 'bg-blue-900/50 text-blue-300'}`}>{r.method}</span>
@@ -1793,7 +2077,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
         </div>
       ),
     },
-    // ─── CHANGELOG ────────────────────────────────────────────────
+    // â”€â”€â”€ CHANGELOG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     {
       id: 'changelog',
       title: 'Changelog',
@@ -1810,62 +2094,62 @@ if (count > 0) return 409 // Slot taken`}</pre>
             {
               date: '2026-09-27',
               entries: [
-                { hash: 'e72f85f', type: '🔧 Fix',       text: 'Stripe mode toggle — settings page writes via /api/admin-config (service role) to bypass RLS' },
-                { hash: '8a1035e', type: '🔧 Fix',       text: 'admin-config.sql — replaced unsupported "create policy if not exists" with drop+create for Supabase Postgres compat' },
-                { hash: 'b1e78e0', type: '✨ Feature',   text: 'Stripe test/live mode toggle — Admin Settings, admin_config table, lib/stripe-config.ts, /api/admin-config route, checkout + webhook updated' },
-                { hash: '6bf5aaa', type: '📋 Plan',      text: 'Phase 10 documented — Contact Form + Smart Leads Engine: What/Why/Who/Status, leads table schema, new routes, pitch pages + README updated' },
-                { hash: '64667c8', type: '✅ Complete',  text: 'Phase 9 complete — /admin/clients list + profile + new, Client column in /admin/sites, By Client tab in /admin/revenue, auto-upsert client on booking' },
-                { hash: '5807265', type: '📋 Plan',      text: 'Phase 9 plan — clients.sql, sidebar nav, docs section, placeholder page' },
-                { hash: '0b4dc35', type: '🔧 Fix',       text: 'Timezone + race condition — IANA timezone on sites/bookings, server-side 409 check, getTodayInTimezone moved to lib/timezones.ts, booking architecture docs' },
-                { hash: 'c25cd1d', type: '✅ Complete',  text: 'Phase 6 complete — Smart Booking System: availability check, next slot, /booking/[id] confirmation, Add to Calendar, cancel/reschedule, Block Dates, auto-confirm toggle, email auto-fill' },
-                { hash: '82e1440', type: '📝 Docs',      text: 'Feature roadmap rewritten with What/Why/Who/Status standard across all features' },
-                { hash: '5dac1eb', type: '✅ Complete',  text: 'Phase 5 complete — 3-step generate form: service selector + custom pricing, currency picker (10 currencies), currency on public site + booking form' },
+                { hash: 'e72f85f', type: 'ðŸ”§ Fix',       text: 'Stripe mode toggle â€” settings page writes via /api/admin-config (service role) to bypass RLS' },
+                { hash: '8a1035e', type: 'ðŸ”§ Fix',       text: 'admin-config.sql â€” replaced unsupported "create policy if not exists" with drop+create for Supabase Postgres compat' },
+                { hash: 'b1e78e0', type: 'âœ¨ Feature',   text: 'Stripe test/live mode toggle â€” Admin Settings, admin_config table, lib/stripe-config.ts, /api/admin-config route, checkout + webhook updated' },
+                { hash: '6bf5aaa', type: 'ðŸ“‹ Plan',      text: 'Phase 10 documented â€” Contact Form + Smart Leads Engine: What/Why/Who/Status, leads table schema, new routes, pitch pages + README updated' },
+                { hash: '64667c8', type: 'âœ… Complete',  text: 'Phase 9 complete â€” /admin/clients list + profile + new, Client column in /admin/sites, By Client tab in /admin/revenue, auto-upsert client on booking' },
+                { hash: '5807265', type: 'ðŸ“‹ Plan',      text: 'Phase 9 plan â€” clients.sql, sidebar nav, docs section, placeholder page' },
+                { hash: '0b4dc35', type: 'ðŸ”§ Fix',       text: 'Timezone + race condition â€” IANA timezone on sites/bookings, server-side 409 check, getTodayInTimezone moved to lib/timezones.ts, booking architecture docs' },
+                { hash: 'c25cd1d', type: 'âœ… Complete',  text: 'Phase 6 complete â€” Smart Booking System: availability check, next slot, /booking/[id] confirmation, Add to Calendar, cancel/reschedule, Block Dates, auto-confirm toggle, email auto-fill' },
+                { hash: '82e1440', type: 'ðŸ“ Docs',      text: 'Feature roadmap rewritten with What/Why/Who/Status standard across all features' },
+                { hash: '5dac1eb', type: 'âœ… Complete',  text: 'Phase 5 complete â€” 3-step generate form: service selector + custom pricing, currency picker (10 currencies), currency on public site + booking form' },
               ],
             },
             {
-              date: '2026-09-27 · session 2',
+              date: '2026-09-27 Â· session 2',
               entries: [
-                { hash: '601ace0', type: '🔧 Fix',       text: 'React.Fragment with key prop replacing bare <> fragment in pricing matrix — resolved React console warning' },
-                { hash: '58e10da', type: '📝 Docs',      text: 'Subscription Plans documented — full feature matrix table in client-management section; new standalone Pricing section (plan cards, comparison table, upgrade triggers, MRR projections); pricing comparison on /pitch; README updated' },
-                { hash: '01d4163', type: '✅ Complete',  text: 'Stripe webhook → client integration on payment — upsert client record, set subscription_status=active, plan=starter, onboarding_complete=true, link sites.client_id; docs integration point marked Done' },
-                { hash: 'b1e78e0', type: '✨ Feature',   text: 'Stripe test/live mode toggle — Admin Settings, admin_config Supabase table, lib/stripe-config.ts, /api/admin-config server route (service role), checkout + webhook updated' },
+                { hash: '601ace0', type: 'ðŸ”§ Fix',       text: 'React.Fragment with key prop replacing bare <> fragment in pricing matrix â€” resolved React console warning' },
+                { hash: '58e10da', type: 'ðŸ“ Docs',      text: 'Subscription Plans documented â€” full feature matrix table in client-management section; new standalone Pricing section (plan cards, comparison table, upgrade triggers, MRR projections); pricing comparison on /pitch; README updated' },
+                { hash: '01d4163', type: 'âœ… Complete',  text: 'Stripe webhook â†’ client integration on payment â€” upsert client record, set subscription_status=active, plan=starter, onboarding_complete=true, link sites.client_id; docs integration point marked Done' },
+                { hash: 'b1e78e0', type: 'âœ¨ Feature',   text: 'Stripe test/live mode toggle â€” Admin Settings, admin_config Supabase table, lib/stripe-config.ts, /api/admin-config server route (service role), checkout + webhook updated' },
               ],
             },
             {
               date: '2026-09-26',
               entries: [
-                { hash: 'b922dff', type: '📝 Docs',      text: 'Docs + README: full project overview updated — both products, Phases 5–8 roadmap, commercial pitch section' },
-                { hash: 'aeb80f0', type: '✨ Feature',   text: 'Template custom fields — notes_label/placeholder/required per template type; BookingForm updated' },
-                { hash: '2522aa1', type: '✨ Feature',   text: 'Audit pitch page /audit-pitch built; README updated to 27 routes' },
-                { hash: '9fa77cc', type: '✅ Complete',  text: 'Audit Phase 3 — PDF report via jsPDF, Forensic format, 8 sections, multi-page download' },
-                { hash: 'd6f2bb0', type: '✅ Complete',  text: 'Audit Phase 2 — Crawler (10 pages, 3 concurrent), Pages tab, broken links, History search/delete/score trend' },
-                { hash: 'a9af653', type: '✅ Complete',  text: 'Audit Phase 1 — Performance (PSI), SEO (cheerio), Security headers, Tech fingerprinting, Accessibility (WCAG 2.1), score rings, issue explorer' },
+                { hash: 'b922dff', type: 'ðŸ“ Docs',      text: 'Docs + README: full project overview updated â€” both products, Phases 5â€“8 roadmap, commercial pitch section' },
+                { hash: 'aeb80f0', type: 'âœ¨ Feature',   text: 'Template custom fields â€” notes_label/placeholder/required per template type; BookingForm updated' },
+                { hash: '2522aa1', type: 'âœ¨ Feature',   text: 'Audit pitch page /audit-pitch built; README updated to 27 routes' },
+                { hash: '9fa77cc', type: 'âœ… Complete',  text: 'Audit Phase 3 â€” PDF report via jsPDF, Forensic format, 8 sections, multi-page download' },
+                { hash: 'd6f2bb0', type: 'âœ… Complete',  text: 'Audit Phase 2 â€” Crawler (10 pages, 3 concurrent), Pages tab, broken links, History search/delete/score trend' },
+                { hash: 'a9af653', type: 'âœ… Complete',  text: 'Audit Phase 1 â€” Performance (PSI), SEO (cheerio), Security headers, Tech fingerprinting, Accessibility (WCAG 2.1), score rings, issue explorer' },
               ],
             },
             {
               date: '2026-09-25',
               entries: [
-                { hash: '9c30201', type: '✨ Feature',   text: 'Gallery renders on public site — "Our Work" grid, 2-col mobile / 3-col desktop, hover zoom' },
-                { hash: 'cc38ce0', type: '✨ Feature',   text: 'Staff booking — preferred staff picker in booking form, staff_id + staff_name saved to booking and shown in dashboard + email' },
-                { hash: 'cd8f05b', type: '✨ Feature',   text: 'Site analytics — page_views table, /api/track, Analytics tab in owner dashboard (14-day chart, weekly trend), views in revenue page' },
-                { hash: 'f703e01', type: '✅ Complete',  text: 'No-blocker backlog complete — PIN change, logo upload, gallery, testimonials editor, MRR revenue dashboard, CSV export' },
-                { hash: 'cbd7ba1', type: '🔧 Fix',       text: 'Webhook maxDuration=60; respond to Stripe immediately then generate in background' },
-                { hash: '713e9bd', type: '🔧 Fix',       text: 'Stripe server-only import fixed; lib/pricing.ts split to client-safe module' },
+                { hash: '9c30201', type: 'âœ¨ Feature',   text: 'Gallery renders on public site â€” "Our Work" grid, 2-col mobile / 3-col desktop, hover zoom' },
+                { hash: 'cc38ce0', type: 'âœ¨ Feature',   text: 'Staff booking â€” preferred staff picker in booking form, staff_id + staff_name saved to booking and shown in dashboard + email' },
+                { hash: 'cd8f05b', type: 'âœ¨ Feature',   text: 'Site analytics â€” page_views table, /api/track, Analytics tab in owner dashboard (14-day chart, weekly trend), views in revenue page' },
+                { hash: 'f703e01', type: 'âœ… Complete',  text: 'No-blocker backlog complete â€” PIN change, logo upload, gallery, testimonials editor, MRR revenue dashboard, CSV export' },
+                { hash: 'cbd7ba1', type: 'ðŸ”§ Fix',       text: 'Webhook maxDuration=60; respond to Stripe immediately then generate in background' },
+                { hash: '713e9bd', type: 'ðŸ”§ Fix',       text: 'Stripe server-only import fixed; lib/pricing.ts split to client-safe module' },
               ],
             },
             {
               date: '2026-09-24',
               entries: [
-                { hash: '50d34af', type: '✅ Complete',  text: 'Week 3 — Stripe payments: /api/checkout, /api/webhook, /onboard, /onboard/success, payments.sql, payment_status tracking, Pay & Launch CTA on pitch page' },
+                { hash: '50d34af', type: 'âœ… Complete',  text: 'Week 3 â€” Stripe payments: /api/checkout, /api/webhook, /onboard, /onboard/success, payments.sql, payment_status tracking, Pay & Launch CTA on pitch page' },
               ],
             },
             {
               date: '2026-09-23',
               entries: [
-                { hash: 'b76b8c1', type: '✅ Complete',  text: 'Week 2 complete — Outreach pitch page /pitch, mobile responsive (sticky nav, responsive grids), Resend email fix' },
-                { hash: 'd648171', type: '✨ Feature',   text: 'Owner dashboard — Staff, Hours, About, AI Assistant tabs added (total 10 tabs)' },
-                { hash: 'ddc8bc3', type: '✅ Complete',  text: 'Week 1 complete — Templates marketplace (11 templates), Agentic AI assistant (9 tools via Gemini function-calling)' },
-                { hash: 'c9217bf', type: '🎉 Init',      text: 'KITA Builder Systems v1 — Initial commit: Next.js 16, Supabase schema, 5 templates, admin CMS, public site renderer, booking form, owner dashboard, Gemini AI generation' },
+                { hash: 'b76b8c1', type: 'âœ… Complete',  text: 'Week 2 complete â€” Outreach pitch page /pitch, mobile responsive (sticky nav, responsive grids), Resend email fix' },
+                { hash: 'd648171', type: 'âœ¨ Feature',   text: 'Owner dashboard â€” Staff, Hours, About, AI Assistant tabs added (total 10 tabs)' },
+                { hash: 'ddc8bc3', type: 'âœ… Complete',  text: 'Week 1 complete â€” Templates marketplace (11 templates), Agentic AI assistant (9 tools via Gemini function-calling)' },
+                { hash: 'c9217bf', type: 'ðŸŽ‰ Init',      text: 'KITA Builder Systems v1 â€” Initial commit: Next.js 16, Supabase schema, 5 templates, admin CMS, public site renderer, booking form, owner dashboard, Gemini AI generation' },
               ],
             },
           ].map(day => (
@@ -1882,12 +2166,12 @@ if (count > 0) return 409 // Slot taken`}</pre>
                   <div key={entry.hash} className="px-4 py-3 flex items-start gap-3 hover:bg-gray-900/40 transition">
                     <code className="text-gray-700 font-mono text-xs shrink-0 mt-0.5 w-14">{entry.hash}</code>
                     <span className={`text-xs shrink-0 font-medium w-24 ${
-                      entry.type.startsWith('✅') ? 'text-green-400' :
-                      entry.type.startsWith('✨') ? 'text-blue-400' :
-                      entry.type.startsWith('🔧') ? 'text-yellow-400' :
-                      entry.type.startsWith('📝') ? 'text-gray-400' :
-                      entry.type.startsWith('📋') ? 'text-purple-400' :
-                      entry.type.startsWith('🎉') ? 'text-pink-400' :
+                      entry.type.startsWith('âœ…') ? 'text-green-400' :
+                      entry.type.startsWith('âœ¨') ? 'text-blue-400' :
+                      entry.type.startsWith('ðŸ”§') ? 'text-yellow-400' :
+                      entry.type.startsWith('ðŸ“') ? 'text-gray-400' :
+                      entry.type.startsWith('ðŸ“‹') ? 'text-purple-400' :
+                      entry.type.startsWith('ðŸŽ‰') ? 'text-pink-400' :
                       'text-gray-500'
                     }`}>{entry.type}</span>
                     <span className="text-gray-400 text-xs leading-relaxed">{entry.text}</span>
@@ -1902,12 +2186,12 @@ if (count > 0) return 409 // Slot taken`}</pre>
             <p className="text-gray-500 text-xs font-semibold mb-3">Legend</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {[
-                { icon: '🎉 Init',     color: 'text-pink-400',   desc: 'Project initialisation' },
-                { icon: '✅ Complete', color: 'text-green-400',  desc: 'Phase or feature fully shipped' },
-                { icon: '✨ Feature',  color: 'text-blue-400',   desc: 'New feature added' },
-                { icon: '🔧 Fix',      color: 'text-yellow-400', desc: 'Bug fix or correction' },
-                { icon: '📝 Docs',     color: 'text-gray-400',   desc: 'Documentation update only' },
-                { icon: '📋 Plan',     color: 'text-purple-400', desc: 'Planned, not yet built' },
+                { icon: 'ðŸŽ‰ Init',     color: 'text-pink-400',   desc: 'Project initialisation' },
+                { icon: 'âœ… Complete', color: 'text-green-400',  desc: 'Phase or feature fully shipped' },
+                { icon: 'âœ¨ Feature',  color: 'text-blue-400',   desc: 'New feature added' },
+                { icon: 'ðŸ”§ Fix',      color: 'text-yellow-400', desc: 'Bug fix or correction' },
+                { icon: 'ðŸ“ Docs',     color: 'text-gray-400',   desc: 'Documentation update only' },
+                { icon: 'ðŸ“‹ Plan',     color: 'text-purple-400', desc: 'Planned, not yet built' },
               ].map(l => (
                 <div key={l.icon} className="flex items-center gap-2">
                   <span className={`text-xs font-medium w-24 shrink-0 ${l.color}`}>{l.icon}</span>
@@ -1919,43 +2203,43 @@ if (count > 0) return 409 // Slot taken`}</pre>
         </div>
       ),
     },
-    // ─── BACKLOG ──────────────────────────────────────────────────
+    // â”€â”€â”€ BACKLOG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     {
       id: 'backlog',
-      title: 'Backlog — Next Week',
+      title: 'Backlog â€” Next Week',
       icon: ListTodo,
       content: (
         <div className="space-y-6">
           <p className="text-gray-400 text-sm">
-            Tasks that require paid accounts or billing activation. Code preparation is done — just needs account setup and testing.
+            Tasks that require paid accounts or billing activation. Code preparation is done â€” just needs account setup and testing.
           </p>
 
           {[
             {
-              label: '🔴 Blocked — Needs Gemini Account Fix',
+              label: 'ðŸ”´ Blocked â€” Needs Gemini Account Fix',
               color: 'border-red-800',
               tasks: [
                 {
                   title: 'Webhook auto-generation after Stripe payment',
-                  status: 'Code complete — blocked on Gemini API',
-                  blocker: 'All 3 Gemini models (gemini-3.6-flash, gemini-2.5-flash, gemini-2.5-flash-lite) return 503 unavailable from Vercel servers. Confirmed via Vercel live logs — execution is only 5.58s so it is NOT a timeout. Root cause: AQ. key rate limit or IP restriction on Vercel. Fix: create a new API key at aistudio.google.com/app/apikey, replace GEMINI_API_KEY in .env.local and Vercel env vars, test locally first.',
+                  status: 'Code complete â€” blocked on Gemini API',
+                  blocker: 'All 3 Gemini models (gemini-3.6-flash, gemini-2.5-flash, gemini-2.5-flash-lite) return 503 unavailable from Vercel servers. Confirmed via Vercel live logs â€” execution is only 5.58s so it is NOT a timeout. Root cause: AQ. key rate limit or IP restriction on Vercel. Fix: create a new API key at aistudio.google.com/app/apikey, replace GEMINI_API_KEY in .env.local and Vercel env vars, test locally first.',
                   effort: '30 min once new key is working',
                 },
                 {
-                  title: 'Full /onboard → pay → site live flow end-to-end',
-                  status: 'Code complete — depends on webhook fix above',
+                  title: 'Full /onboard â†’ pay â†’ site live flow end-to-end',
+                  status: 'Code complete â€” depends on webhook fix above',
                   blocker: 'Depends on Gemini webhook fix. All polling, idempotency, and maxDuration=60 code is already in place.',
-                  effort: 'Testing only — no code needed',
+                  effort: 'Testing only â€” no code needed',
                 },
               ],
             },
             {
-              label: '🟡 Blocked — Needs Stripe Live Keys',
+              label: 'ðŸŸ¡ Blocked â€” Needs Stripe Live Keys',
               color: 'border-yellow-800',
               tasks: [
                 {
                   title: '$29/month recurring subscription billing',
-                  status: 'Code not started — needs Stripe Products + Prices setup',
+                  status: 'Code not started â€” needs Stripe Products + Prices setup',
                   blocker: 'Currently in test mode. Need to create a $29/mo Stripe Product and switch to live keys when ready for real clients.',
                   effort: '2-3 hours coding + Stripe dashboard setup',
                 },
@@ -1968,12 +2252,12 @@ if (count > 0) return 409 // Slot taken`}</pre>
               ],
             },
             {
-              label: '🟡 Blocked — Needs Twilio Account ($20 deposit)',
+              label: 'ðŸŸ¡ Blocked â€” Needs Twilio Account ($20 deposit)',
               color: 'border-orange-800',
               tasks: [
                 {
                   title: 'SMS booking confirmation to customer',
-                  status: 'Code not started — /api/notify ready to extend',
+                  status: 'Code not started â€” /api/notify ready to extend',
                   blocker: 'Need Twilio account funded. Add TWILIO_ACCOUNT_SID + TWILIO_AUTH_TOKEN + TWILIO_PHONE_NUMBER to .env.local.',
                   effort: '1 hour to add SMS to /api/notify route',
                 },
@@ -1986,102 +2270,102 @@ if (count > 0) return 409 // Slot taken`}</pre>
               ],
             },
             {
-              label: '🟡 Blocked — Needs Resend Verified Domain',
+              label: 'ðŸŸ¡ Blocked â€” Needs Resend Verified Domain',
               color: 'border-blue-800',
               tasks: [
                 {
                   title: 'Send booking emails to client\'s owner_email (not just your email)',
-                  status: 'Workaround active — currently all emails go to NOTIFICATION_EMAIL',
-                  blocker: 'Add a domain in Resend → verify DNS → update from address to bookings@yourdomain.com.',
+                  status: 'Workaround active â€” currently all emails go to NOTIFICATION_EMAIL',
+                  blocker: 'Add a domain in Resend â†’ verify DNS â†’ update from address to bookings@yourdomain.com.',
                   effort: '30 minutes once domain is ready',
                 },
               ],
             },
             {
-              label: '🟢 No Blocker — Can Build Anytime',
+              label: 'ðŸŸ¢ No Blocker â€” Can Build Anytime',
               color: 'border-green-800',
               tasks: [
                 {
                   title: 'Custom PIN change in owner dashboard',
-                  status: '✅ DONE — Settings tab in owner dashboard, validates match + min length',
+                  status: 'âœ… DONE â€” Settings tab in owner dashboard, validates match + min length',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
                   title: 'Business logo upload in owner dashboard',
-                  status: '✅ DONE — Settings tab, uploads to Supabase Storage, saves to theme_json.logo_url',
+                  status: 'âœ… DONE â€” Settings tab, uploads to Supabase Storage, saves to theme_json.logo_url',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
                   title: 'Gallery / photo upload section on public site',
-                  status: '✅ DONE — Gallery tab in owner dashboard + "Our Work" grid section on public site',
+                  status: 'âœ… DONE â€” Gallery tab in owner dashboard + "Our Work" grid section on public site',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
                   title: 'Testimonials editor in owner dashboard',
-                  status: '✅ DONE — Reviews tab, add/edit/remove, star rating picker, save to theme_json',
+                  status: 'âœ… DONE â€” Reviews tab, add/edit/remove, star rating picker, save to theme_json',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
-                  title: 'Revenue dashboard in admin — MRR tracker',
-                  status: '✅ DONE — /admin/revenue: MRR, setup revenue, annual projection, per-site breakdown',
+                  title: 'Revenue dashboard in admin â€” MRR tracker',
+                  status: 'âœ… DONE â€” /admin/revenue: MRR, setup revenue, annual projection, per-site breakdown',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
                   title: 'Export bookings to CSV',
-                  status: '✅ DONE — CSV export in owner dashboard Bookings tab + admin Revenue page',
+                  status: 'âœ… DONE â€” CSV export in owner dashboard Bookings tab + admin Revenue page',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
                   title: 'Service selector + currency on generate form (Phase 5)',
-                  status: '✅ DONE — 3-step form: Type → Services + Currency → Details. Client picks/edits services, currency stored on site.',
+                  status: 'âœ… DONE â€” 3-step form: Type â†’ Services + Currency â†’ Details. Client picks/edits services, currency stored on site.',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
                   title: 'Real-time slot availability check (Phase 6)',
-                  status: '✅ DONE — checkSlotAvailability() in lib/booking-utils.ts',
+                  status: 'âœ… DONE â€” checkSlotAvailability() in lib/booking-utils.ts',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
                   title: 'Add to Calendar button after booking (Phase 6)',
-                  status: '✅ DONE — Google Calendar link + Apple .ics on /booking/[id]',
+                  status: 'âœ… DONE â€” Google Calendar link + Apple .ics on /booking/[id]',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
                   title: 'Block out dates / time off (Phase 6)',
-                  status: '✅ DONE — Block Dates tab in owner dashboard, blocked_dates table',
+                  status: 'âœ… DONE â€” Block Dates tab in owner dashboard, blocked_dates table',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
                   title: 'Reschedule / cancel self-service link (Phase 6)',
-                  status: '✅ DONE — /booking/[id]/cancel + /booking/[id]/reschedule with cancel_token',
+                  status: 'âœ… DONE â€” /booking/[id]/cancel + /booking/[id]/reschedule with cancel_token',
                   blocker: 'None',
                   effort: 'Complete',
                 },
                 {
                   title: 'Booking calendar view in dashboard (Phase 7)',
-                  status: 'Planned — weekly/monthly calendar view of all bookings',
-                  blocker: 'None — display only, reads existing bookings table.',
+                  status: 'Planned â€” weekly/monthly calendar view of all bookings',
+                  blocker: 'None â€” display only, reads existing bookings table.',
                   effort: '3-4 hours',
                 },
                 {
                   title: 'Promo codes / discount system (Phase 7)',
-                  status: 'Planned — owner creates codes in dashboard, applied at booking',
-                  blocker: 'None — new DB table for promo_codes.',
+                  status: 'Planned â€” owner creates codes in dashboard, applied at booking',
+                  blocker: 'None â€” new DB table for promo_codes.',
                   effort: '3-4 hours',
                 },
                 {
                   title: 'Reschedule / cancel self-service link (Phase 6)',
-                  status: '✅ DONE — /booking/[id]/cancel + /booking/[id]/reschedule with cancel_token',
+                  status: 'âœ… DONE â€” /booking/[id]/cancel + /booking/[id]/reschedule with cancel_token',
                   blocker: 'None',
                   effort: 'Complete',
                 },
@@ -2153,7 +2437,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
       </div>
 
       <p className="text-gray-700 text-xs text-center mt-8">
-        KITA Builder Systems v1 · Built by Denny Martinez · From Struggle to Booked. ✊
+        KITA Builder Systems v1 Â· Built by Denny Martinez Â· From Struggle to Booked. âœŠ
       </p>
     </div>
   )
