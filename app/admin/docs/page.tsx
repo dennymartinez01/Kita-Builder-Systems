@@ -484,7 +484,7 @@ export default function DocsPage() {
     },
     {
       id: 'plan',
-      title: '30-Day Build Plan',
+      title: '30-Day Build Plan & Phase Roadmap',
       icon: Calendar,
       content: (
         <div className="space-y-4">
@@ -524,9 +524,9 @@ export default function DocsPage() {
             },
             {
               week: 'Week 3 — Revenue (Days 15–21)',
-              color: 'border-yellow-800',
-              badge: '🔄 CURRENT',
-              badgeColor: 'bg-yellow-900/50 text-yellow-400',
+              color: 'border-purple-800',
+              badge: '✅ COMPLETE',
+              badgeColor: 'bg-green-900/50 text-green-400',
               tasks: [
                 'Stripe SDK installed + lib/stripe.ts + lib/pricing.ts (client-safe split) ✅',
                 '/api/checkout — creates Stripe Checkout session with business metadata ✅',
@@ -538,18 +538,21 @@ export default function DocsPage() {
                 'Admin /sites shows payment status badge (paid/free/unpaid) ✅',
                 'Pitch page updated with Pay & Launch Now → /onboard button ✅',
                 'Fix webhook: idempotency check + extended polling to 120s ✅',
+                'Stripe test/live mode toggle — admin_config table, /api/admin-config, Admin Settings ✅',
+                'Live Stripe keys configured (publishable + secret) ✅',
                 'Debug Gemini timeout in webhook on Vercel cold start → moved to backlog (Gemini 503 on all models from Vercel IPs)',
-                'Get 2 paying clients',
-                'Collect real feedback and fix actual issues',
               ],
             },
             {
               week: 'Week 4 — Scale (Days 22–30)',
-              color: 'border-yellow-800',
-              badge: '🔄 CURRENT',
-              badgeColor: 'bg-yellow-900/50 text-yellow-400',
+              color: 'border-orange-800',
+              badge: '✅ COMPLETE',
+              badgeColor: 'bg-green-900/50 text-green-400',
               tasks: [
-                'Deploy to Vercel — kita-builder-systems.vercel.app ✅',
+                'Phase 5: 3-step generate form — service selector + currency picker (10 currencies) ✅',
+                'Phase 6: Smart Booking System — availability check, next slot, confirmation page ✅',
+                'Phase 6: Add to Calendar (.ics + Google), cancel/reschedule self-service ✅',
+                'Phase 6: Block Dates, auto-confirm toggle, timezone handling, race condition guard ✅',
                 'Website Audit Module Phase 1 (Performance, SEO, Security, Tech, A11y) ✅',
                 'Website Audit Module Phase 2 (Crawler, Pages tab, History, Delete) ✅',
                 'Website Audit Module Phase 3 (PDF Report download) ✅',
@@ -559,10 +562,14 @@ export default function DocsPage() {
                 'Site analytics — page views tracking + Analytics tab ✅',
                 'White-label mode — agency branding via env vars ✅',
                 'Revenue dashboard — MRR tracker at /admin/revenue ✅',
-                'Client Management System (Phase 9) — clients table, list/profile/new pages, revenue by client tab, auto-upsert on booking ✅',
+                'Phase 9: Client Management System — clients table, list/profile/new pages ✅',
+                'Phase 9: Client column in /admin/sites, By Client tab in /admin/revenue ✅',
+                'Phase 9: Stripe webhook auto-upserts client on payment ✅',
+                'Subscription Plans documented — full feature matrix, pricing comparison on /pitch ✅',
+                'Changelog system — CHANGELOG.md + /admin/docs Changelog section ✅',
                 'Custom domain (kita.build or kitasystems.com)',
                 'Twilio SMS reminders for owners + customers',
-                '$29/mo recurring billing via Stripe subscriptions',
+                '$29/mo recurring billing via Stripe subscriptions — needs Price IDs',
                 'Record 60-sec Loom demo video of site generation',
               ],
             },
@@ -588,9 +595,94 @@ export default function DocsPage() {
               </div>
             </div>
           ))}
+
+          {/* Phase continuation — beyond 30 days */}
+          <div className="bg-gray-950 border border-gray-700 rounded-xl p-4 mt-2">
+            <p className="text-white font-bold text-sm mb-1">Beyond 30 Days — Phase Roadmap</p>
+            <p className="text-gray-500 text-xs mb-4">The 30-day sprint established the MVP. Development continues in phases aligned to the 7 capability groups in the Feature Roadmap section.</p>
+            <div className="space-y-3">
+              {[
+                {
+                  phase: 'Phase 10 — Contact Form + Smart Leads Engine',
+                  color: 'border-blue-800 bg-blue-950/10',
+                  badge: '📋 Planned',
+                  badgeColor: 'bg-gray-800 text-gray-400',
+                  items: [
+                    'Contact / inquiry form on every client site ("Not ready to book? Message us")',
+                    'Leads table in Supabase — name, email, message, source, opt_in, city, business_type',
+                    '/api/inquire — save lead, notify owner via Resend',
+                    'Owner dashboard Inquiries tab — leads list + "Convert to Booking" button',
+                    '/admin/leads — cross-site leads view for operator',
+                    'Smart promotion blasts — send targeted offers to opted-in leads by city + type',
+                  ],
+                },
+                {
+                  phase: 'Phase 11 — Entitlement Engine + Commerce Foundation',
+                  color: 'border-red-800 bg-red-950/10',
+                  badge: '🔴 Foundation',
+                  badgeColor: 'bg-red-900/50 text-red-400',
+                  items: [
+                    'Feature & Entitlement Engine — features table, plan_features, admin_overrides, effective entitlements',
+                    'Stripe $29/mo Recurring Billing — Price ID setup, subscription creation on payment',
+                    'Trial Duration Configuration — configurable starts_at / expires_at (7/14/21/30/60 days)',
+                    'Trial Account Request System — public /trial form, admin approval workflow, welcome email',
+                    'Admin Subscription Override — Upgrade/Downgrade/Extend/Pause/Cancel + per-feature toggles',
+                    '9-step Site Creation Wizard — replaces 3-step generate form',
+                    'Customer Registration + Client Customer Database (Growth+ plan)',
+                    'Coupon & Promotion Engine — codes, discounts, limits, applicable services',
+                    'Universal Event Stream — events table, /admin/events UI',
+                    'Notification Center — in-admin bell, unread/all tabs',
+                    'Client 360 Profile — 14-tab client view (Overview, Sites, Subscription, Billing, Customers, Leads...)',
+                  ],
+                },
+                {
+                  phase: 'Phase 12 — CRM, Outreach & Attribution',
+                  color: 'border-yellow-800 bg-yellow-950/10',
+                  badge: '🟡 CRM & Growth',
+                  badgeColor: 'bg-yellow-900/50 text-yellow-400',
+                  items: [
+                    'Outreach & Campaign Center — Prospects, Lists, Campaigns, Templates, Send Queue, Analytics',
+                    'Global Suppression List + privacy compliance (PH DPA, AU Spam Act, UK PECR)',
+                    'Lead Source / Attribution Tracking — UTM params on every lead, booking, inquiry',
+                    'Geographic Visitor Analytics — country/region/city aggregate (no raw IPs)',
+                    'WhatsApp / Messenger / Google Calendar integrations (entitlement-gated)',
+                  ],
+                },
+                {
+                  phase: 'Phase 13 — Intelligence + Mature Platform',
+                  color: 'border-green-800 bg-green-950/10',
+                  badge: '🟢 Intelligence',
+                  badgeColor: 'bg-green-900/50 text-green-400',
+                  items: [
+                    'Business Rank + Badges — 10-level scoring system, rank history, earned badges',
+                    'Behavioral Heatmaps — click/scroll/engagement heatmaps, privacy-first opt-in',
+                    'Admin Impersonation — "View as Client" with full event logging',
+                    'Bulk Demo Site Generator — 5 demo sites across niches in one click',
+                    'CRM intelligence — lead-to-client attribution, promotion matching, local loyalty network',
+                  ],
+                },
+              ].map(phase => (
+                <div key={phase.phase} className={`border rounded-xl p-4 ${phase.color}`}>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-white font-semibold text-sm">{phase.phase}</p>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${phase.badgeColor}`}>{phase.badge}</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    {phase.items.map((item, i) => (
+                      <div key={i} className="flex items-start gap-2 text-xs text-gray-400">
+                        <span className="text-gray-600 shrink-0 mt-0.5">○</span>
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="bg-yellow-950/30 border border-yellow-900/50 rounded-xl p-4">
             <p className="text-yellow-400 font-semibold text-sm mb-1">The One Rule</p>
-            <p className="text-yellow-200/60 text-sm">No new features unless a paying client asks for it. Ship ugly but working. A live site that takes bookings beats a perfect Figma mock every time.</p>
+            <p className="text-yellow-200/60 text-sm">No new features unless a paying client asks for it, or it directly unblocks revenue. The Entitlement Engine (Phase 11) is the only exception — build it once, unlock everything cleanly. Ship ugly but working. A live site that takes bookings beats a perfect Figma mock every time.</p>
           </div>
         </div>
       ),
