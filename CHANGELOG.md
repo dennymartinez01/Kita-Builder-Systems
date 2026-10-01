@@ -11,7 +11,7 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 | Commit | Area | What Changed |
 |---|---|---|
-| *(pending)* | 📝 Docs | **Feature Roadmap restructured** — replaced flat Operator/Client/Customer groups with 7 capability groups (Foundation/Commerce/CRM+Growth/Intelligence), priority tier system, 17+ features documented with What/Why/Who/Status, core architectural principle (Entitlement Engine) added, overview Upcoming Phases updated |
+| `ebdbfe7` | 📝 Docs | **Feature Roadmap restructured** — replaced flat Operator/Client/Customer groups with 7 capability groups (Foundation/Commerce/CRM+Growth/Intelligence), priority tier system, 17+ features documented with What/Why/Who/Status, core architectural principle (Entitlement Engine) added, overview Upcoming Phases updated |
 
 ---
 
