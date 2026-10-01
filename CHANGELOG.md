@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 7)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Notification Center** — `supabase/notifications.sql` (admin_notifications table, FK to events, read_at, indexes, RLS); `lib/notifications.ts` (createNotification, getNotifications, getUnreadCount, markRead, markAllRead, NOTIFIABLE_EVENTS); `GET+POST /api/notifications`; notification bell in admin layout header (dropdown preview, unread badge, mark all read, outside-click close); `/admin/notifications` full page (All/Unread tabs, mark-read per row, client/site links, pagination); logEvent() now auto-creates notifications for 10 notifiable event types; Notifications added to sidebar nav |
+
+---
+
 ## 2026-09-27 (session 6)
 
 | Commit | Area | What Changed |

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -17,7 +17,12 @@ import {
   Search,
   Users,
   Activity,
+  Bell,
+  CheckCheck,
+  X,
 } from 'lucide-react'
+import { CATEGORY_ICONS, SEVERITY_COLORS } from '@/lib/events'
+import type { AdminNotification } from '@/lib/notifications'
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -26,7 +31,8 @@ const NAV_ITEMS = [
   { href: '/admin/sites', label: 'All Sites', icon: Globe },
   { href: '/admin/clients', label: 'Clients', icon: Users },
   { href: '/admin/revenue', label: 'Revenue', icon: TrendingUp },
-  { href: '/admin/events',  label: 'Activity & Events', icon: Activity },
+  { href: '/admin/events',         label: 'Activity & Events', icon: Activity },
+  { href: '/admin/notifications',  label: 'Notifications',     icon: Bell },
   { href: '/admin/templates', label: 'Templates', icon: Layers },
   { href: '/audit', label: 'Website Audit', icon: Search },
   { href: '/audit-pitch', label: 'Audit Pitch ↗', icon: Globe },
@@ -43,12 +49,73 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [logoUrl, setLogoUrl] = useState<string | null>(null)
 
+  // Notification bell state
+  const [unreadCount, setUnreadCount]         = useState(0)
+  const [bellOpen, setBellOpen]               = useState(false)
+  const [notifications, setNotifications]     = useState<AdminNotification[]>([])
+  const [notifLoading, setNotifLoading]       = useState(false)
+  const bellRef                               = useRef<HTMLDivElement>(null)
+
+  const fetchUnreadCount = useCallback(async () => {
+    try {
+      const res  = await fetch('/api/notifications?limit=1')
+      const data = await res.json()
+      if (res.ok) setUnreadCount(data.unread_count ?? 0)
+    } catch { /* silent */ }
+  }, [])
+
+  const fetchNotifications = useCallback(async () => {
+    setNotifLoading(true)
+    try {
+      const res  = await fetch('/api/notifications?limit=10')
+      const data = await res.json()
+      if (res.ok) {
+        setNotifications(data.notifications ?? [])
+        setUnreadCount(data.unread_count ?? 0)
+      }
+    } finally {
+      setNotifLoading(false)
+    }
+  }, [])
+
+  async function handleMarkAllRead() {
+    await fetch('/api/notifications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'mark_all_read' }),
+    })
+    setUnreadCount(0)
+    setNotifications(prev => prev.map(n => ({ ...n, read_at: new Date().toISOString() })))
+  }
+
+  async function handleMarkRead(id: string) {
+    await fetch('/api/notifications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'mark_read', id }),
+    })
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read_at: new Date().toISOString() } : n))
+    setUnreadCount(prev => Math.max(0, prev - 1))
+  }
+
+  // Close bell dropdown on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (bellRef.current && !bellRef.current.contains(e.target as Node)) {
+        setBellOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
   useEffect(() => {
     const stored = sessionStorage.getItem('kita_admin_auth')
-    if (stored === 'true') setAuthed(true)
-    // Load logo from Supabase Storage
+    if (stored === 'true') {
+      setAuthed(true)
+      fetchUnreadCount()
+    }
     loadLogo()
-    // Listen for logo updates from the settings page
     window.addEventListener('kita-logo-updated', (e: any) => {
       setLogoUrl(e.detail.url + '?t=' + Date.now())
     })
@@ -231,12 +298,110 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Mobile header */}
-        <header className="lg:hidden flex items-center gap-4 bg-gray-900 border-b border-gray-800 px-4 py-3">
-          <button onClick={() => setSidebarOpen(true)} className="text-gray-400 hover:text-white">
-            <Menu size={20} />
-          </button>
-          <span className="text-white font-semibold text-sm">KITA Admin</span>
+        {/* Top header — mobile hamburger + notification bell */}
+        <header className="flex items-center justify-between bg-gray-900 border-b border-gray-800 px-4 py-3">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setSidebarOpen(true)} className="text-gray-400 hover:text-white lg:hidden">
+              <Menu size={20} />
+            </button>
+            <span className="text-white font-semibold text-sm lg:hidden">KITA Admin</span>
+          </div>
+
+          {/* Notification bell */}
+          <div className="relative ml-auto" ref={bellRef}>
+            <button
+              onClick={() => {
+                setBellOpen(prev => {
+                  if (!prev) fetchNotifications()
+                  return !prev
+                })
+              }}
+              className="relative p-2 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded-lg transition"
+              title="Notifications"
+            >
+              <Bell size={16} />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-blue-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1">
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
+            </button>
+
+            {/* Dropdown */}
+            {bellOpen && (
+              <div className="absolute right-0 top-10 w-80 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl z-50 overflow-hidden">
+                {/* Header */}
+                <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
+                  <div className="flex items-center gap-2">
+                    <Bell size={13} className="text-gray-400" />
+                    <span className="text-white text-xs font-semibold">Notifications</span>
+                    {unreadCount > 0 && (
+                      <span className="bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {unreadCount > 0 && (
+                      <button
+                        onClick={handleMarkAllRead}
+                        className="flex items-center gap-1 text-gray-500 hover:text-white text-xs transition px-2 py-1 rounded hover:bg-gray-800"
+                        title="Mark all as read"
+                      >
+                        <CheckCheck size={12} />
+                        All read
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setBellOpen(false)}
+                      className="text-gray-600 hover:text-white p-1 rounded transition"
+                    >
+                      <X size={13} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Notification list */}
+                <div className="max-h-80 overflow-y-auto">
+                  {notifLoading ? (
+                    <div className="text-center py-8 text-gray-600 text-xs">Loading...</div>
+                  ) : notifications.length === 0 ? (
+                    <div className="text-center py-8 text-gray-600 text-xs">No notifications yet</div>
+                  ) : (
+                    notifications.map(n => (
+                      <div
+                        key={n.id}
+                        onClick={() => !n.read_at && handleMarkRead(n.id)}
+                        className={`flex items-start gap-3 px-4 py-3 border-b border-gray-800/50 last:border-0 cursor-pointer hover:bg-gray-800/40 transition ${!n.read_at ? 'bg-blue-950/20' : ''}`}
+                      >
+                        <span className="text-base shrink-0 mt-0.5">{CATEGORY_ICONS[n.category] ?? '⚙️'}</span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-gray-200 text-xs leading-relaxed line-clamp-2">{n.summary}</p>
+                          <p className="text-gray-600 text-xs mt-0.5">
+                            {new Date(n.created_at).toLocaleString('en-AU', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                          </p>
+                        </div>
+                        {!n.read_at && (
+                          <div className="w-2 h-2 bg-blue-500 rounded-full shrink-0 mt-1.5" />
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                {/* Footer */}
+                <div className="px-4 py-2.5 border-t border-gray-800">
+                  <Link
+                    href="/admin/notifications"
+                    onClick={() => setBellOpen(false)}
+                    className="text-blue-400 hover:text-blue-300 text-xs transition"
+                  >
+                    View all notifications →
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
         </header>
 
         <main className="flex-1 overflow-auto">

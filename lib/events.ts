@@ -23,6 +23,7 @@
 
 import { createServerClient } from '@/lib/supabase'
 import type { LogEventInput } from '@/types/database'
+import { createNotification } from '@/lib/notifications'
 
 // ── Event Type constants ──────────────────────────────────────
 // Using ET.* ensures consistency and enables search-by-reference.
@@ -95,7 +96,7 @@ export type EventType = typeof ET[keyof typeof ET]
 export async function logEvent(input: LogEventInput): Promise<void> {
   try {
     const supabase = createServerClient()
-    const { error } = await supabase.from('events').insert({
+    const { data, error } = await supabase.from('events').insert({
       event_type:  input.event_type,
       category:    input.category,
       severity:    input.severity ?? 'info',
@@ -108,11 +109,25 @@ export async function logEvent(input: LogEventInput): Promise<void> {
       metadata:    input.metadata ?? null,
       summary:     input.summary,
       ip_address:  input.ip_address ?? null,
-    } as any)
+    } as any).select('id').single()
 
     if (error) {
       // Table might not exist yet — log but don't crash
       console.warn('[events] logEvent failed:', error.message)
+      return
+    }
+
+    // Auto-create admin notification for notifiable event types
+    if (data) {
+      createNotification({
+        event_id:   (data as any).id,
+        event_type: input.event_type,
+        category:   input.category,
+        summary:    input.summary,
+        severity:   input.severity ?? 'info',
+        client_id:  input.client_id ?? null,
+        site_id:    input.site_id ?? null,
+      }).catch(() => {}) // non-fatal
     }
   } catch (err: any) {
     console.warn('[events] logEvent exception:', err?.message)
