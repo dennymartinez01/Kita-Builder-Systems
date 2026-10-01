@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 5)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Trial Duration Configuration** — `supabase/trial-duration.sql` (trial_starts_at + trial_duration_days columns); `lib/trial.ts` (calculateTrialDates, getTrialStatus, formatTrialCountdown, formatDate); trial duration picker + countdown badge on `/admin/clients/[id]` Subscription section; trial picker + preview on `/admin/clients/new`; trial countdown badge in client list Status column; `/api/notify` + `/api/webhook` set trial dates when auto-creating clients |
+
+---
+
 ## 2026-09-27 (session 4)
 
 | Commit | Area | What Changed |

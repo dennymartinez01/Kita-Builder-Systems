@@ -187,7 +187,9 @@ export interface Client {
   city: string | null
   subscription_plan: SubscriptionPlan
   subscription_status: SubscriptionStatus
+  trial_starts_at: string | null
   trial_ends_at: string | null
+  trial_duration_days: number
   stripe_customer_id: string | null
   source: string | null
   notes: string | null

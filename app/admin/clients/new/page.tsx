@@ -4,28 +4,32 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
-import { ArrowLeft, UserPlus, Loader2 } from 'lucide-react'
+import { ArrowLeft, UserPlus, Loader2, Timer } from 'lucide-react'
+import { calculateTrialDates, TRIAL_DURATION_OPTIONS } from '@/lib/trial'
 
 const SOURCE_OPTIONS = ['outreach', 'referral', 'organic', 'audit', 'direct', 'other']
-const PLAN_OPTIONS = ['trial', 'starter', 'growth', 'agency', 'custom']
+const PLAN_OPTIONS   = ['trial', 'starter', 'growth', 'agency', 'custom']
 
 export default function NewClientPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError]     = useState('')
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    country: '',
-    city: '',
-    subscription_plan: 'trial',
+    name:                '',
+    email:               '',
+    phone:               '',
+    country:             '',
+    city:                '',
+    subscription_plan:   'trial',
     subscription_status: 'trial',
-    source: '',
-    notes: '',
+    source:              '',
+    notes:               '',
+    trial_duration_days: 14,
   })
 
-  function setField(key: string, value: string) {
+  const isTrial = form.subscription_plan === 'trial' || form.subscription_status === 'trial'
+
+  function setField(key: string, value: string | number) {
     setForm(prev => ({ ...prev, [key]: value }))
   }
 
@@ -34,31 +38,47 @@ export default function NewClientPage() {
     setLoading(true)
     setError('')
 
+    // Calculate trial dates when plan is trial
+    const trialDates = isTrial
+      ? calculateTrialDates(form.trial_duration_days)
+      : { trial_starts_at: null, trial_ends_at: null }
+
     const { data, error: err } = await supabase
       .from('clients')
       .insert({
-        name: form.name,
-        email: form.email,
-        phone: form.phone || null,
-        country: form.country || null,
-        city: form.city || null,
-        subscription_plan: form.subscription_plan,
+        name:                form.name,
+        email:               form.email,
+        phone:               form.phone || null,
+        country:             form.country || null,
+        city:                form.city || null,
+        subscription_plan:   form.subscription_plan,
         subscription_status: form.subscription_status,
-        source: form.source || null,
-        notes: form.notes || null,
+        source:              form.source || null,
+        notes:               form.notes || null,
         onboarding_complete: false,
-      })
+        trial_duration_days: form.trial_duration_days,
+        trial_starts_at:     trialDates.trial_starts_at,
+        trial_ends_at:       trialDates.trial_ends_at,
+      } as any)
       .select()
       .single()
 
     if (err) {
-      setError(err.message.includes('unique') ? 'A client with this email already exists.' : err.message)
+      setError(err.message.includes('unique')
+        ? 'A client with this email already exists.'
+        : err.message)
       setLoading(false)
       return
     }
 
     router.push(`/admin/clients/${data.id}`)
   }
+
+  // Preview the trial end date for display
+  const trialPreviewEnd = isTrial
+    ? new Date(Date.now() + form.trial_duration_days * 24 * 60 * 60 * 1000)
+        .toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
+    : null
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
@@ -74,15 +94,16 @@ export default function NewClientPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Contact Details */}
         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 space-y-4">
           <h2 className="text-white font-semibold text-sm">Contact Details</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {[
-              { label: 'Full Name', key: 'name', type: 'text', required: true, placeholder: 'John Smith' },
-              { label: 'Email', key: 'email', type: 'email', required: true, placeholder: 'john@business.com' },
-              { label: 'Phone / WhatsApp', key: 'phone', type: 'tel', required: false, placeholder: '+61 400 000 000' },
-              { label: 'Country', key: 'country', type: 'text', required: false, placeholder: 'AU' },
-              { label: 'City', key: 'city', type: 'text', required: false, placeholder: 'Sydney' },
+              { label: 'Full Name',         key: 'name',    type: 'text',  required: true,  placeholder: 'John Smith' },
+              { label: 'Email',             key: 'email',   type: 'email', required: true,  placeholder: 'john@business.com' },
+              { label: 'Phone / WhatsApp',  key: 'phone',   type: 'tel',   required: false, placeholder: '+61 400 000 000' },
+              { label: 'Country',           key: 'country', type: 'text',  required: false, placeholder: 'AU' },
+              { label: 'City',              key: 'city',    type: 'text',  required: false, placeholder: 'Sydney' },
             ].map(field => (
               <div key={field.key}>
                 <label className="text-gray-400 text-xs font-medium block mb-1.5">
@@ -101,6 +122,7 @@ export default function NewClientPage() {
           </div>
         </div>
 
+        {/* Subscription */}
         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 space-y-4">
           <h2 className="text-white font-semibold text-sm">Subscription</h2>
           <div className="grid sm:grid-cols-3 gap-4">
@@ -127,8 +149,39 @@ export default function NewClientPage() {
               </select>
             </div>
           </div>
+
+          {/* Trial duration — shown only when plan/status is trial */}
+          {isTrial && (
+            <div className="bg-blue-950/20 border border-blue-800/50 rounded-xl p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Timer size={13} className="text-blue-400" />
+                <span className="text-blue-400 text-xs font-semibold">Trial Duration</span>
+              </div>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {TRIAL_DURATION_OPTIONS.map(days => (
+                  <button
+                    key={days}
+                    type="button"
+                    onClick={() => setField('trial_duration_days', days)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition border ${
+                      form.trial_duration_days === days
+                        ? 'bg-blue-600 border-blue-500 text-white'
+                        : 'bg-gray-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-500'
+                    }`}
+                  >
+                    {days} days
+                  </button>
+                ))}
+              </div>
+              <p className="text-gray-500 text-xs">
+                Trial will expire on{' '}
+                <span className="text-white font-medium">{trialPreviewEnd}</span>
+              </p>
+            </div>
+          )}
         </div>
 
+        {/* Notes */}
         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
           <label className="text-gray-400 text-xs font-medium block mb-1.5">Notes (optional)</label>
           <textarea

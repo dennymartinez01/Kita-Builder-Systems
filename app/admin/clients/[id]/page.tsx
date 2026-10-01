@@ -6,12 +6,13 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import type { Client, Site, EffectiveEntitlements } from '@/types/database'
 import { FEATURE_CATEGORIES } from '@/lib/entitlements'
+import { calculateTrialDates, formatTrialCountdown, formatDate, getTrialStatus, TRIAL_DURATION_OPTIONS } from '@/lib/trial'
 import {
   ArrowLeft, User, Mail, Phone, Globe, MapPin,
   CreditCard, Calendar, ExternalLink, LayoutDashboard,
   Save, Trash2, Loader2, CheckCircle, AlertCircle,
   Edit3, Building2, ShieldCheck, ToggleLeft, ToggleRight,
-  RefreshCw, Info,
+  RefreshCw, Info, Timer,
 } from 'lucide-react'
 
 const PLAN_OPTIONS = ['trial', 'starter', 'growth', 'agency', 'custom']
@@ -246,7 +247,7 @@ export default function ClientProfilePage() {
             {/* Subscription */}
             <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
               <h2 className="text-white font-semibold text-sm mb-4 flex items-center gap-2"><CreditCard size={14} className="text-green-400" /> Subscription</h2>
-              <div className="grid sm:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-3 gap-4 mb-4">
                 {[
                   { label: 'Plan', key: 'subscription_plan', options: PLAN_OPTIONS },
                   { label: 'Status', key: 'subscription_status', options: STATUS_OPTIONS },
@@ -271,6 +272,70 @@ export default function ClientProfilePage() {
                   <p className="text-green-400 font-mono text-sm font-bold">${totalMRR}/mo</p>
                 </div>
               </div>
+
+              {/* Trial section — shown when plan or status is trial */}
+              {(client.subscription_plan === 'trial' || client.subscription_status === 'trial' ||
+                form.subscription_plan === 'trial' || form.subscription_status === 'trial') && (() => {
+                const countdown = formatTrialCountdown(editing ? { ...client, ...form } as any : client)
+                const trialStatus = getTrialStatus(editing ? { ...client, ...form } as any : client)
+                const currentDuration = (form.trial_duration_days ?? client.trial_duration_days) || 14
+
+                return (
+                  <div className="bg-blue-950/20 border border-blue-800/50 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Timer size={13} className="text-blue-400" />
+                        <span className="text-blue-400 text-xs font-semibold">Trial Period</span>
+                      </div>
+                      <span className={`text-xs font-bold ${countdown.color}`}>{countdown.label}</span>
+                    </div>
+
+                    {/* Duration picker — only in edit mode */}
+                    {editing && (
+                      <div className="mb-3">
+                        <p className="text-gray-500 text-xs mb-2">Duration</p>
+                        <div className="flex flex-wrap gap-2">
+                          {TRIAL_DURATION_OPTIONS.map(days => (
+                            <button
+                              key={days}
+                              type="button"
+                              onClick={() => setForm(prev => {
+                                const dates = calculateTrialDates(days, client.trial_starts_at ? new Date(client.trial_starts_at) : undefined)
+                                return { ...prev, trial_duration_days: days, trial_ends_at: dates.trial_ends_at, trial_starts_at: dates.trial_starts_at }
+                              })}
+                              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition border ${
+                                currentDuration === days
+                                  ? 'bg-blue-600 border-blue-500 text-white'
+                                  : 'bg-gray-800 border-gray-700 text-gray-400 hover:text-white'
+                              }`}
+                            >
+                              {days} days
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Dates */}
+                    <div className="grid grid-cols-2 gap-3 text-xs">
+                      <div>
+                        <p className="text-gray-600 mb-0.5">Started</p>
+                        <p className="text-gray-300">{formatDate(client.trial_starts_at)}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600 mb-0.5">Expires</p>
+                        <p className={`font-medium ${
+                          trialStatus.state === 'expired'   ? 'text-red-400' :
+                          trialStatus.state === 'expiring'  ? 'text-yellow-400' :
+                          'text-gray-300'
+                        }`}>
+                          {formatDate(editing ? (form.trial_ends_at as any) ?? client.trial_ends_at : client.trial_ends_at)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })()}
             </div>
 
             {/* Notes */}

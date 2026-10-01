@@ -188,6 +188,9 @@ Use realistic ${location} pricing. 3-5 services, 2-3 staff, 3 testimonials.`
             source: 'onboard',
             city,
             country,
+            // Payment = active subscription, not a trial
+            trial_starts_at: null,
+            trial_ends_at: null,
           },
           {
             onConflict: 'email',

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import type { Client } from '@/types/database'
+import { formatTrialCountdown } from '@/lib/trial'
 import {
   Users, Plus, Search, RefreshCw, ExternalLink,
   Globe, TrendingUp, ChevronRight, Download,
@@ -218,9 +219,17 @@ export default function ClientsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${STATUS_COLORS[client.subscription_status] || 'bg-gray-800 text-gray-400'}`}>
-                      {client.subscription_status}
-                    </span>
+                    <div className="flex flex-col gap-1">
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize w-fit ${STATUS_COLORS[client.subscription_status] || 'bg-gray-800 text-gray-400'}`}>
+                        {client.subscription_status}
+                      </span>
+                      {client.subscription_status === 'trial' && (() => {
+                        const ct = formatTrialCountdown(client)
+                        return (
+                          <span className={`text-xs font-mono ${ct.color}`}>{ct.label}</span>
+                        )
+                      })()}
+                    </div>
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell">
                     <span className="text-gray-400 text-xs">{(client as any).site_count || 0}</span>

@@ -93,6 +93,9 @@ export async function POST(req: NextRequest) {
               subscription_status: 'trial',
               source: 'booking',
               onboarding_complete: false,
+              trial_duration_days: 14,
+              trial_starts_at: new Date().toISOString(),
+              trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
             },
             {
               onConflict: 'email',
