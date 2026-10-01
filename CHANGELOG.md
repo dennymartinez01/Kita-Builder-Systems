@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 4)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Phase 11 — Feature & Entitlement Engine** — `supabase/entitlements.sql` (features, plan_features, client_entitlements tables + 25-feature seed across 4 plans); `lib/entitlements.ts` (getEffectiveEntitlements, hasFeature, getLimit, setClientEntitlementOverride, MONTHLY_RATES, PLAN_SITE_LIMITS, FEATURE_CATEGORIES); `types/database.ts` (Feature, PlanFeature, ClientEntitlement, EffectiveEntitlements types); `GET+POST /api/entitlements/[clientId]`; Features tab on `/admin/clients/[id]` with live toggle + override badges + reason input |
+
+---
+
 ## 2026-09-27 (session 3)
 
 | Commit | Area | What Changed |

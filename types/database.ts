@@ -195,3 +195,49 @@ export interface Client {
   created_at: string
   updated_at: string
 }
+
+// ── ENTITLEMENT ENGINE (Phase 11) ────────────────────────────
+
+export type FeatureCategory = 'booking' | 'crm' | 'analytics' | 'integrations' | 'branding' | 'platform'
+
+export interface Feature {
+  key: string
+  label: string
+  description: string | null
+  category: FeatureCategory
+  is_active: boolean
+  created_at: string
+}
+
+export interface PlanFeature {
+  plan: SubscriptionPlan
+  feature_key: string
+  enabled: boolean
+  limit_value: number | null
+  limit_unit: string | null
+}
+
+export interface ClientEntitlement {
+  id: string
+  client_id: string
+  feature_key: string
+  enabled: boolean
+  limit_value: number | null
+  override_reason: string | null
+  overridden_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+/**
+ * The resolved entitlement map for a specific client.
+ * Computed by getEffectiveEntitlements() — never stored directly.
+ *
+ * key   = feature key (e.g. 'whatsapp')
+ * value = { enabled, limitValue, source }
+ *   source: 'override' means an admin set it; 'plan' means it came from plan defaults
+ */
+export type EffectiveEntitlements = Record<
+  string,
+  { enabled: boolean; limitValue: number | null; source: 'plan' | 'override' }
+>
