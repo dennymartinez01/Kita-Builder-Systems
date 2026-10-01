@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 6)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Universal Event Stream** — `supabase/events.sql` (events table + indexes + RLS); `lib/events.ts` (logEvent, queryEvents, ET constants, CATEGORY_COLORS/ICONS, SEVERITY_COLORS); `types/database.ts` (PlatformEvent, LogEventInput, EventCategory, EventSeverity); `GET /api/events` (filterable query endpoint); `/admin/events` page (live feed, 7 filters, pagination, metadata hover, setup reminder); sidebar nav updated; /api/notify instrumented (booking.created); /api/webhook instrumented (site.created, payment.completed, client.created); /api/entitlements instrumented (entitlement.override_set/removed) |
+
+---
+
 ## 2026-09-27 (session 5)
 
 | Commit | Area | What Changed |

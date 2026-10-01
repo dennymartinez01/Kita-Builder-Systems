@@ -4,6 +4,7 @@ import {
   getEffectiveEntitlements,
   setClientEntitlementOverride,
 } from '@/lib/entitlements'
+import { logEvent, ET } from '@/lib/events'
 
 type RouteContext = { params: Promise<{ clientId: string }> }
 
@@ -59,6 +60,22 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
     })
 
     if (error) throw new Error(error)
+
+    // Log the override change
+    logEvent({
+      event_type:  enabled === null ? ET.ENTITLEMENT_OVERRIDE_REMOVED : ET.ENTITLEMENT_OVERRIDE_SET,
+      category:    'entitlement',
+      severity:    'info',
+      actor_type:  'admin',
+      actor_id:    'admin',
+      client_id:   clientId,
+      entity_type: 'entitlement',
+      entity_id:   feature_key,
+      summary:     enabled === null
+        ? `Entitlement override removed — ${feature_key} reverted to plan default`
+        : `Entitlement override set — ${feature_key} = ${enabled ? 'granted' : 'revoked'}`,
+      metadata: { feature_key, enabled, limit_value, override_reason },
+    }).catch(() => {})
 
     const supabase = createServerClient()
     const { data: client } = await supabase

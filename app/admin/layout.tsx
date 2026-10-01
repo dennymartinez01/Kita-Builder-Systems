@@ -16,6 +16,7 @@ import {
   TrendingUp,
   Search,
   Users,
+  Activity,
 } from 'lucide-react'
 
 const NAV_ITEMS = [
@@ -25,6 +26,7 @@ const NAV_ITEMS = [
   { href: '/admin/sites', label: 'All Sites', icon: Globe },
   { href: '/admin/clients', label: 'Clients', icon: Users },
   { href: '/admin/revenue', label: 'Revenue', icon: TrendingUp },
+  { href: '/admin/events',  label: 'Activity & Events', icon: Activity },
   { href: '/admin/templates', label: 'Templates', icon: Layers },
   { href: '/audit', label: 'Website Audit', icon: Search },
   { href: '/audit-pitch', label: 'Audit Pitch ↗', icon: Globe },

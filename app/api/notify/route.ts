@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createServerClient } from '@/lib/supabase'
 import { generateCancelToken } from '@/lib/booking-utils'
+import { logEvent, ET } from '@/lib/events'
 
 // Helper — add/subtract minutes from HH:MM string
 function addMinutesToTime(time: string, minutes: number): string {
@@ -131,6 +132,24 @@ export async function POST(req: NextRequest) {
       .single()
 
     if (bookingError) throw new Error(`Booking save failed: ${bookingError.message}`)
+
+    // Log booking creation event (non-blocking)
+    logEvent({
+      event_type:  ET.BOOKING_CREATED,
+      category:    'booking',
+      severity:    'info',
+      actor_type:  'customer',
+      actor_id:    customer_email || customer_phone,
+      site_id:     site_id,
+      entity_type: 'booking',
+      entity_id:   booking.id,
+      summary:     `Booking created — ${service_name} for ${customer_name}`,
+      metadata: {
+        service_name, booking_date, booking_time,
+        customer_name, status,
+        staff_name: staff_name || null,
+      },
+    }).catch(() => {})
 
     // Build base URL for cancel/reschedule links
     const baseUrl = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'https://kita-builder-systems.vercel.app'

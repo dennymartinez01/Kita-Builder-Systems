@@ -8,6 +8,7 @@ import { clinicDefaultServices, clinicDefaultStaff } from '@/lib/templates/clini
 import { petDefaultServices, petDefaultStaff } from '@/lib/templates/pet'
 import { cafeDefaultServices, cafeDefaultStaff } from '@/lib/templates/cafe'
 import { mechanicDefaultServices, mechanicDefaultStaff } from '@/lib/templates/mechanic'
+import { logEvent, ET } from '@/lib/events'
 import type { BusinessType } from '@/types/database'
 
 // Tell Vercel this function can run up to 60 seconds (Hobby plan max)
@@ -135,6 +136,20 @@ Use realistic ${location} pricing. 3-5 services, 2-3 staff, 3 testimonials.`
 
   if (error) throw new Error(`Supabase insert error: ${error.message}`)
 
+  // Log site creation event (non-blocking)
+  logEvent({
+    event_type:  ET.SITE_CREATED,
+    category:    'site',
+    severity:    'info',
+    actor_type:  'system',
+    actor_id:    'stripe_webhook',
+    site_id:     site.id,
+    entity_type: 'site',
+    entity_id:   site.id,
+    summary:     `Site created — ${business_name} (${business_type}) at /${slug}`,
+    metadata:    { business_name, business_type, location, slug, stripe_session_id },
+  }).catch(() => {})
+
   const servicesData = aiData.services?.length ? aiData.services : DEFAULT_SERVICES[business_type]
   const staffData = aiData.staff?.length ? aiData.staff : DEFAULT_STAFF[business_type]
 
@@ -208,6 +223,34 @@ Use realistic ${location} pricing. 3-5 services, 2-3 staff, 3 testimonials.`
           .eq('id', site.id)
 
         console.log(`[webhook] ✅ Client upserted (${owner_email}) → status=active, site linked`)
+
+        // Log payment + client events (non-blocking)
+        logEvent({
+          event_type:  ET.PAYMENT_COMPLETED,
+          category:    'payment',
+          severity:    'info',
+          actor_type:  'customer',
+          actor_id:    owner_email,
+          client_id:   client.id,
+          site_id:     site.id,
+          entity_type: 'payment',
+          entity_id:   stripe_session_id,
+          summary:     `Payment completed — $150 setup fee for ${business_name}`,
+          metadata:    { stripe_session_id, stripe_customer_id, business_name, business_type },
+        }).catch(() => {})
+
+        logEvent({
+          event_type:  ET.CLIENT_CREATED,
+          category:    'client',
+          severity:    'info',
+          actor_type:  'system',
+          actor_id:    'stripe_webhook',
+          client_id:   client.id,
+          entity_type: 'client',
+          entity_id:   client.id,
+          summary:     `Client record created/activated — ${owner_email} (${business_type})`,
+          metadata:    { owner_email, business_type, location },
+        }).catch(() => {})
       }
     } catch (clientErr: any) {
       // Non-fatal — site is already created, just log the failure

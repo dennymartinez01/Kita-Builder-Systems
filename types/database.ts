@@ -243,3 +243,52 @@ export type EffectiveEntitlements = Record<
   string,
   { enabled: boolean; limitValue: number | null; source: 'plan' | 'override' }
 >
+
+// ── UNIVERSAL EVENT STREAM (Phase 11) ────────────────────────
+
+export type EventCategory =
+  | 'booking'
+  | 'site'
+  | 'client'
+  | 'subscription'
+  | 'entitlement'
+  | 'payment'
+  | 'auth'
+  | 'system'
+
+export type EventSeverity = 'info' | 'warning' | 'error' | 'critical'
+
+export type EventActorType = 'admin' | 'client' | 'customer' | 'system'
+
+export interface PlatformEvent {
+  id: string
+  occurred_at: string
+  event_type: string
+  category: EventCategory
+  severity: EventSeverity
+  actor_type: EventActorType | null
+  actor_id: string | null
+  client_id: string | null
+  site_id: string | null
+  entity_type: string | null
+  entity_id: string | null
+  metadata: Record<string, any> | null
+  summary: string | null
+  ip_address: string | null
+  created_at: string
+}
+
+export interface LogEventInput {
+  event_type: string
+  category: EventCategory
+  severity?: EventSeverity
+  actor_type?: EventActorType
+  actor_id?: string
+  client_id?: string
+  site_id?: string
+  entity_type?: string
+  entity_id?: string
+  metadata?: Record<string, any>
+  summary: string
+  ip_address?: string
+}
