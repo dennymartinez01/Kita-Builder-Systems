@@ -13,6 +13,8 @@ import {
   Save, Trash2, Loader2, CheckCircle, AlertCircle,
   Edit3, Building2, ShieldCheck, ToggleLeft, ToggleRight,
   RefreshCw, Info, Timer,
+  ArrowUpCircle, ArrowDownCircle, PauseCircle, XCircle,
+  Zap, RotateCcw, Clock,
 } from 'lucide-react'
 
 const PLAN_OPTIONS = ['trial', 'starter', 'growth', 'agency', 'custom']
@@ -43,6 +45,14 @@ export default function ClientProfilePage() {
   const [entLoading, setEntLoading] = useState(false)
   const [togglingKey, setTogglingKey] = useState<string | null>(null)
   const [overrideReason, setOverrideReason] = useState('')
+
+  // Subscription override state
+  const [subAction, setSubAction]           = useState<string | null>(null)
+  const [subLoading, setSubLoading]         = useState(false)
+  const [subStatus, setSubStatus]           = useState<{ type: 'success' | 'error'; msg: string } | null>(null)
+  const [subTargetPlan, setSubTargetPlan]   = useState('')
+  const [subExtendDays, setSubExtendDays]   = useState(14)
+  const [subReason, setSubReason]           = useState('')
 
   useEffect(() => { loadClient() }, [id])
 
@@ -98,6 +108,44 @@ export default function ClientProfilePage() {
     if (!confirm(`Delete client "${client?.name}"? This will unlink their sites but not delete them.`)) return
     await supabase.from('clients').delete().eq('id', id)
     router.push('/admin/clients')
+  }
+
+  async function handleSubAction(action: string) {
+    // Confirm destructive actions
+    if (['cancel', 'terminate'].includes(action)) {
+      const label = action === 'terminate' ? 'TERMINATE (clears all billing)' : 'cancel'
+      if (!confirm(`Are you sure you want to ${label} the subscription for ${client?.name}? This will be logged.`)) return
+    }
+
+    setSubLoading(true)
+    setSubStatus(null)
+    try {
+      const body: any = { action, reason: subReason || undefined }
+      if (subTargetPlan) body.target_plan = subTargetPlan
+      if (action === 'extend') body.extend_days = subExtendDays
+
+      const res  = await fetch(`/api/clients/${id}/subscription`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(body),
+      })
+      const data = await res.json()
+
+      if (!res.ok) throw new Error(data.error || 'Action failed')
+
+      // Refresh client data from the returned record
+      setClient(data.client)
+      setForm(data.client)
+      setSubAction(null)
+      setSubTargetPlan('')
+      setSubReason('')
+      setSubStatus({ type: 'success', msg: `${action} completed successfully.` })
+      setTimeout(() => setSubStatus(null), 4000)
+    } catch (err: any) {
+      setSubStatus({ type: 'error', msg: err.message })
+    } finally {
+      setSubLoading(false)
+    }
   }
 
   async function toggleFeature(featureKey: string, currentEnabled: boolean, isOverride: boolean) {
@@ -439,6 +487,161 @@ export default function ClientProfilePage() {
               )}
             </div>
           </div>
+
+            {/* Subscription Override panel */}
+            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+              <h2 className="text-white font-semibold text-sm mb-4 flex items-center gap-2">
+                <Zap size={14} className="text-yellow-400" />
+                Subscription Override
+              </h2>
+
+              {/* Current state */}
+              <div className="flex items-center justify-between mb-4 bg-gray-800 rounded-xl px-3 py-2.5">
+                <div>
+                  <p className="text-gray-500 text-xs mb-0.5">Current</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-white text-xs font-bold capitalize">{client.subscription_plan}</span>
+                    <span className="text-gray-600 text-xs">·</span>
+                    <span className={`text-xs capitalize ${
+                      client.subscription_status === 'active'    ? 'text-green-400' :
+                      client.subscription_status === 'trial'     ? 'text-blue-400'  :
+                      client.subscription_status === 'paused'    ? 'text-yellow-400':
+                      client.subscription_status === 'cancelled' ? 'text-red-400'   :
+                      'text-gray-400'
+                    }`}>{client.subscription_status}</span>
+                  </div>
+                </div>
+                <span className="text-green-400 font-mono text-xs font-bold">${totalMRR}/mo</span>
+              </div>
+
+              {/* Status feedback */}
+              {subStatus && (
+                <div className={`mb-3 flex items-start gap-2 p-3 rounded-xl text-xs ${
+                  subStatus.type === 'success'
+                    ? 'bg-green-950/40 border border-green-900/50 text-green-300'
+                    : 'bg-red-950/40 border border-red-900/50 text-red-300'
+                }`}>
+                  {subStatus.type === 'success' ? <CheckCircle size={13} className="shrink-0 mt-0.5" /> : <AlertCircle size={13} className="shrink-0 mt-0.5" />}
+                  {subStatus.msg}
+                </div>
+              )}
+
+              {/* Action buttons */}
+              <div className="grid grid-cols-2 gap-2 mb-3">
+                {[
+                  { action: 'upgrade',    label: 'Upgrade',     icon: ArrowUpCircle,   color: 'hover:border-green-700 hover:text-green-400' },
+                  { action: 'downgrade',  label: 'Downgrade',   icon: ArrowDownCircle, color: 'hover:border-yellow-700 hover:text-yellow-400' },
+                  { action: 'extend',     label: 'Extend Trial', icon: Clock,           color: 'hover:border-blue-700 hover:text-blue-400' },
+                  { action: 'pause',      label: 'Pause',       icon: PauseCircle,     color: 'hover:border-yellow-700 hover:text-yellow-400' },
+                  { action: 'reactivate', label: 'Reactivate',  icon: RotateCcw,       color: 'hover:border-green-700 hover:text-green-400' },
+                  { action: 'cancel',     label: 'Cancel',      icon: XCircle,         color: 'hover:border-red-700 hover:text-red-400' },
+                ].map(btn => {
+                  const Icon = btn.icon
+                  const isActive = subAction === btn.action
+                  return (
+                    <button
+                      key={btn.action}
+                      onClick={() => setSubAction(isActive ? null : btn.action)}
+                      disabled={subLoading}
+                      className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition border ${
+                        isActive
+                          ? 'bg-blue-900/40 border-blue-600 text-blue-300'
+                          : `bg-gray-800 border-gray-700 text-gray-400 ${btn.color}`
+                      } disabled:opacity-50`}
+                    >
+                      <Icon size={12} />
+                      {btn.label}
+                    </button>
+                  )
+                })}
+              </div>
+
+              {/* Expanded action panel */}
+              {subAction && (
+                <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 space-y-3">
+                  <p className="text-white text-xs font-semibold capitalize">{subAction}</p>
+
+                  {['upgrade', 'downgrade', 'change'].includes(subAction) && (
+                    <div>
+                      <label className="text-gray-500 text-xs block mb-1.5">Target plan (optional)</label>
+                      <select
+                        value={subTargetPlan}
+                        onChange={e => setSubTargetPlan(e.target.value)}
+                        className="w-full bg-gray-900 border border-gray-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+                      >
+                        <option value="">Auto (next/prev tier)</option>
+                        {['trial', 'starter', 'growth', 'agency', 'custom'].map(p => (
+                          <option key={p} value={p}>{p}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {subAction === 'extend' && (
+                    <div>
+                      <label className="text-gray-500 text-xs block mb-1.5">Extend by (days)</label>
+                      <div className="flex gap-2 flex-wrap">
+                        {[7, 14, 21, 30, 60].map(d => (
+                          <button
+                            key={d}
+                            type="button"
+                            onClick={() => setSubExtendDays(d)}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition border ${
+                              subExtendDays === d
+                                ? 'bg-blue-600 border-blue-500 text-white'
+                                : 'bg-gray-900 border-gray-700 text-gray-400 hover:text-white'
+                            }`}
+                          >
+                            {d}d
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="text-gray-500 text-xs block mb-1.5">Reason (logged to event stream)</label>
+                    <input
+                      value={subReason}
+                      onChange={e => setSubReason(e.target.value)}
+                      placeholder="e.g. Client requested extension..."
+                      className="w-full bg-gray-900 border border-gray-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleSubAction(subAction)}
+                      disabled={subLoading}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1.5"
+                    >
+                      {subLoading ? <Loader2 size={12} className="animate-spin" /> : <Zap size={12} />}
+                      {subLoading ? 'Applying...' : `Apply ${subAction}`}
+                    </button>
+                    <button
+                      onClick={() => { setSubAction(null); setSubTargetPlan(''); setSubReason('') }}
+                      className="bg-gray-700 hover:bg-gray-600 text-gray-300 text-xs px-3 py-2 rounded-lg transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Terminate — danger zone */}
+              <div className="mt-3 pt-3 border-t border-gray-800">
+                <button
+                  onClick={() => handleSubAction('terminate')}
+                  disabled={subLoading}
+                  className="w-full flex items-center justify-center gap-1.5 bg-red-950/30 hover:bg-red-950/60 border border-red-900/50 text-red-400 hover:text-red-300 text-xs font-medium py-2 rounded-lg transition disabled:opacity-50"
+                >
+                  <XCircle size={12} />
+                  Terminate &amp; Clear Billing
+                </button>
+                <p className="text-gray-700 text-xs mt-1.5 text-center">Cancels subscription and clears Stripe ID</p>
+              </div>
+            </div>
+
         </div>
       )}
 

@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 8)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Admin Subscription Override** — `POST /api/clients/[id]/subscription` (8 actions: upgrade/downgrade/change/extend/pause/cancel/terminate/reactivate, each logs to event stream); Subscription Override panel on `/admin/clients/[id]` right column (current plan display, 6 action buttons, expanded panel with target plan picker / extend days / reason input, Terminate danger zone, success/error feedback) |
+
+---
+
 ## 2026-09-27 (session 7)
 
 | Commit | Area | What Changed |
