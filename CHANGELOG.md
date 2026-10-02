@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 13)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **9-step Site Creation Wizard** — `/admin/generate` rewritten: Step 1 (Business Owner: search existing client / create new inline / skip); Step 2 (Business Info: name, location, email, notes); Step 3 (Business Type — existing); Step 4 (Services & Currency — existing); Step 5 (Subscription Plan: trial/starter/growth/agency cards with feature bullets); Step 6 (Trial Duration: conditional, only shown for trial plan, with live expiry preview); Step 7 (Feature Entitlements: plan summary grid of enabled/disabled features); Step 8 (Review: full settings summary + Generate button); Step 9 (Activate: live links + client profile link); Progress bar skips Step 6 for non-trial plans; client_id linked to site after generation |
+
+---
+
 ## 2026-09-27 (session 12)
 
 | Commit | Area | What Changed |
