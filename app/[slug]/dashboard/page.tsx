@@ -7,15 +7,16 @@ import AgentChat from '@/components/AgentChat'
 import BlockedDatesTab from '@/components/BlockedDatesTab'
 import CustomersTab from '@/components/CustomersTab'
 import CouponsTab from '@/components/CouponsTab'
+import InquiriesTab from '@/components/InquiriesTab'
 import { getWhiteLabelConfig } from '@/lib/whitelabel'
 import {
   CalendarCheck, Wrench, ExternalLink, CheckCircle,
   XCircle, Plus, Trash2, Loader2, Lock, Zap,
   Users, Clock, FileText, Save, KeyRound, Image,
-  Star, Upload, X, Download, BarChart2, Ban, Tag,
+  Star, Upload, X, Download, BarChart2, Ban, Tag, MessageSquare,
 } from 'lucide-react'
 
-type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'blocked' | 'ai' | 'customers' | 'coupons'
+type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'blocked' | 'ai' | 'customers' | 'coupons' | 'inquiries'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -415,8 +416,9 @@ export default function OwnerDashboard({ params }: PageProps) {
     { id: 'gallery' as Tab, label: 'Gallery', icon: Image, badge: null },
     { id: 'analytics' as Tab, label: 'Analytics', icon: BarChart2, badge: null },
     { id: 'customers' as Tab, label: 'Customers', icon: Users, badge: null },
-    { id: 'coupons' as Tab,   label: 'Coupons',   icon: Tag,   badge: null },
-    { id: 'blocked' as Tab,   label: 'Block Dates', icon: Ban, badge: null },
+    { id: 'coupons' as Tab,    label: 'Coupons',    icon: Tag,          badge: null },
+    { id: 'inquiries' as Tab,  label: 'Inquiries',  icon: MessageSquare, badge: null },
+    { id: 'blocked' as Tab,    label: 'Block Dates', icon: Ban,          badge: null },
     { id: 'settings' as Tab, label: 'Settings', icon: KeyRound, badge: null },
     { id: 'ai' as Tab, label: 'AI Assistant', icon: Zap, badge: null },
   ]
@@ -1084,6 +1086,11 @@ export default function OwnerDashboard({ params }: PageProps) {
         {/* ── COUPONS ── */}
         {tab === 'coupons' && site && (
           <CouponsTab siteId={site.id} currencySymbol={(site as any).currency || '$'} />
+        )}
+
+        {/* ── INQUIRIES ── */}
+        {tab === 'inquiries' && site && (
+          <InquiriesTab siteId={site.id} primaryColor={primaryColor} />
         )}
       </div>
     </div>

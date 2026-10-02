@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import BookingForm from '@/components/BookingForm'
+import BookingContactSection from '@/components/BookingContactSection'
 import PageTracker from '@/components/PageTracker'
 import { getWhiteLabelConfig, getSiteWhiteLabel } from '@/lib/whitelabel'
 import type { ThemeJson, Service, Staff, HeroSection, AboutSection, BookingSection, TestimonialsSection } from '@/types/database'
@@ -224,10 +225,11 @@ export default async function PublicSitePage({ params }: PageProps) {
         </section>
       )}
 
-      {/* ── BOOKING ── */}
-      {services.length > 0 && (        <section id="book" className="py-12 sm:py-16 px-4 sm:px-6 bg-gray-50">
+      {/* ── BOOKING + ENQUIRY ── */}
+      {services.length > 0 && (
+        <section id="book" className="py-12 sm:py-16 px-4 sm:px-6 bg-gray-50">
           <div className="max-w-lg mx-auto bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:p-8">
-            <BookingForm
+            <BookingContactSection
               siteId={site.id}
               services={services}
               staff={staff}
@@ -240,6 +242,7 @@ export default async function PublicSitePage({ params }: PageProps) {
               notesRequired={booking?.data.notes_required || false}
               currencySymbol={currencySymbol}
               siteTimezone={siteTimezone}
+              showContactTab={true}
             />
           </div>
         </section>

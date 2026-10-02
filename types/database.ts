@@ -393,3 +393,28 @@ export interface CouponValidationResult {
   discount_amount: number   // calculated final discount in currency units
   error: string | null      // human-readable reason if invalid
 }
+
+// ── LEADS / CONTACT FORM (Phase 10) ──────────────────────────
+
+export type LeadSource = 'contact_form' | 'booking' | 'audit_inquiry' | 'other'
+export type LeadStatus = 'new' | 'contacted' | 'converted' | 'closed'
+
+export interface Lead {
+  id: string
+  site_id: string
+  client_id: string | null
+  name: string
+  email: string
+  phone: string | null
+  message: string | null
+  service_interest: string | null
+  source: LeadSource
+  city: string | null
+  country: string | null
+  business_type: string | null
+  opt_in: boolean
+  status: LeadStatus
+  notes: string | null
+  created_at: string
+  updated_at: string
+}

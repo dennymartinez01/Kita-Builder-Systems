@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 14)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Phase 10 — Contact Form + Smart Leads Engine** — `supabase/leads.sql` (leads table, RLS: public insert + service_role all); `Lead`/`LeadSource`/`LeadStatus` types; `POST /api/inquire` (save lead, owner email notification, log event); `GET /api/inquire` (admin all-sites + owner per-site list); `PATCH /api/inquire` (update status/notes); `ContactForm` component (name/email/phone/service picker/message/opt-in); `BookingContactSection` wrapper (Book / Enquire tab switcher); public site updated to use BookingContactSection; `InquiriesTab` component (leads list, expand, reply/call/WhatsApp links, Convert to Booking, Mark Contacted, Close); Inquiries tab added to owner dashboard; `/admin/leads` cross-site inbox (stat cards, search, status filter, table with pagination, CSV export); Leads Inbox added to admin sidebar |
+
+---
+
 ## 2026-09-27 (session 13)
 
 | Commit | Area | What Changed |
