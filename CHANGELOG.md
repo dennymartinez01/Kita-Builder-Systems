@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 9)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Trial Account Request System** — `supabase/trial-requests.sql` (trial_requests table, statuses, RLS: public insert + service_role all); `TrialRequest` type in database.ts; `/trial` public form (contact, business type picker, plan selector, duration picker, privacy acceptance, success screen); `POST /api/trial-request` (save + admin email notification); `GET /api/trial-request` (admin list with status filter); `POST /api/trial-request/[id]/action` (approve: creates client + trial dates + welcome email; reject: optional rejection email; review: status update); `/admin/trial-requests` page (pending badge, status tabs, expand per-request, approve with duration override, reject with reason, mark-under-review); Trial Requests added to sidebar nav |
+
+---
+
 ## 2026-09-27 (session 8)
 
 | Commit | Area | What Changed |

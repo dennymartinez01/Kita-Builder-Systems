@@ -292,3 +292,39 @@ export interface LogEventInput {
   summary: string
   ip_address?: string
 }
+
+// ── TRIAL ACCOUNT REQUEST SYSTEM (Phase 11) ──────────────────
+
+export type TrialRequestStatus =
+  | 'pending'
+  | 'under_review'
+  | 'approved'
+  | 'rejected'
+  | 'activated'
+  | 'expired'
+  | 'converted'
+  | 'cancelled'
+
+export interface TrialRequest {
+  id: string
+  name: string
+  email: string
+  phone: string | null
+  country: string | null
+  city: string | null
+  business_name: string
+  business_type: string
+  website: string | null
+  intended_use: string | null
+  trial_plan: SubscriptionPlan
+  trial_duration_days: number
+  privacy_accepted: boolean
+  status: TrialRequestStatus
+  reviewed_by: string | null
+  reviewed_at: string | null
+  rejection_reason: string | null
+  admin_notes: string | null
+  client_id: string | null
+  created_at: string
+  updated_at: string
+}

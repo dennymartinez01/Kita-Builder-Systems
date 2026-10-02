@@ -20,6 +20,7 @@ import {
   Bell,
   CheckCheck,
   X,
+  ClipboardList,
 } from 'lucide-react'
 import { CATEGORY_ICONS, SEVERITY_COLORS } from '@/lib/events'
 import type { AdminNotification } from '@/lib/notifications'
@@ -30,6 +31,7 @@ const NAV_ITEMS = [
   { href: '/admin/generate', label: 'Generate Site', icon: Zap },
   { href: '/admin/sites', label: 'All Sites', icon: Globe },
   { href: '/admin/clients', label: 'Clients', icon: Users },
+  { href: '/admin/trial-requests', label: 'Trial Requests', icon: ClipboardList },
   { href: '/admin/revenue', label: 'Revenue', icon: TrendingUp },
   { href: '/admin/events',         label: 'Activity & Events', icon: Activity },
   { href: '/admin/notifications',  label: 'Notifications',     icon: Bell },
