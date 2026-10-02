@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 12)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Client 360 Profile** — `GET /api/clients/[id]/overview` (aggregates stats: bookings_total, customers_total, page_views_30d, coupons_active, sites, recent_bookings, recent_events, MRR, setup_fees, ARR in one call); `/admin/clients/[id]` fully rebuilt as 7-tab Client 360 (Overview: stat grid + revenue summary + sites grid + recent bookings + recent events; Profile: contact edit + subscription + trial block + subscription override panel; Bookings: all bookings across all sites table; Customers: registered customers table; Activity: event stream for client; Features: entitlements tab preserved; Notes: internal notes + Stripe info) |
+
+---
+
 ## 2026-09-27 (session 11)
 
 | Commit | Area | What Changed |
