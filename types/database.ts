@@ -328,3 +328,27 @@ export interface TrialRequest {
   created_at: string
   updated_at: string
 }
+
+// ── CUSTOMER REGISTRATION (Phase 11) ─────────────────────────
+
+export type CustomerStatus = 'active' | 'blocked'
+
+export interface SiteCustomer {
+  id: string
+  site_id: string
+  email: string
+  name: string
+  phone: string | null
+  pin_hash: string | null       // never sent to client — omit in SELECT
+  is_verified: boolean
+  booking_count: number
+  total_spend: number
+  last_booking_at: string | null
+  status: CustomerStatus
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+// Safe version returned to owner dashboard (no pin_hash)
+export type SiteCustomerSafe = Omit<SiteCustomer, 'pin_hash'>

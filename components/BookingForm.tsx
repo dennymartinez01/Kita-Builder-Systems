@@ -19,6 +19,7 @@ interface BookingFormProps {
   notesRequired?: boolean
   currencySymbol?: string
   siteTimezone?: string
+  enableCustomerAccounts?: boolean  // Phase 11 — entitlement-gated
 }
 
 export default function BookingForm({
@@ -34,6 +35,7 @@ export default function BookingForm({
   notesRequired = false,
   currencySymbol = '$',
   siteTimezone = 'UTC',
+  enableCustomerAccounts = false,
 }: BookingFormProps) {
   const [form, setForm] = useState({
     service_id: services[0]?.id || '',
@@ -57,6 +59,8 @@ export default function BookingForm({
   const [checkingAvailability, setCheckingAvailability] = useState(false)
   const [nextSlot, setNextSlot] = useState<{ date: string; time: string } | null>(null)
   const [loadingNextSlot, setLoadingNextSlot] = useState(false)
+  // Customer account opt-in
+  const [registerAccount, setRegisterAccount] = useState(false)
 
   // Auto-fill from localStorage on mount
   useEffect(() => {
@@ -149,6 +153,21 @@ export default function BookingForm({
         customer_phone: form.customer_phone,
         customer_email: form.customer_email,
       })
+
+      // Register customer account if opted in and email provided
+      if (registerAccount && form.customer_email) {
+        fetch('/api/customers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            site_id:  siteId,
+            email:    form.customer_email,
+            name:     form.customer_name,
+            phone:    form.customer_phone || undefined,
+            action:   'register',
+          }),
+        }).catch(() => {}) // non-blocking
+      }
 
       setDoneData({ booking_id: data.booking?.id, cancel_token: data.booking?.cancel_token, status: data.status })
       setDone(true)
@@ -418,6 +437,28 @@ export default function BookingForm({
             />
           </div>
         </div>
+
+        {/* Customer account opt-in — shown when feature enabled and email provided */}
+        {enableCustomerAccounts && form.customer_email && (
+          <label className="flex items-start gap-3 cursor-pointer bg-blue-50 border border-blue-100 rounded-xl px-4 py-3">
+            <div
+              onClick={() => setRegisterAccount(prev => !prev)}
+              className={`w-5 h-5 rounded border-2 shrink-0 mt-0.5 flex items-center justify-center transition ${
+                registerAccount ? 'bg-blue-600 border-blue-600' : 'border-gray-300 bg-white'
+              }`}
+            >
+              {registerAccount && (
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
+            </div>
+            <div>
+              <p className="text-gray-800 text-sm font-medium">Save my details for faster future bookings</p>
+              <p className="text-gray-500 text-xs mt-0.5">We will remember your name, phone, and email so you do not have to type them again.</p>
+            </div>
+          </label>
+        )}
 
         {error && (
           <p className="text-red-500 text-sm bg-red-50 px-4 py-3 rounded-xl">{error}</p>

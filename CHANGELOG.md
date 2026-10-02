@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 10)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Customer Registration + DB** — `supabase/site-customers.sql` (site_customers table, unique site_id+email, booking_count/total_spend denormalised counters, increment_customer_booking() function, RLS: public insert/select + service_role all); `SiteCustomer`/`SiteCustomerSafe` types; `POST /api/customers` (register/lookup upsert); `GET /api/customers` (owner list with search + pagination); `enableCustomerAccounts` prop on BookingForm with opt-in checkbox + non-blocking registration call; `CustomersTab` component (stats, search, sortable table, CSV export, setup note); Customers tab added to owner dashboard |
+
+---
+
 ## 2026-09-27 (session 9)
 
 | Commit | Area | What Changed |

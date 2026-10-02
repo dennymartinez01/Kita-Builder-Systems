@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase'
 import type { Site, Service, Booking, Staff } from '@/types/database'
 import AgentChat from '@/components/AgentChat'
 import BlockedDatesTab from '@/components/BlockedDatesTab'
+import CustomersTab from '@/components/CustomersTab'
 import { getWhiteLabelConfig } from '@/lib/whitelabel'
 import {
   CalendarCheck, Wrench, ExternalLink, CheckCircle,
@@ -13,7 +14,7 @@ import {
   Star, Upload, X, Download, BarChart2, Ban,
 } from 'lucide-react'
 
-type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'blocked' | 'ai'
+type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'blocked' | 'ai' | 'customers'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -412,6 +413,7 @@ export default function OwnerDashboard({ params }: PageProps) {
     { id: 'testimonials' as Tab, label: 'Reviews', icon: Star, badge: null },
     { id: 'gallery' as Tab, label: 'Gallery', icon: Image, badge: null },
     { id: 'analytics' as Tab, label: 'Analytics', icon: BarChart2, badge: null },
+    { id: 'customers' as Tab, label: 'Customers', icon: Users, badge: null },
     { id: 'blocked' as Tab, label: 'Block Dates', icon: Ban, badge: null },
     { id: 'settings' as Tab, label: 'Settings', icon: KeyRound, badge: null },
     { id: 'ai' as Tab, label: 'AI Assistant', icon: Zap, badge: null },
@@ -1070,6 +1072,11 @@ export default function OwnerDashboard({ params }: PageProps) {
         {/* ── BLOCKED DATES ── */}
         {tab === 'blocked' && site && (
           <BlockedDatesTab siteId={site.id} primaryColor={primaryColor} />
+        )}
+
+        {/* ── CUSTOMERS ── */}
+        {tab === 'customers' && site && (
+          <CustomersTab siteId={site.id} />
         )}
       </div>
     </div>
