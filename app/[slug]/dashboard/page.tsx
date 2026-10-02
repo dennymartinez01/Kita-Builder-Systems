@@ -6,15 +6,16 @@ import type { Site, Service, Booking, Staff } from '@/types/database'
 import AgentChat from '@/components/AgentChat'
 import BlockedDatesTab from '@/components/BlockedDatesTab'
 import CustomersTab from '@/components/CustomersTab'
+import CouponsTab from '@/components/CouponsTab'
 import { getWhiteLabelConfig } from '@/lib/whitelabel'
 import {
   CalendarCheck, Wrench, ExternalLink, CheckCircle,
   XCircle, Plus, Trash2, Loader2, Lock, Zap,
   Users, Clock, FileText, Save, KeyRound, Image,
-  Star, Upload, X, Download, BarChart2, Ban,
+  Star, Upload, X, Download, BarChart2, Ban, Tag,
 } from 'lucide-react'
 
-type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'blocked' | 'ai' | 'customers'
+type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'blocked' | 'ai' | 'customers' | 'coupons'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -414,7 +415,8 @@ export default function OwnerDashboard({ params }: PageProps) {
     { id: 'gallery' as Tab, label: 'Gallery', icon: Image, badge: null },
     { id: 'analytics' as Tab, label: 'Analytics', icon: BarChart2, badge: null },
     { id: 'customers' as Tab, label: 'Customers', icon: Users, badge: null },
-    { id: 'blocked' as Tab, label: 'Block Dates', icon: Ban, badge: null },
+    { id: 'coupons' as Tab,   label: 'Coupons',   icon: Tag,   badge: null },
+    { id: 'blocked' as Tab,   label: 'Block Dates', icon: Ban, badge: null },
     { id: 'settings' as Tab, label: 'Settings', icon: KeyRound, badge: null },
     { id: 'ai' as Tab, label: 'AI Assistant', icon: Zap, badge: null },
   ]
@@ -1077,6 +1079,11 @@ export default function OwnerDashboard({ params }: PageProps) {
         {/* ── CUSTOMERS ── */}
         {tab === 'customers' && site && (
           <CustomersTab siteId={site.id} />
+        )}
+
+        {/* ── COUPONS ── */}
+        {tab === 'coupons' && site && (
+          <CouponsTab siteId={site.id} currencySymbol={(site as any).currency || '$'} />
         )}
       </div>
     </div>

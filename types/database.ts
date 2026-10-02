@@ -352,3 +352,44 @@ export interface SiteCustomer {
 
 // Safe version returned to owner dashboard (no pin_hash)
 export type SiteCustomerSafe = Omit<SiteCustomer, 'pin_hash'>
+
+// ── COUPON & PROMOTION ENGINE (Phase 11) ─────────────────────
+
+export type DiscountType = 'percentage' | 'fixed'
+
+export interface Coupon {
+  id: string
+  site_id: string
+  code: string
+  description: string | null
+  discount_type: DiscountType
+  discount_value: number
+  min_booking_amount: number
+  max_discount: number | null
+  usage_limit: number | null
+  per_customer_limit: number | null
+  applicable_service_ids: string[]
+  starts_at: string
+  expires_at: string | null
+  active: boolean
+  usage_count: number
+  created_at: string
+  updated_at: string
+}
+
+export interface CouponUsage {
+  id: string
+  coupon_id: string
+  site_id: string
+  booking_id: string | null
+  customer_email: string | null
+  discount_applied: number
+  used_at: string
+}
+
+export interface CouponValidationResult {
+  valid: boolean
+  coupon: Coupon | null
+  discount_amount: number   // calculated final discount in currency units
+  error: string | null      // human-readable reason if invalid
+}

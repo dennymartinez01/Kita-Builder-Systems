@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 11)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Coupon & Promotion Engine** — `supabase/coupons.sql` (coupons table + coupon_usages tracking table, RLS: service_role all + public select active); `Coupon`/`CouponUsage`/`CouponValidationResult` types; `GET/POST/DELETE /api/coupons`; `GET /api/coupons/validate` (server-side validation: window, usage limit, per-customer limit, min amount, service restriction, discount calculation); `enableCoupons` prop on BookingForm with coupon input, Apply button, live result display, coupon passed to /api/notify; `CouponsTab` component (create/edit/delete/toggle form, card list with status badges); Coupons tab added to owner dashboard (12th tab) |
+
+---
+
 ## 2026-09-27 (session 10)
 
 | Commit | Area | What Changed |

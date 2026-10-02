@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import type { Service, Staff } from '@/types/database'
-import { CheckCircle, Loader2, Calendar, Clock, Phone, User, Car, PawPrint, MessageSquare, Users, Mail, AlertCircle, Info } from 'lucide-react'
+import { CheckCircle, Loader2, Calendar, Clock, Phone, User, Car, PawPrint, MessageSquare, Users, Mail, AlertCircle, Info, Tag, X } from 'lucide-react'
 import { checkSlotAvailability, getNextAvailableSlot, getSavedBookingDetails, saveBookingDetails } from '@/lib/booking-utils'
 import { getTodayInTimezone } from '@/lib/timezones'
 
@@ -20,6 +20,7 @@ interface BookingFormProps {
   currencySymbol?: string
   siteTimezone?: string
   enableCustomerAccounts?: boolean  // Phase 11 — entitlement-gated
+  enableCoupons?: boolean           // Phase 11 — entitlement-gated
 }
 
 export default function BookingForm({
@@ -36,6 +37,7 @@ export default function BookingForm({
   currencySymbol = '$',
   siteTimezone = 'UTC',
   enableCustomerAccounts = false,
+  enableCoupons = false,
 }: BookingFormProps) {
   const [form, setForm] = useState({
     service_id: services[0]?.id || '',
@@ -61,6 +63,10 @@ export default function BookingForm({
   const [loadingNextSlot, setLoadingNextSlot] = useState(false)
   // Customer account opt-in
   const [registerAccount, setRegisterAccount] = useState(false)
+  // Coupon code
+  const [couponCode, setCouponCode]         = useState('')
+  const [couponLoading, setCouponLoading]   = useState(false)
+  const [couponResult, setCouponResult]     = useState<{ valid: boolean; discount_amount: number; label: string; error: string | null } | null>(null)
 
   // Auto-fill from localStorage on mount
   useEffect(() => {
@@ -114,6 +120,38 @@ export default function BookingForm({
     }))
   }
 
+  async function validateCoupon() {
+    if (!couponCode.trim()) return
+    setCouponLoading(true)
+    setCouponResult(null)
+    try {
+      const selectedService = services.find(s => s.id === form.service_id)
+      const params = new URLSearchParams({
+        code:           couponCode.trim(),
+        site_id:        siteId,
+        booking_amount: String(selectedService?.price ?? 0),
+      })
+      if (form.service_id) params.set('service_id', form.service_id)
+      if (form.customer_email) params.set('customer_email', form.customer_email)
+
+      const res  = await fetch(`/api/coupons/validate?${params}`)
+      const data = await res.json()
+
+      if (data.valid) {
+        const label = data.coupon.discount_type === 'percentage'
+          ? `${data.coupon.discount_value}% off`
+          : `${currencySymbol}${data.coupon.discount_value} off`
+        setCouponResult({ valid: true, discount_amount: data.discount_amount, label, error: null })
+      } else {
+        setCouponResult({ valid: false, discount_amount: 0, label: '', error: data.error })
+      }
+    } catch {
+      setCouponResult({ valid: false, discount_amount: 0, label: '', error: 'Could not validate coupon. Try again.' })
+    } finally {
+      setCouponLoading(false)
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
@@ -142,6 +180,8 @@ export default function BookingForm({
           site_id: siteId,
           ...form,
           service_duration_minutes: selectedService?.duration_minutes || 60,
+          coupon_code:     couponResult?.valid ? couponCode.trim() : undefined,
+          discount_amount: couponResult?.valid ? couponResult.discount_amount : undefined,
         }),
       })
       const data = await res.json()
@@ -437,6 +477,57 @@ export default function BookingForm({
             />
           </div>
         </div>
+
+        {/* Coupon code — shown when feature enabled */}
+        {enableCoupons && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Promo / Coupon Code <span className="text-gray-400 font-normal">(optional)</span>
+            </label>
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Tag size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  value={couponCode}
+                  onChange={e => { setCouponCode(e.target.value.toUpperCase()); setCouponResult(null) }}
+                  onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), validateCoupon())}
+                  placeholder="Enter code e.g. WELCOME20"
+                  className="w-full border border-gray-200 rounded-xl pl-9 pr-4 py-3 text-sm focus:outline-none focus:ring-2 font-mono uppercase"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={validateCoupon}
+                disabled={!couponCode.trim() || couponLoading}
+                className="px-4 py-3 rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition"
+              >
+                {couponLoading ? <Loader2 size={14} className="animate-spin" /> : 'Apply'}
+              </button>
+            </div>
+
+            {/* Coupon result */}
+            {couponResult && (
+              <div className={`flex items-center justify-between mt-2 px-3 py-2 rounded-xl text-xs ${
+                couponResult.valid
+                  ? 'bg-green-50 border border-green-200 text-green-700'
+                  : 'bg-red-50 border border-red-200 text-red-600'
+              }`}>
+                <div className="flex items-center gap-1.5">
+                  {couponResult.valid
+                    ? <><CheckCircle size={13} /><span className="font-semibold">{couponResult.label}</span> applied — you save {currencySymbol}{couponResult.discount_amount.toFixed(2)}</>
+                    : <><AlertCircle size={13} />{couponResult.error}</>
+                  }
+                </div>
+                {couponResult.valid && (
+                  <button type="button" onClick={() => { setCouponCode(''); setCouponResult(null) }} className="ml-2 hover:opacity-70">
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Customer account opt-in — shown when feature enabled and email provided */}
         {enableCustomerAccounts && form.customer_email && (
