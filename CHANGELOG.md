@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 16)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Booking Calendar View** — `CalendarTab` component (weekly grid Mon–Sun, HOUR_START 7am to HOUR_END 9pm, booking blocks color-coded by status, today column highlight, prev/next week navigation, Today shortcut, booking count dots in day headers, booking detail popover with Confirm/Cancel quick actions); Calendar tab added to owner dashboard between Bookings and Services; Calendar icon added to lucide imports |
+
+---
+
 ## 2026-09-27 (session 15)
 
 | Commit | Area | What Changed |

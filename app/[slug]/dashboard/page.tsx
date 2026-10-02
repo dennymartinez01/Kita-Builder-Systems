@@ -8,15 +8,16 @@ import BlockedDatesTab from '@/components/BlockedDatesTab'
 import CustomersTab from '@/components/CustomersTab'
 import CouponsTab from '@/components/CouponsTab'
 import InquiriesTab from '@/components/InquiriesTab'
+import CalendarTab from '@/components/CalendarTab'
 import { getWhiteLabelConfig } from '@/lib/whitelabel'
 import {
   CalendarCheck, Wrench, ExternalLink, CheckCircle,
   XCircle, Plus, Trash2, Loader2, Lock, Zap,
   Users, Clock, FileText, Save, KeyRound, Image,
-  Star, Upload, X, Download, BarChart2, Ban, Tag, MessageSquare,
+  Star, Upload, X, Download, BarChart2, Ban, Tag, MessageSquare, Calendar,
 } from 'lucide-react'
 
-type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'blocked' | 'ai' | 'customers' | 'coupons' | 'inquiries'
+type Tab = 'bookings' | 'services' | 'staff' | 'hours' | 'about' | 'testimonials' | 'gallery' | 'settings' | 'analytics' | 'blocked' | 'ai' | 'customers' | 'coupons' | 'inquiries' | 'calendar'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -431,6 +432,7 @@ export default function OwnerDashboard({ params }: PageProps) {
 
   // ─── DASHBOARD ────────────────────────────────────────────────
   const TABS = [    { id: 'bookings' as Tab, label: 'Bookings', icon: CalendarCheck, badge: pendingBookings > 0 ? pendingBookings : null },
+    { id: 'calendar' as Tab,  label: 'Calendar',  icon: Calendar,      badge: null },
     { id: 'services' as Tab, label: 'Services', icon: Wrench, badge: null },
     { id: 'staff' as Tab, label: 'Staff', icon: Users, badge: null },
     { id: 'hours' as Tab, label: 'Hours', icon: Clock, badge: null },
@@ -1147,6 +1149,11 @@ export default function OwnerDashboard({ params }: PageProps) {
         {/* ── INQUIRIES ── */}
         {tab === 'inquiries' && site && (
           <InquiriesTab siteId={site.id} primaryColor={primaryColor} />
+        )}
+
+        {/* ── CALENDAR ── */}
+        {tab === 'calendar' && site && (
+          <CalendarTab siteId={site.id} primaryColor={primaryColor} siteTimezone={siteTimezone} />
         )}
       </div>
     </div>

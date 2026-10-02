@@ -2271,9 +2271,9 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 },
                 {
                   title: 'Booking calendar view in dashboard (Phase 7)',
-                  status: 'Planned — weekly/monthly calendar view of all bookings',
-                  blocker: 'None — display only, reads existing bookings table.',
-                  effort: '3-4 hours',
+                  status: '✅ DONE — Weekly calendar in owner dashboard (Calendar tab)',
+                  blocker: 'None',
+                  effort: 'Complete',
                 },
                 {
                   title: 'Promo codes / discount system (Phase 7)',
