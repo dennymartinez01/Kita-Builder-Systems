@@ -3,16 +3,19 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Users, Search, RefreshCw, Download, Mail, Phone, TrendingUp, Clock } from 'lucide-react'
 import type { SiteCustomerSafe } from '@/types/database'
+import CustomerProfileModal from '@/components/CustomerProfileModal'
 
 interface Props {
   siteId: string
+  primaryColor?: string
 }
 
-export default function CustomersTab({ siteId }: Props) {
+export default function CustomersTab({ siteId, primaryColor = '#2563eb' }: Props) {
   const [customers, setCustomers] = useState<SiteCustomerSafe[]>([])
   const [total, setTotal]         = useState(0)
   const [loading, setLoading]     = useState(true)
   const [search, setSearch]       = useState('')
+  const [selected, setSelected]   = useState<SiteCustomerSafe | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -136,7 +139,11 @@ export default function CustomersTab({ siteId }: Props) {
             </thead>
             <tbody>
               {customers.map(c => (
-                <tr key={c.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition">
+                <tr
+                  key={c.id}
+                  onClick={() => setSelected(c)}
+                  className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition cursor-pointer"
+                >
                   <td className="px-4 py-3">
                     <p className="font-medium text-gray-900">{c.name}</p>
                     <p className="text-gray-400 text-xs">{c.email}</p>
@@ -187,6 +194,19 @@ export default function CustomersTab({ siteId }: Props) {
           to enable the customer database. Available on Growth+ plans.
         </p>
       </div>
+
+      {/* Customer profile modal */}
+      {selected && (
+        <CustomerProfileModal
+          customer={selected}
+          siteId={siteId}
+          primaryColor={primaryColor}
+          onClose={() => setSelected(null)}
+          onNotesUpdate={(id, notes) =>
+            setCustomers(prev => prev.map(c => c.id === id ? { ...c, notes } : c))
+          }
+        />
+      )}
     </div>
   )
 }

@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 17)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Customer Profile (Owner View)** — `CustomerProfileModal` component (stats row: visits/spend/loyal-since; key facts: last visit, next booking, favourite service, contact; booking history table with status badges; internal notes textarea with save; quick actions: Email/Call/WhatsApp); `CustomersTab` updated: row click opens modal, `primaryColor` prop added, notes update callback refreshes list |
+
+---
+
 ## 2026-09-27 (session 16)
 
 | Commit | Area | What Changed |

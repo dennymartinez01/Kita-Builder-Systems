@@ -1138,7 +1138,7 @@ export default function OwnerDashboard({ params }: PageProps) {
 
         {/* ── CUSTOMERS ── */}
         {tab === 'customers' && site && (
-          <CustomersTab siteId={site.id} />
+          <CustomersTab siteId={site.id} primaryColor={primaryColor} />
         )}
 
         {/* ── COUPONS ── */}
