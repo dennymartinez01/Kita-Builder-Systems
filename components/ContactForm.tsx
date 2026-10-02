@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { CheckCircle, Loader2, Mail, Phone, User, MessageSquare, Tag } from 'lucide-react'
+import { getStoredAttribution } from '@/lib/attribution'
 
 interface ContactFormProps {
   siteId: string
@@ -43,6 +44,7 @@ export default function ContactForm({ siteId, primaryColor, services = [] }: Con
           service_interest: form.service_interest || undefined,
           message:          form.message,
           opt_in:           form.opt_in,
+          ...getStoredAttribution(),  // attach UTM + referrer
         }),
       })
       const data = await res.json()

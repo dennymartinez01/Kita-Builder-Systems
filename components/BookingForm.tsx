@@ -5,6 +5,7 @@ import type { Service, Staff } from '@/types/database'
 import { CheckCircle, Loader2, Calendar, Clock, Phone, User, Car, PawPrint, MessageSquare, Users, Mail, AlertCircle, Info, Tag, X } from 'lucide-react'
 import { checkSlotAvailability, getNextAvailableSlot, getSavedBookingDetails, saveBookingDetails } from '@/lib/booking-utils'
 import { getTodayInTimezone } from '@/lib/timezones'
+import { getStoredAttribution } from '@/lib/attribution'
 
 interface BookingFormProps {
   siteId: string
@@ -182,6 +183,7 @@ export default function BookingForm({
           service_duration_minutes: selectedService?.duration_minutes || 60,
           coupon_code:     couponResult?.valid ? couponCode.trim() : undefined,
           discount_amount: couponResult?.valid ? couponResult.discount_amount : undefined,
+          ...getStoredAttribution(),  // attach UTM + referrer
         }),
       })
       const data = await res.json()

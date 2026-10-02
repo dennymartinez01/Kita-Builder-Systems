@@ -29,6 +29,14 @@ export async function POST(req: NextRequest) {
       staff_id,
       staff_name,
       service_duration_minutes,
+      // Attribution fields (optional — set by AttributionTracker on client)
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_content,
+      utm_term,
+      referrer,
+      landing_page,
     } = body
 
     if (!site_id || !customer_name || !customer_phone || !service_name || !booking_date || !booking_time) {
@@ -127,6 +135,14 @@ export async function POST(req: NextRequest) {
         cancel_token: cancelToken,
         site_timezone: siteTimezone,
         status,
+        // Attribution — silently captured from URL params by AttributionTracker
+        utm_source:   utm_source   || null,
+        utm_medium:   utm_medium   || null,
+        utm_campaign: utm_campaign || null,
+        utm_content:  utm_content  || null,
+        utm_term:     utm_term     || null,
+        referrer:     referrer     || null,
+        landing_page: landing_page || null,
       } as any)
       .select()
       .single()

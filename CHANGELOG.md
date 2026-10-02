@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 15)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Attribution Tracking** — `supabase/attribution.sql` (utm_source/medium/campaign/content/term + referrer + landing_page on bookings + leads); `lib/attribution.ts` (parseUTM: extracts params + derives source from referrer; saveAttribution: first-touch sessionStorage; getStoredAttribution; SOURCE_LABELS map); `AttributionTracker` component (silent, mounts on page load, runs once); BookingForm + ContactForm both spread `getStoredAttribution()` into their API calls; `/api/notify` destructures + saves 7 attribution fields to booking; public `/{slug}/page.tsx` includes `<AttributionTracker />`; owner dashboard Analytics tab: "Where Bookings Come From" bar chart breakdown by source |
+
+---
+
 ## 2026-09-27 (session 14)
 
 | Commit | Area | What Changed |

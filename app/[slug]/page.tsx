@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import BookingForm from '@/components/BookingForm'
 import BookingContactSection from '@/components/BookingContactSection'
+import AttributionTracker from '@/components/AttributionTracker'
 import PageTracker from '@/components/PageTracker'
 import { getWhiteLabelConfig, getSiteWhiteLabel } from '@/lib/whitelabel'
 import type { ThemeJson, Service, Staff, HeroSection, AboutSection, BookingSection, TestimonialsSection } from '@/types/database'
@@ -68,6 +69,8 @@ export default async function PublicSitePage({ params }: PageProps) {
     <div style={{ backgroundColor: bg, fontFamily: `${theme.theme?.font || 'Inter'}, sans-serif` }} className="overflow-x-hidden">
       {/* Fire analytics tracking — non-blocking, client-side */}
       <PageTracker siteId={site.id} path={`/${slug}`} />
+      {/* Capture UTM params + referrer for attribution (first-touch, sessionStorage) */}
+      <AttributionTracker />
 
       {/* ── MOBILE NAV ── */}
       <nav className="sticky top-0 z-50 flex items-center justify-between px-4 py-3 border-b border-white/10" style={{ backgroundColor: primary }}>

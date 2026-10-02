@@ -79,6 +79,7 @@ export default function OwnerDashboard({ params }: PageProps) {
   // Analytics state
   const [pageViews, setPageViews] = useState<{ date: string; count: number }[]>([])
   const [analyticsLoading, setAnalyticsLoading] = useState(false)
+  const [sourceBreakdown, setSourceBreakdown] = useState<{ source: string; count: number }[]>([])
 
   useEffect(() => {
     params.then(p => setSlug(p.slug))
@@ -352,6 +353,28 @@ export default function OwnerDashboard({ params }: PageProps) {
     })
 
     setPageViews(Object.entries(counts).map(([date, count]) => ({ date, count })))
+
+    // Attribution source breakdown — bookings with utm_source
+    const { data: attributed } = await supabase
+      .from('bookings')
+      .select('utm_source')
+      .eq('site_id', siteId)
+      .not('utm_source', 'is', null)
+
+    if (attributed && attributed.length > 0) {
+      const srcCounts: Record<string, number> = {}
+      attributed.forEach((b: any) => {
+        const src = b.utm_source || 'direct'
+        srcCounts[src] = (srcCounts[src] || 0) + 1
+      })
+      const sorted = Object.entries(srcCounts)
+        .map(([source, count]) => ({ source, count }))
+        .sort((a, b) => b.count - a.count)
+      setSourceBreakdown(sorted)
+    } else {
+      setSourceBreakdown([])
+    }
+
     setAnalyticsLoading(false)
   }
 
@@ -944,6 +967,39 @@ export default function OwnerDashboard({ params }: PageProps) {
                 </div>
               )}
             </div>
+
+            {/* Where bookings come from — attribution breakdown */}
+            {sourceBreakdown.length > 0 && (
+              <div className="bg-white border border-gray-200 rounded-2xl p-5">
+                <h3 className="font-semibold text-gray-900 text-sm mb-4">Where Bookings Come From</h3>
+                <div className="space-y-2">
+                  {sourceBreakdown.map(({ source, count }) => {
+                    const total = sourceBreakdown.reduce((s, r) => s + r.count, 0)
+                    const pct   = Math.round((count / total) * 100)
+                    const icons: Record<string, string> = {
+                      direct: '🔗', google: '🔍', facebook: '📘', instagram: '📸',
+                      twitter: '🐦', tiktok: '🎵', youtube: '📺', whatsapp: '💬',
+                      email: '📧', referral: '🔁',
+                    }
+                    const icon = icons[source] ?? '📎'
+                    return (
+                      <div key={source} className="flex items-center gap-3">
+                        <span className="text-base w-6 shrink-0">{icon}</span>
+                        <span className="text-xs text-gray-600 w-20 capitalize shrink-0">{source}</span>
+                        <div className="flex-1 bg-gray-100 rounded-full h-2">
+                          <div className="h-2 rounded-full transition-all" style={{
+                            width: `${pct}%`,
+                            backgroundColor: (site?.theme_json as any)?.theme?.primary || '#3B82F6',
+                          }} />
+                        </div>
+                        <span className="text-xs font-semibold text-gray-700 w-12 text-right">{count} ({pct}%)</span>
+                      </div>
+                    )
+                  })}
+                </div>
+                <p className="text-gray-400 text-xs mt-3">Based on {sourceBreakdown.reduce((s, r) => s + r.count, 0)} bookings with source data. Run <code className="font-mono bg-gray-100 px-1 rounded">supabase/attribution.sql</code> to enable tracking.</p>
+              </div>
+            )}
 
             <button
               onClick={() => site && loadAnalytics(site.id)}
