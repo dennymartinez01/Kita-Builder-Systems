@@ -88,17 +88,29 @@ export async function POST(req: NextRequest) {
       new Map((leads || []).map(l => [l.email, l])).values()
     )
 
+    // ── Remove suppressed emails ──────────────────────────────
+    // Check suppression list in one query
+    const emails = uniqueLeads.map(l => l.email)
+    const { data: suppressed } = await supabase
+      .from('suppression_list')
+      .select('email')
+      .in('email', emails)
+
+    const suppressedSet = new Set((suppressed || []).map((s: any) => s.email))
+    const filteredLeads = uniqueLeads.filter(l => !suppressedSet.has(l.email))
+
     if (preview) {
       return NextResponse.json({
         preview: true,
-        recipients_count: uniqueLeads.length,
-        sample: uniqueLeads.slice(0, 5),
+        recipients_count: filteredLeads.length,
+        suppressed_count: suppressedSet.size,
+        sample: filteredLeads.slice(0, 5),
       })
     }
 
-    if (uniqueLeads.length === 0) {
+    if (filteredLeads.length === 0) {
       return NextResponse.json(
-        { error: 'No opted-in leads match the selected filters.' },
+        { error: 'No opted-in leads match the selected filters (all may be suppressed or unsubscribed).' },
         { status: 400 }
       )
     }
@@ -115,7 +127,7 @@ export async function POST(req: NextRequest) {
         filter_city:         filter_city || null,
         filter_business_type: filter_business_type || null,
         filter_country:      filter_country || null,
-        recipients_count:    uniqueLeads.length,
+        recipients_count:    filteredLeads.length,
         status:              'sending',
       } as any)
       .select()
@@ -137,8 +149,8 @@ export async function POST(req: NextRequest) {
 
       // Send in batches of 10 to avoid rate limits
       const BATCH = 10
-      for (let i = 0; i < uniqueLeads.length; i += BATCH) {
-        const batch = uniqueLeads.slice(i, i + BATCH)
+      for (let i = 0; i < filteredLeads.length; i += BATCH) {
+        const batch = filteredLeads.slice(i, i + BATCH)
         await Promise.all(batch.map(async lead => {
           try {
             await resend.emails.send({
@@ -195,16 +207,17 @@ export async function POST(req: NextRequest) {
       actor_id:   'admin',
       entity_type: 'promotion_blast',
       entity_id:   blast.id,
-      summary:    `Promotion blast sent — "${headline}" to ${sentCount} leads (${failedCount} failed)`,
-      metadata:   { headline, recipients: uniqueLeads.length, sent: sentCount, failed: failedCount },
+      summary:    `Promotion blast sent — "${headline}" to ${sentCount} leads (${failedCount} failed, ${suppressedSet.size} suppressed)`,
+      metadata:   { headline, recipients: filteredLeads.length, sent: sentCount, failed: failedCount, suppressed: suppressedSet.size },
     }).catch(() => {})
 
     return NextResponse.json({
-      success:      true,
-      blast_id:     blast.id,
-      sent_count:   sentCount,
-      failed_count: failedCount,
-      recipients:   uniqueLeads.length,
+      success:          true,
+      blast_id:         blast.id,
+      sent_count:       sentCount,
+      failed_count:     failedCount,
+      suppressed_count: suppressedSet.size,
+      recipients:       filteredLeads.length,
     })
   } catch (err: any) {
     console.error('[/api/leads/promote]', err)

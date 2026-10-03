@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 24)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Global Suppression List** — `supabase/suppression.sql` (suppression_list table: email unique, reason enum, source, notes, added_at; RLS: public insert for unsubscribe, service_role all); `SuppressionEntry`/`SuppressionReason` types; `GET /api/unsubscribe` (check if already suppressed); `POST /api/unsubscribe` (upsert to suppression list + mark leads as closed, idempotent); `/unsubscribe` public page (5 states: loading/confirming/done/already/error; confirms email, calls API, shows permanent removal message); `/api/leads/promote` updated to filter out suppressed emails before sending (suppressedSet check, suppressed_count in response); `/admin/suppression` page (search, add manually with reason/notes, delete with confirmation, CSV export, reason badges); ShieldOff sidebar nav item added |
+
+---
+
 ## 2026-09-27 (session 23)
 
 | Commit | Area | What Changed |

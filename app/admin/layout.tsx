@@ -22,6 +22,7 @@ import {
   X,
   ClipboardList,
   Inbox,
+  ShieldOff,
 } from 'lucide-react'
 import { CATEGORY_ICONS, SEVERITY_COLORS } from '@/lib/events'
 import type { AdminNotification } from '@/lib/notifications'
@@ -34,6 +35,7 @@ const NAV_ITEMS = [
   { href: '/admin/clients', label: 'Clients', icon: Users },
   { href: '/admin/trial-requests', label: 'Trial Requests',   icon: ClipboardList },
   { href: '/admin/leads',          label: 'Leads Inbox',       icon: Inbox },
+  { href: '/admin/suppression',    label: 'Suppression List',  icon: ShieldOff },
   { href: '/admin/revenue', label: 'Revenue', icon: TrendingUp },
   { href: '/admin/events',         label: 'Activity & Events', icon: Activity },
   { href: '/admin/notifications',  label: 'Notifications',     icon: Bell },

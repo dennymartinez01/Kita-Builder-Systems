@@ -418,3 +418,16 @@ export interface Lead {
   created_at: string
   updated_at: string
 }
+
+// ── GLOBAL SUPPRESSION LIST (Phase 12) ───────────────────────
+
+export type SuppressionReason = 'unsubscribe' | 'admin' | 'bounce' | 'complaint' | 'other'
+
+export interface SuppressionEntry {
+  id: string
+  email: string
+  reason: SuppressionReason
+  source: string | null
+  notes: string | null
+  added_at: string
+}
