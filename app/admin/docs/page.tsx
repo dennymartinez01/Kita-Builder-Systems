@@ -2000,6 +2000,218 @@ if (count > 0) return 409 // Slot taken`}</pre>
         </div>
       ),
     },
+    // --- SMART PROMOTION BLASTS ---
+    {
+      id: 'promotion-blasts',
+      title: 'Smart Promotion Blasts (Phase 10)',
+      icon: Zap,
+      content: (
+        <div className="space-y-5">
+          {/* Status */}
+          <div className="bg-gray-950 border border-green-800/50 rounded-xl p-4">
+            <p className="text-green-400 font-bold text-sm mb-2">✅ Phase 10 — Built and Live</p>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Send targeted email promotions to opted-in leads across your entire KITA client network.
+              Filter by city, business type, and country. Every blast is logged with full delivery stats.
+              Access via <strong className="text-white">Admin → Leads Inbox → ⚡ Promote</strong> or <code className="text-blue-300 font-mono">/admin/leads/promote</code>.
+            </p>
+          </div>
+
+          {/* What / Why / Who */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-5 space-y-4">
+            <div>
+              <p className="text-white font-semibold text-sm mb-1">What</p>
+              <p className="text-gray-400 text-xs leading-relaxed">
+                The operator composes a promotion — headline, offer text, CTA button URL and label, optional expiry date — then targets it at opted-in leads filtered by city, business type, and/or country. The system previews the exact audience size, lets the operator confirm, then sends personalised HTML emails in batches of 10 via Resend. Every campaign is recorded in the <code className="text-blue-300 font-mono">promotion_blasts</code> table with sent/failed counts and timestamps.
+              </p>
+            </div>
+            <div>
+              <p className="text-white font-semibold text-sm mb-1">Why</p>
+              <p className="text-gray-400 text-xs leading-relaxed">
+                KITA sits across multiple local businesses simultaneously. No individual business can build a cross-business loyalty network alone — but KITA can aggregate opted-in customers from all its client sites and connect them with relevant local offers. A salon customer in Sydney might also be interested in a mechanic's discount in the same suburb. This is a revenue product: charge clients $49/blast to reach the KITA network in their city.
+              </p>
+            </div>
+            <div>
+              <p className="text-white font-semibold text-sm mb-1">Who</p>
+              <div className="flex gap-2 flex-wrap">
+                <span className="bg-purple-900/50 text-purple-400 text-xs px-2 py-0.5 rounded-full">Operator</span>
+                <span className="text-gray-500 text-xs mt-0.5">composes and sends the blast</span>
+                <span className="bg-blue-900/50 text-blue-400 text-xs px-2 py-0.5 rounded-full ml-2">Client</span>
+                <span className="text-gray-500 text-xs mt-0.5">can pay for a blast (future monetisation)</span>
+                <span className="bg-green-900/50 text-green-400 text-xs px-2 py-0.5 rounded-full ml-2">Customer (Lead)</span>
+                <span className="text-gray-500 text-xs mt-0.5">receives the offer email</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 3-screen workflow */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-5">
+            <p className="text-white font-semibold text-sm mb-4">3-Screen Workflow</p>
+            <div className="space-y-4">
+              {[
+                {
+                  step: 'Screen 1 — Compose',
+                  color: 'border-blue-700 bg-blue-950/20',
+                  badge: 'bg-blue-900/50 text-blue-400',
+                  fields: [
+                    'Headline / Subject — shown as email subject line and H2',
+                    'Offer Text — main body paragraph (HTML-safe, rendered in email template)',
+                    'CTA URL — the link the button points to (e.g. booking page)',
+                    'CTA Button Label — e.g. "Claim Offer", "Book Now", "Get 20% Off"',
+                    'Expiry Date (optional) — shows "⏰ Offer expires: [date]" in email',
+                    'City filter (optional) — fuzzy match on leads.city',
+                    'Business Type filter (optional) — exact match (salon/clinic/pet/cafe/mechanic)',
+                    'Country filter (optional) — 2-letter ISO code e.g. AU, PH',
+                    'Sticky audience panel — live count + 5-sample recipients, auto-refreshes 400ms after filter change',
+                  ],
+                },
+                {
+                  step: 'Screen 2 — Preview & Confirm',
+                  color: 'border-yellow-700 bg-yellow-950/20',
+                  badge: 'bg-yellow-900/50 text-yellow-400',
+                  fields: [
+                    'Styled email preview — exactly how the email appears in the recipient\'s inbox',
+                    'Audience summary — filter badges (city / business type / country) or "All opted-in leads"',
+                    'Recipient count — exact number of unique emails that will receive the blast',
+                    'Warning banner — "This action will send real emails"',
+                    'Send button — disabled if count = 0; shows exact recipient count',
+                    'Compliance note — AU Spam Act, PH Data Privacy Act, UK PECR, US CAN-SPAM',
+                  ],
+                },
+                {
+                  step: 'Screen 3 — Sent',
+                  color: 'border-green-700 bg-green-950/20',
+                  badge: 'bg-green-900/50 text-green-400',
+                  fields: [
+                    'Success confirmation with sent / failed counts and total recipients',
+                    'Blast ID — unique UUID for audit trail reference',
+                    'Campaign headline shown as confirmation',
+                    '"Send Another" — resets form for next campaign',
+                    '"Back to Leads" — returns to /admin/leads inbox',
+                  ],
+                },
+              ].map(screen => (
+                <div key={screen.step} className={`border rounded-xl p-4 ${screen.color}`}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${screen.badge}`}>{screen.step}</span>
+                  </div>
+                  <ul className="space-y-1.5">
+                    {screen.fields.map((f, i) => (
+                      <li key={i} className="flex gap-2 text-xs text-gray-400">
+                        <span className="text-gray-600 shrink-0">→</span>{f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Email template */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-5">
+            <p className="text-white font-semibold text-sm mb-3">Email Template Structure</p>
+            <div className="bg-white rounded-xl p-4 space-y-2">
+              <p className="text-gray-900 font-bold text-sm">[Headline]</p>
+              <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                <p className="text-gray-700 text-xs">[Offer Text — paragraph]</p>
+                <p className="text-gray-500 text-xs">⏰ Offer expires: [expiry date] (if set)</p>
+              </div>
+              <div className="inline-block bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-lg">[CTA Label] →</div>
+              <p className="text-gray-400 text-xs">You received this because you opted in to receive local offers. <span className="underline">Unsubscribe</span></p>
+            </div>
+            <p className="text-gray-500 text-xs mt-3">The unsubscribe link points to <code className="font-mono text-blue-300">/unsubscribe?email=[email]</code> — this route is planned as Phase 12 (Global Suppression List).</p>
+          </div>
+
+          {/* Database */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-gray-800">
+              <p className="text-white font-semibold text-sm">Database — <code className="text-blue-300 font-mono">promotion_blasts</code> table</p>
+              <p className="text-gray-500 text-xs mt-0.5">Run <code className="font-mono text-yellow-300">supabase/promotions.sql</code> — one-time setup</p>
+            </div>
+            <table className="w-full text-xs">
+              <tbody>
+                {[
+                  ['id',                  'uuid',        'Primary key'],
+                  ['headline',            'text',        'Email subject + heading'],
+                  ['offer_text',          'text',        'Main body paragraph'],
+                  ['cta_url',             'text',        'Button link URL'],
+                  ['cta_label',           'text',        'Button label (default: "Claim Offer")'],
+                  ['expires_at',          'timestamptz', 'Optional offer expiry'],
+                  ['filter_city',         'text',        'City filter used (null = all)'],
+                  ['filter_business_type','text',        'Business type filter (null = all)'],
+                  ['filter_country',      'text',        'Country ISO code filter (null = all)'],
+                  ['recipients_count',    'integer',     'Total unique emails targeted'],
+                  ['sent_count',          'integer',     'Successfully sent'],
+                  ['failed_count',        'integer',     'Failed sends'],
+                  ['status',              'text',        'draft | sending | sent | failed'],
+                  ['sent_at',             'timestamptz', 'When the blast was sent'],
+                  ['created_at',          'timestamptz', 'Record created'],
+                ].map(([col, type, note]) => (
+                  <tr key={col} className="border-b border-gray-900 last:border-0">
+                    <td className="px-4 py-2 font-mono text-white w-36">{col}</td>
+                    <td className="px-4 py-2 font-mono text-blue-300 w-24">{type}</td>
+                    <td className="px-4 py-2 text-gray-500">{note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* API routes */}
+          <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+            <p className="text-white font-semibold text-sm mb-3">API Routes</p>
+            <div className="space-y-2 text-xs font-mono">
+              {[
+                { method: 'GET',  path: '/api/leads/promote?city=&business_type=&country=', desc: 'Audience preview — returns count + 5-sample of opted-in leads matching filters' },
+                { method: 'POST', path: '/api/leads/promote',                               desc: 'Send blast — filters leads, deduplicates by email, sends via Resend in batches of 10, records result' },
+                { method: 'GET',  path: '/api/leads/promote?...&preview=true (body)',        desc: 'Dry run via POST body — returns count + sample, sends NO emails' },
+              ].map(r => (
+                <div key={r.path} className="flex gap-3 bg-gray-900 rounded-lg px-3 py-2 items-start">
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded shrink-0 ${r.method === 'POST' ? 'bg-green-900/50 text-green-300' : 'bg-blue-900/50 text-blue-300'}`}>{r.method}</span>
+                  <div>
+                    <span className="text-white">{r.path}</span>
+                    <p className="text-gray-600 text-xs mt-0.5">{r.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Revenue angle */}
+          <div className="bg-purple-950/30 border border-purple-800/50 rounded-xl p-4">
+            <p className="text-purple-300 font-semibold text-xs mb-2">💰 Monetisation Opportunity</p>
+            <div className="space-y-1.5 text-xs text-gray-500">
+              {[
+                'Charge KITA clients $49/blast to reach the full opted-in network in their city',
+                'Bundle: 2 blasts/month in Growth plan · 5 blasts/month in Agency plan',
+                'Sell geo-targeted segments: "500 opted-in leads in Manila" → $29/segment',
+                'At 20 clients × 1 blast/month → $980 additional MRR beyond subscriptions',
+              ].map((p, i) => (
+                <div key={i} className="flex gap-2"><span className="text-purple-500 shrink-0">→</span>{p}</div>
+              ))}
+            </div>
+          </div>
+
+          {/* Compliance */}
+          <div className="bg-yellow-950/30 border border-yellow-800/50 rounded-xl p-4">
+            <p className="text-yellow-400 font-semibold text-xs mb-2">⚠️ Compliance Requirements</p>
+            <div className="space-y-1.5 text-xs text-gray-500">
+              {[
+                'Only leads with opt_in=true are ever contacted — enforced server-side',
+                'Every email includes an unsubscribe link (/unsubscribe?email=...)',
+                'AU Spam Act: requires consent + sender identification + unsubscribe mechanism ✓',
+                'PH Data Privacy Act: personal data used only for stated purpose (marketing offers) ✓',
+                'UK PECR / US CAN-SPAM: unsubscribe honoured immediately — planned in Phase 12 Global Suppression List',
+                'Planned: /unsubscribe route + suppression_list table to permanently block re-contact',
+              ].map((p, i) => (
+                <div key={i} className="flex gap-2"><span className="text-yellow-600 shrink-0">→</span>{p}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ),
+    },
+
     // ─── CHANGELOG ────────────────────────────────────────────────
     {
       id: 'changelog',

@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 23)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | 📝 Docs | **Smart Promotion Blasts — full documentation** — new standalone section in /admin/docs: What/Why/Who, 3-screen workflow (Compose/Confirm/Sent) with all fields described, email template structure, promotion_blasts DB schema (15 columns), API routes (GET preview + POST send), monetisation opportunity ($49/blast model), compliance requirements (AU/PH/UK/US laws, unsubscribe, suppression list planned) |
+
+---
+
 ## 2026-09-27 (session 22)
 
 | Commit | Area | What Changed |
