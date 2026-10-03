@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 19)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Admin Impersonation** — `lib/impersonation.ts` (startImpersonation, endImpersonation, getImpersonationSession, isImpersonating, ImpersonationSession type, sessionStorage key); `ImpersonationBanner` component (sticky purple banner, business name, Exit Client View button → clears session + returns to client profile); `/{slug}/dashboard` PIN gate: useEffect checks for valid impersonation session matching the slug, auto-authenticates without PIN, mounts ImpersonationBanner at top; Client 360 sites list: 👁 Eye button starts impersonation + logs event + opens dashboard in new tab; `/admin/sites` table: same Eye button per row; `auth.impersonation.started` logged to event stream for all sessions |
+
+---
+
 ## 2026-09-27 (session 18)
 
 | Commit | Area | What Changed |

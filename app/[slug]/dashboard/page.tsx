@@ -9,6 +9,8 @@ import CustomersTab from '@/components/CustomersTab'
 import CouponsTab from '@/components/CouponsTab'
 import InquiriesTab from '@/components/InquiriesTab'
 import CalendarTab from '@/components/CalendarTab'
+import ImpersonationBanner from '@/components/ImpersonationBanner'
+import { getImpersonationSession } from '@/lib/impersonation'
 import { getWhiteLabelConfig } from '@/lib/whitelabel'
 import {
   CalendarCheck, Wrench, ExternalLink, CheckCircle,
@@ -391,6 +393,23 @@ export default function OwnerDashboard({ params }: PageProps) {
   const siteTimezone = (site as any)?.timezone || 'UTC'
   const wl = getWhiteLabelConfig()
 
+  // ─── IMPERSONATION BYPASS ─────────────────────────────────────
+  // If admin is impersonating this site, auto-bypass PIN gate
+  useEffect(() => {
+    if (authed || !slug) return
+    const session = getImpersonationSession()
+    if (session && session.siteSlug === slug) {
+      // Load site data and authenticate without PIN
+      supabase.from('sites').select('*').eq('slug', slug).single().then(({ data: siteData }) => {
+        if (siteData) {
+          setSite(siteData)
+          loadData(siteData)
+          setAuthed(true)
+        }
+      })
+    }
+  }, [slug, authed]) // eslint-disable-line
+
   // ─── PIN GATE ─────────────────────────────────────────────────
   if (!authed) {
     return (
@@ -450,6 +469,8 @@ export default function OwnerDashboard({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Admin impersonation banner — only shown when admin is viewing as client */}
+      <ImpersonationBanner />
       {/* Header */}
       <div className="px-6 py-5" style={{ backgroundColor: primaryColor }}>
         <div className="max-w-4xl mx-auto flex items-center justify-between">

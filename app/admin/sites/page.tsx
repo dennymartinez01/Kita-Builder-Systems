@@ -5,7 +5,9 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { BUSINESS_TYPE_ICONS } from '@/lib/templates'
 import type { BusinessType, Site, Client } from '@/types/database'
-import { Globe, ExternalLink, LayoutDashboard, Trash2, Search, RefreshCw, User } from 'lucide-react'
+import { Globe, ExternalLink, LayoutDashboard, Trash2, Search, RefreshCw, User, Eye } from 'lucide-react'
+import { startImpersonation } from '@/lib/impersonation'
+import { logEvent, ET } from '@/lib/events'
 
 export default function SitesPage() {
   const [sites, setSites] = useState<Site[]>([])
@@ -197,6 +199,31 @@ export default function SitesPage() {
                         >
                           <LayoutDashboard size={14} />
                         </a>
+                        <button
+                          onClick={() => {
+                            startImpersonation({
+                              siteId:       site.id,
+                              siteSlug:     site.slug,
+                              businessName: site.business_name,
+                              clientId:     (site as any).client_id ?? null,
+                              startedAt:    new Date().toISOString(),
+                            })
+                            logEvent({
+                              event_type: ET.AUTH_IMPERSONATION_STARTED,
+                              category:   'auth',
+                              severity:   'info',
+                              actor_type: 'admin',
+                              actor_id:   'admin',
+                              site_id:    site.id,
+                              summary:    `Admin started viewing ${site.business_name} as client`,
+                            }).catch(() => {})
+                            window.open(`/${site.slug}/dashboard`, '_blank')
+                          }}
+                          className="text-gray-500 hover:text-purple-400 transition"
+                          title="View as Client"
+                        >
+                          <Eye size={14} />
+                        </button>
                         <button
                           onClick={() => deleteSite(site.id, site.business_name)}
                           className="text-gray-700 hover:text-red-400 transition"

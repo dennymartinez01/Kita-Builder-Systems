@@ -8,6 +8,8 @@ import type { Client, Site, EffectiveEntitlements } from '@/types/database'
 import { FEATURE_CATEGORIES } from '@/lib/entitlements'
 import { calculateTrialDates, formatTrialCountdown, formatDate, getTrialStatus, TRIAL_DURATION_OPTIONS } from '@/lib/trial'
 import { CATEGORY_ICONS, SEVERITY_COLORS } from '@/lib/events'
+import { startImpersonation } from '@/lib/impersonation'
+import { logEvent, ET } from '@/lib/events'
 import {
   ArrowLeft, User, Mail, Phone, Globe, MapPin,
   CreditCard, ExternalLink, LayoutDashboard,
@@ -16,7 +18,7 @@ import {
   RefreshCw, Info, Timer, TrendingUp, DollarSign,
   BarChart2, Users, Activity, MessageSquare, Calendar,
   ArrowUpCircle, ArrowDownCircle, PauseCircle, XCircle,
-  Zap, RotateCcw, Clock, BookOpen, Tag,
+  Zap, RotateCcw, Clock, BookOpen, Tag, Eye,
 } from 'lucide-react'
 
 // ── Constants ─────────────────────────────────────────────────
@@ -412,8 +414,34 @@ export default function Client360Page() {
                             <p className="text-gray-500 text-xs capitalize">{s.business_type} · <span className={s.payment_status === 'paid' ? 'text-green-400' : 'text-gray-500'}>{s.payment_status || 'free'}</span></p>
                           </div>
                           <div className="flex gap-2">
-                            <a href={`/${s.slug}`} target="_blank" className="text-gray-500 hover:text-blue-400 transition"><ExternalLink size={13} /></a>
-                            <a href={`/${s.slug}/dashboard`} target="_blank" className="text-gray-500 hover:text-green-400 transition"><LayoutDashboard size={13} /></a>
+                            <a href={`/${s.slug}`} target="_blank" className="text-gray-500 hover:text-blue-400 transition" title="View public site"><ExternalLink size={13} /></a>
+                            <a href={`/${s.slug}/dashboard`} target="_blank" className="text-gray-500 hover:text-green-400 transition" title="Owner dashboard"><LayoutDashboard size={13} /></a>
+                            <button
+                              onClick={() => {
+                                startImpersonation({
+                                  siteId:       s.id,
+                                  siteSlug:     s.slug,
+                                  businessName: s.business_name,
+                                  clientId:     client?.id ?? null,
+                                  startedAt:    new Date().toISOString(),
+                                })
+                                logEvent({
+                                  event_type: ET.AUTH_IMPERSONATION_STARTED,
+                                  category:   'auth',
+                                  severity:   'info',
+                                  actor_type: 'admin',
+                                  actor_id:   'admin',
+                                  site_id:    s.id,
+                                  client_id:  client?.id,
+                                  summary:    `Admin started viewing ${s.business_name} as client`,
+                                }).catch(() => {})
+                                window.open(`/${s.slug}/dashboard`, '_blank')
+                              }}
+                              className="text-gray-500 hover:text-purple-400 transition"
+                              title="View as Client (admin impersonation)"
+                            >
+                              <Eye size={13} />
+                            </button>
                           </div>
                         </div>
                       ))}
