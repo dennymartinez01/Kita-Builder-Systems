@@ -7,6 +7,15 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 21)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Docs: Business Rank + Badges** — Group 3 entry updated with full implementation details (scoring formula, 7 badges, RankBadge component, API route); 4 new entries added to "Already Shipped" section (Business Rank, Booking Calendar View, Contact Form + Leads, Attribution Tracking, Admin Impersonation) |
+| *(pending)* | ✅ Complete | **Geographic Visitor Analytics** — `supabase/geo-analytics.sql` (country + region columns on page_views, index); `/api/track` updated to capture country from CF-IPCountry / x-vercel-ip-country / Accept-Language headers (privacy-first: country code only, no IP); `loadAnalytics()` extended to query page_views.country and build top-8 country breakdown; "Where Visitors Come From" bar chart section added to owner dashboard Analytics tab with flag emojis, country names, percentage bars |
+
+---
+
 ## 2026-09-27 (session 20)
 
 | Commit | Area | What Changed |

@@ -84,6 +84,7 @@ export default function OwnerDashboard({ params }: PageProps) {
   const [pageViews, setPageViews] = useState<{ date: string; count: number }[]>([])
   const [analyticsLoading, setAnalyticsLoading] = useState(false)
   const [sourceBreakdown, setSourceBreakdown] = useState<{ source: string; count: number }[]>([])
+  const [geoBreakdown, setGeoBreakdown] = useState<{ country: string; count: number; pct: number }[]>([])
 
   useEffect(() => {
     params.then(p => setSlug(p.slug))
@@ -377,6 +378,30 @@ export default function OwnerDashboard({ params }: PageProps) {
       setSourceBreakdown(sorted)
     } else {
       setSourceBreakdown([])
+    }
+
+    // Geographic breakdown from page_views country column
+    const { data: geoData } = await supabase
+      .from('page_views')
+      .select('country')
+      .eq('site_id', siteId)
+      .not('country', 'is', null)
+      .gte('viewed_at', since.toISOString())
+
+    if (geoData && geoData.length > 0) {
+      const geoCounts: Record<string, number> = {}
+      geoData.forEach((v: any) => {
+        const c = v.country || 'Unknown'
+        geoCounts[c] = (geoCounts[c] || 0) + 1
+      })
+      const total = geoData.length
+      const sorted = Object.entries(geoCounts)
+        .map(([country, count]) => ({ country, count, pct: Math.round((count / total) * 100) }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 8) // top 8 countries
+      setGeoBreakdown(sorted)
+    } else {
+      setGeoBreakdown([])
     }
 
     setAnalyticsLoading(false)
@@ -1029,6 +1054,50 @@ export default function OwnerDashboard({ params }: PageProps) {
                   })}
                 </div>
                 <p className="text-gray-400 text-xs mt-3">Based on {sourceBreakdown.reduce((s, r) => s + r.count, 0)} bookings with source data. Run <code className="font-mono bg-gray-100 px-1 rounded">supabase/attribution.sql</code> to enable tracking.</p>
+              </div>
+            )}
+
+            {/* Geographic breakdown — where visitors come from */}
+            {geoBreakdown.length > 0 && (
+              <div className="bg-white border border-gray-200 rounded-2xl p-5">
+                <h3 className="font-semibold text-gray-900 text-sm mb-4">Where Visitors Come From</h3>
+                <div className="space-y-2">
+                  {geoBreakdown.map(({ country, count, pct }) => {
+                    const flagMap: Record<string, string> = {
+                      AU: '🇦🇺', PH: '🇵🇭', US: '🇺🇸', GB: '🇬🇧', NZ: '🇳🇿',
+                      CA: '🇨🇦', SG: '🇸🇬', MY: '🇲🇾', IN: '🇮🇳', AE: '🇦🇪',
+                      JP: '🇯🇵', KR: '🇰🇷', HK: '🇭🇰', TW: '🇹🇼', ID: '🇮🇩',
+                      DE: '🇩🇪', FR: '🇫🇷', NL: '🇳🇱', IT: '🇮🇹', ES: '🇪🇸',
+                    }
+                    const flag = flagMap[country] ?? '🌏'
+                    const countryNames: Record<string, string> = {
+                      AU: 'Australia', PH: 'Philippines', US: 'United States',
+                      GB: 'United Kingdom', NZ: 'New Zealand', CA: 'Canada',
+                      SG: 'Singapore', MY: 'Malaysia', IN: 'India', AE: 'UAE',
+                      JP: 'Japan', KR: 'South Korea', HK: 'Hong Kong',
+                      TW: 'Taiwan', ID: 'Indonesia', DE: 'Germany',
+                      FR: 'France', NL: 'Netherlands', IT: 'Italy', ES: 'Spain',
+                    }
+                    const label = countryNames[country] ?? country
+                    return (
+                      <div key={country} className="flex items-center gap-3">
+                        <span className="text-base w-7 shrink-0">{flag}</span>
+                        <span className="text-xs text-gray-600 w-28 shrink-0">{label}</span>
+                        <div className="flex-1 bg-gray-100 rounded-full h-2">
+                          <div className="h-2 rounded-full transition-all" style={{
+                            width: `${pct}%`,
+                            backgroundColor: (site?.theme_json as any)?.theme?.primary || '#3B82F6',
+                          }} />
+                        </div>
+                        <span className="text-xs font-semibold text-gray-700 w-14 text-right">{count} ({pct}%)</span>
+                      </div>
+                    )
+                  })}
+                </div>
+                <p className="text-gray-400 text-xs mt-3">
+                  Based on {geoBreakdown.reduce((s, r) => s + r.count, 0)} page views with location data (last 14 days).
+                  Run <code className="font-mono bg-gray-100 px-1 rounded">supabase/geo-analytics.sql</code> to enable.
+                </p>
               </div>
             )}
 
