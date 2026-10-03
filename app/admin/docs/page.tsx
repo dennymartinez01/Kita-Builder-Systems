@@ -88,7 +88,7 @@ export default function DocsPage() {
                 '📋 Phase 10 — Contact Form + Smart Leads Engine (documented, not yet built)',
                 '📋 Phase 11 — Entitlement Engine + Trial Workflow + Admin Overrides + Customer DB',
                 '📋 Phase 12 — Outreach Campaigns + Attribution + Geographic Analytics',
-                '📋 Phase 13 — Business Rank + Badges + Heatmaps + Admin Impersonation',
+                '📋 Built — Phase 13 — Business Rank + Badges + Heatmaps + Admin Impersonation',
               ].map((item, i) => (
                 <div key={i} className="flex gap-2"><span className="text-yellow-400">→</span>{item}</div>
               ))}
@@ -1214,7 +1214,7 @@ if (count > 0) return 409 // Slot taken`}</pre>
               {[
                 { feature: 'Customer Registration + Client Customer Database', what: 'Owner settings: Guest Only / Guest + Optional Account / Account Required. Customers register per site. Owner sees Customers tab: name, email, bookings, last visit, status. Export CSV. Supabase RLS enforces strict multi-tenant isolation.', why: 'A customer database enables loyalty programs, targeted promotions, and booking history — none of which are possible without persistent identity.', who: 'Client + Customer', status: '📋 Built — Phase 11' },
                 { feature: 'Customer Profile (Owner View)', what: 'Per-customer page in owner dashboard: Booking History, Total Spend, Last Booking, Upcoming Booking, Promotions Used, Internal Notes.', why: 'An owner who can see "Maria has booked 12 times and spent $840" can personalise service and offers in ways that drive loyalty and referrals.', who: 'Client', status: '📋 Built — Phase 11' },
-                { feature: 'Business Rank + Badges', what: 'Three-layer identity: (1) Rank (Newcomer → Starter → Active → Established → Growing → Pro → Elite → Premier → Pioneer → Legend) scored by weighted formula — Recent Bookings 20%, Booking Growth 15%, Recent Activity 15%, Customer Engagement 15%, Feature Adoption 10%, Site Completeness 10%, Tenure 10%, Reliability 5%. (2) Subscription badge. (3) Earned badges (Early Adopter, Booking Pro, AI Pioneer). Rank history tracked monthly.', why: 'Gamification drives product engagement. A visible rank progression gives owners a reason to keep using the platform. Rank history provides analytics on business health over time.', who: 'Client + Operator', status: '📋 Planned — Phase 13' },
+                { feature: 'Business Rank + Badges', what: 'Three-layer identity: (1) Rank (Newcomer → Starter → Active → Established → Growing → Pro → Elite → Premier → Pioneer → Legend) scored by weighted formula — Recent Bookings 20%, Booking Growth 15%, Recent Activity 15%, Customer Engagement 15%, Feature Adoption 10%, Site Completeness 10%, Tenure 10%, Reliability 5%. (2) Subscription badge. (3) Earned badges (Early Adopter, Booking Pro, AI Pioneer). Rank history tracked monthly.', why: 'Gamification drives product engagement. A visible rank progression gives owners a reason to keep using the platform. Rank history provides analytics on business health over time.', who: 'Client + Operator', status: '📋 Built — Phase 13' },
               ].map((item, i) => (
                 <div key={i} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
                   <div className="flex items-start justify-between gap-2 mb-2">

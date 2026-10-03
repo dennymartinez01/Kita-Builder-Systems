@@ -11,6 +11,7 @@ import InquiriesTab from '@/components/InquiriesTab'
 import CalendarTab from '@/components/CalendarTab'
 import ImpersonationBanner from '@/components/ImpersonationBanner'
 import { getImpersonationSession } from '@/lib/impersonation'
+import RankBadge from '@/components/RankBadge'
 import { getWhiteLabelConfig } from '@/lib/whitelabel'
 import {
   CalendarCheck, Wrench, ExternalLink, CheckCircle,
@@ -501,6 +502,13 @@ export default function OwnerDashboard({ params }: PageProps) {
             </div>
           ))}
         </div>
+
+        {/* Business Rank — compact badge shown below stats */}
+        {site && (
+          <div className="mb-5">
+            <RankBadge siteId={site.id} compact={false} darkMode={false} primaryColor={primaryColor} />
+          </div>
+        )}
 
         {/* Tabs — scrollable on mobile */}
         <div className="overflow-x-auto mb-5">

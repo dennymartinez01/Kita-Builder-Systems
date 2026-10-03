@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 20)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Business Rank + Badges** — `lib/ranking.ts` (RANK_TIERS x10: Newcomer→Legend; ALL_BADGES x7: Early Adopter/Booking Pro/AI Pioneer/Top Rated/Loyal Client/Fully Setup/Customer Magnet; calculateRank() weighted formula: Recent Bookings 20%, Booking Growth 15%, Recent Activity 15%, Customer Engagement 15%, Feature Adoption 10%, Site Completeness 10%, Tenure 10%, Reliability 5%); `GET /api/ranking/[siteId]` (parallel queries: bookings, 30d/prev30d counts, customers, services, staff, reviews from theme_json; returns score/tier/badges/breakdown); `RankBadge` component (compact pill + full card with score bar, next-tier hint, badges, score breakdown accordion); owner dashboard: RankBadge full card shown below stats grid; Client 360: rank badges per site shown between stat strip and tab bar; docs updated |
+
+---
+
 ## 2026-09-27 (session 19)
 
 | Commit | Area | What Changed |

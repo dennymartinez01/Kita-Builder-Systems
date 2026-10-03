@@ -10,6 +10,7 @@ import { calculateTrialDates, formatTrialCountdown, formatDate, getTrialStatus, 
 import { CATEGORY_ICONS, SEVERITY_COLORS } from '@/lib/events'
 import { startImpersonation } from '@/lib/impersonation'
 import { logEvent, ET } from '@/lib/events'
+import RankBadge from '@/components/RankBadge'
 import {
   ArrowLeft, User, Mail, Phone, Globe, MapPin,
   CreditCard, ExternalLink, LayoutDashboard,
@@ -328,6 +329,21 @@ export default function Client360Page() {
           </div>
         ))}
       </div>
+
+      {/* ── RANK BADGES (one per site) ──────────────────────── */}
+      {sites.length > 0 && (
+        <div className="mb-6">
+          <p className="text-gray-500 text-xs font-medium mb-3">Business Rank</p>
+          <div className={`grid gap-4 ${sites.length === 1 ? 'grid-cols-1 max-w-sm' : 'grid-cols-1 sm:grid-cols-2'}`}>
+            {sites.slice(0, 2).map(s => (
+              <div key={s.id}>
+                <p className="text-gray-600 text-xs mb-2">{s.business_name}</p>
+                <RankBadge siteId={s.id} compact={false} darkMode={true} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* ── TAB BAR ────────────────────────────────────────── */}
       <div className="flex gap-1 mb-6 bg-gray-900 border border-gray-800 rounded-xl p-1 overflow-x-auto">
