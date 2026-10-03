@@ -304,9 +304,14 @@ function GenerateWizard() {
           <Zap className="text-yellow-400" size={24} />
           Create New Site
         </h1>
-        <p className="text-gray-400 text-sm mt-1">
-          {step === 9 ? 'Site is live!' : `Step ${currentVisibleIndex + 1} of ${visibleSteps.length} — ${visibleSteps[currentVisibleIndex]?.label}`}
-        </p>
+        <div className="flex items-center justify-between mt-1">
+          <p className="text-gray-400 text-sm">
+            {step === 9 ? 'Site is live!' : `Step ${currentVisibleIndex + 1} of ${visibleSteps.length} — ${visibleSteps[currentVisibleIndex]?.label}`}
+          </p>
+          <Link href="/admin/generate/bulk" className="flex items-center gap-1.5 text-gray-500 hover:text-yellow-400 text-xs transition">
+            <Zap size={12} /> Bulk Demo Generator
+          </Link>
+        </div>
       </div>
 
       {/* Progress bar */}

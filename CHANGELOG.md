@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 18)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Bulk Demo Site Generator** — `/admin/generate/bulk` page (niche selector grid: pick 1-5 from 5 business types; preset locations: Sydney/Melbourne/Manila/Cebu/LA/London/Auckland + custom; preview list of what will be generated; sequential generation using existing /api/generate; live per-job progress: queued→generating→done/error; done state shows View Site + Dashboard links + PIN; Generate More / View All Sites actions after completion); "Bulk Demo Generator" link added to generate wizard header |
+
+---
+
 ## 2026-09-27 (session 17)
 
 | Commit | Area | What Changed |
