@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
-import { Inbox, RefreshCw, Search, Download, ExternalLink, Mail, Phone, Filter } from 'lucide-react'
+import { Inbox, RefreshCw, Search, Download, ExternalLink, Mail, Phone, Filter, Zap } from 'lucide-react'
 import type { Lead, LeadStatus } from '@/types/database'
 
 const STATUS_COLORS: Record<LeadStatus | 'all', string> = {
@@ -116,6 +116,12 @@ export default function AdminLeadsPage() {
               <Download size={13} /> Export CSV
             </button>
           )}
+          <Link
+            href="/admin/leads/promote"
+            className="flex items-center gap-1.5 bg-yellow-600 hover:bg-yellow-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition"
+          >
+            <Zap size={13} /> Promote
+          </Link>
         </div>
       </div>
 

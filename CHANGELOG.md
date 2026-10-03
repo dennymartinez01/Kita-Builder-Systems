@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 22)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Smart Promotion Blasts** — `supabase/promotions.sql` (promotion_blasts table: headline/offer_text/cta_url/cta_label/expires_at, audience filters, recipients/sent/failed counts, status, timestamps, RLS service_role); `GET /api/leads/promote` (audience preview: count + 5-sample, filtered by city/business_type/country on opt_in=true leads); `POST /api/leads/promote` (deduplicated by email, creates blast record, sends HTML emails in batches of 10 via Resend with unsubscribe link, updates blast record with results, logs event); `/admin/leads/promote` compose page (3-screen flow: Compose → Preview & Confirm → Sent; audience preview live-updates on filter change; compliance note; sticky audience card); ⚡ Promote button added to /admin/leads header |
+
+---
+
 ## 2026-09-27 (session 21)
 
 | Commit | Area | What Changed |
