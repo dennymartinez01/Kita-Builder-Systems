@@ -604,61 +604,66 @@ export default function DocsPage() {
               {[
                 {
                   phase: 'Phase 10 — Contact Form + Smart Leads Engine',
-                  color: 'border-blue-800 bg-blue-950/10',
-                  badge: '📋 Planned',
-                  badgeColor: 'bg-gray-800 text-gray-400',
+                  color: 'border-green-800 bg-green-950/10',
+                  badge: '✅ Complete',
+                  badgeColor: 'bg-green-900/50 text-green-400',
                   items: [
-                    'Contact / inquiry form on every client site ("Not ready to book? Message us")',
-                    'Leads table in Supabase — name, email, message, source, opt_in, city, business_type',
-                    '/api/inquire — save lead, notify owner via Resend',
-                    'Owner dashboard Inquiries tab — leads list + "Convert to Booking" button',
-                    '/admin/leads — cross-site leads view for operator',
-                    'Smart promotion blasts — send targeted offers to opted-in leads by city + type',
+                    'Contact / inquiry form on every client site — Book/Enquire tabs ✅',
+                    'Leads table in Supabase — name, email, message, source, opt_in, city, business_type ✅',
+                    '/api/inquire — save lead, notify owner via Resend ✅',
+                    'Owner dashboard Inquiries tab — leads list + "Convert to Booking" + reply/call/WhatsApp ✅',
+                    '/admin/leads — cross-site leads inbox + search + filter + CSV export ✅',
+                    'Smart promotion blasts — compose, audience filters, send via Resend, /admin/leads/promote ✅',
+                    'Global Suppression List — /unsubscribe page + /admin/suppression + /api/leads/promote checks ✅',
+                    'Attribution Tracking — UTM params on bookings + leads, "Where Bookings Come From" chart ✅',
                   ],
                 },
                 {
                   phase: 'Phase 11 — Entitlement Engine + Commerce Foundation',
-                  color: 'border-red-800 bg-red-950/10',
-                  badge: '🔴 Foundation',
-                  badgeColor: 'bg-red-900/50 text-red-400',
+                  color: 'border-green-800 bg-green-950/10',
+                  badge: '✅ Complete (except Stripe recurring)',
+                  badgeColor: 'bg-green-900/50 text-green-400',
                   items: [
-                    'Feature & Entitlement Engine — features table, plan_features, admin_overrides, effective entitlements',
-                    'Stripe $29/mo Recurring Billing — Price ID setup, subscription creation on payment',
-                    'Trial Duration Configuration — configurable starts_at / expires_at (7/14/21/30/60 days)',
-                    'Trial Account Request System — public /trial form, admin approval workflow, welcome email',
-                    'Admin Subscription Override — Upgrade/Downgrade/Extend/Pause/Cancel + per-feature toggles',
-                    '9-step Site Creation Wizard — replaces 3-step generate form',
-                    'Customer Registration + Client Customer Database (Growth+ plan)',
-                    'Coupon & Promotion Engine — codes, discounts, limits, applicable services',
-                    'Universal Event Stream — events table, /admin/events UI',
-                    'Notification Center — in-admin bell, unread/all tabs',
-                    'Client 360 Profile — 14-tab client view (Overview, Sites, Subscription, Billing, Customers, Leads...)',
+                    'Feature & Entitlement Engine — features, plan_features, client_entitlements tables ✅',
+                    'Trial Duration Configuration — configurable starts_at / expires_at (7/14/21/30/60 days) ✅',
+                    'Trial Account Request System — /trial form, admin approval, welcome email ✅',
+                    'Admin Subscription Override — Upgrade/Downgrade/Extend/Pause/Cancel/Terminate ✅',
+                    '9-step Site Creation Wizard — replaces 3-step generate form ✅',
+                    'Customer Registration + Client Customer Database — Customers tab + CustomerProfileModal ✅',
+                    'Coupon & Promotion Engine — Coupons tab in owner dashboard, validate API ✅',
+                    'Universal Event Stream — events table, /admin/events UI ✅',
+                    'Notification Center — bell icon, dropdown, /admin/notifications ✅',
+                    'Client 360 Profile — 7-tab view (Overview, Profile, Bookings, Customers, Activity, Features, Notes) ✅',
+                    'Stripe $29/mo Recurring Billing — ⏳ waiting on Stripe Price IDs',
                   ],
                 },
                 {
                   phase: 'Phase 12 — CRM, Outreach & Attribution',
                   color: 'border-yellow-800 bg-yellow-950/10',
-                  badge: '🟡 CRM & Growth',
+                  badge: '🔄 In Progress',
                   badgeColor: 'bg-yellow-900/50 text-yellow-400',
                   items: [
-                    'Outreach & Campaign Center — Prospects, Lists, Campaigns, Templates, Send Queue, Analytics',
-                    'Global Suppression List + privacy compliance (PH DPA, AU Spam Act, UK PECR)',
-                    'Lead Source / Attribution Tracking — UTM params on every lead, booking, inquiry',
-                    'Geographic Visitor Analytics — country/region/city aggregate (no raw IPs)',
-                    'WhatsApp / Messenger / Google Calendar integrations (entitlement-gated)',
+                    'Lead Source / Attribution Tracking — UTM params, source breakdown chart ✅',
+                    'Geographic Visitor Analytics — country/city from CF-IPCountry, "Where Visitors Come From" chart ✅',
+                    'Global Suppression List + compliance (PH DPA, AU Spam Act, UK PECR) ✅',
+                    'Smart Promotion Blasts — /admin/leads/promote, audience filters, suppression check ✅',
+                    'Outreach & Campaign Center — Prospects, Lists, Campaigns, Templates, Send Queue, Analytics 📋 Planned',
+                    'WhatsApp / Messenger / Google Calendar integrations — entitlement-gated 📋 Planned',
                   ],
                 },
                 {
                   phase: 'Phase 13 — Intelligence + Mature Platform',
                   color: 'border-green-800 bg-green-950/10',
-                  badge: '🟢 Intelligence',
-                  badgeColor: 'bg-green-900/50 text-green-400',
+                  badge: '🔄 In Progress',
+                  badgeColor: 'bg-yellow-900/50 text-yellow-400',
                   items: [
-                    'Business Rank + Badges — 10-level scoring system, rank history, earned badges',
-                    'Behavioral Heatmaps — click/scroll/engagement heatmaps, privacy-first opt-in',
-                    'Admin Impersonation — "View as Client" with full event logging',
-                    'Bulk Demo Site Generator — 5 demo sites across niches in one click',
-                    'CRM intelligence — lead-to-client attribution, promotion matching, local loyalty network',
+                    'Business Rank + Badges — 10-level scoring, 7 earned badges, RankBadge component ✅',
+                    'Admin Impersonation — "View as Client" with purple banner + event logging ✅',
+                    'Bulk Demo Site Generator — /admin/generate/bulk, niche selector, live progress ✅',
+                    'Customer Profile (Owner View) — CustomerProfileModal with booking history + notes ✅',
+                    'Booking Calendar View — weekly grid, color-coded blocks, confirm/cancel ✅',
+                    'Behavioral Heatmaps — click/scroll/engagement heatmaps, privacy-first opt-in 📋 Planned',
+                    'CRM intelligence — lead-to-client attribution, promotion matching 📋 Planned',
                   ],
                 },
               ].map(phase => (
@@ -670,8 +675,12 @@ export default function DocsPage() {
                   <div className="space-y-1.5">
                     {phase.items.map((item, i) => (
                       <div key={i} className="flex items-start gap-2 text-xs text-gray-400">
-                        <span className="text-gray-600 shrink-0 mt-0.5">○</span>
-                        {item}
+                        <span className={`shrink-0 mt-0.5 ${item.includes('✅') ? 'text-green-500' : 'text-gray-600'}`}>
+                          {item.includes('✅') ? '✅' : item.includes('⏳') ? '⏳' : '○'}
+                        </span>
+                        <span className={item.includes('✅') ? 'text-gray-500 line-through' : item.includes('⏳') ? 'text-yellow-600' : ''}>
+                          {item.replace(' ✅', '').replace(' ⏳', '')}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -2494,9 +2503,9 @@ if (count > 0) return 409 // Slot taken`}</pre>
                 },
                 {
                   title: 'Promo codes / discount system (Phase 7)',
-                  status: 'Planned — owner creates codes in dashboard, applied at booking',
-                  blocker: 'None — new DB table for promo_codes.',
-                  effort: '3-4 hours',
+                  status: '✅ DONE — Coupon & Promotion Engine built in Phase 11 (Coupons tab in owner dashboard)',
+                  blocker: 'None',
+                  effort: 'Complete',
                 },
                 {
                   title: 'Reschedule / cancel self-service link (Phase 6)',
