@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 27)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Behavioral Heatmaps** — `supabase/heatmaps.sql` (heatmap_events: site_id FK, event_type click/scroll, click_x/y as 0-1 float, scroll_depth 0-1, path, session_id anon, RLS: public insert + service_role all); `HeatmapEvent`/`HeatmapData` types; `POST /api/heatmap` (receives batched click+scroll events, sanitises x/y to 0-1, caps at 50/batch); `GET /api/heatmap/[siteId]` (aggregates clicks into 20x20 grid, scroll into 10% buckets, returns total_clicks/avg_scroll_depth); `HeatmapTracker` component (consent-gated: only fires when kita_heatmap_consent=1 in localStorage; click handler captures x/y as page %; scroll handler tracks max depth; batches and flushes every 5s via /api/heatmap; grantHeatmapConsent/revokeHeatmapConsent/hasHeatmapConsent helpers exported); `/{slug}/page.tsx` includes HeatmapTracker; owner dashboard Analytics tab: scroll depth funnel chart (green/yellow/red by depth, count bars) |
+
+---
+
 ## 2026-09-27 (session 26)
 
 | Commit | Area | What Changed |

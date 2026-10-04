@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabase'
 import BookingForm from '@/components/BookingForm'
 import BookingContactSection from '@/components/BookingContactSection'
 import AttributionTracker from '@/components/AttributionTracker'
+import HeatmapTracker from '@/components/HeatmapTracker'
 import PageTracker from '@/components/PageTracker'
 import { getWhiteLabelConfig, getSiteWhiteLabel } from '@/lib/whitelabel'
 import type { ThemeJson, Service, Staff, HeroSection, AboutSection, BookingSection, TestimonialsSection } from '@/types/database'
@@ -71,6 +72,8 @@ export default async function PublicSitePage({ params }: PageProps) {
       <PageTracker siteId={site.id} path={`/${slug}`} />
       {/* Capture UTM params + referrer for attribution (first-touch, sessionStorage) */}
       <AttributionTracker />
+      {/* Behavioral heatmap tracking — only fires when visitor consented */}
+      <HeatmapTracker siteId={site.id} path={`/${slug}`} />
 
       {/* ── MOBILE NAV ── */}
       <nav className="sticky top-0 z-50 flex items-center justify-between px-4 py-3 border-b border-white/10" style={{ backgroundColor: primary }}>

@@ -85,6 +85,7 @@ export default function OwnerDashboard({ params }: PageProps) {
   const [analyticsLoading, setAnalyticsLoading] = useState(false)
   const [sourceBreakdown, setSourceBreakdown] = useState<{ source: string; count: number }[]>([])
   const [geoBreakdown, setGeoBreakdown] = useState<{ country: string; count: number; pct: number }[]>([])
+  const [heatmapData, setHeatmapData] = useState<{ total_clicks: number; total_scroll_events: number; avg_scroll_depth: number; scroll_buckets: { depth: number; count: number }[] } | null>(null)
 
   useEffect(() => {
     params.then(p => setSlug(p.slug))
@@ -403,6 +404,20 @@ export default function OwnerDashboard({ params }: PageProps) {
     } else {
       setGeoBreakdown([])
     }
+
+    // Heatmap summary (total clicks + scroll depth)
+    try {
+      const hmRes = await fetch(`/api/heatmap/${siteId}?days=30`)
+      if (hmRes.ok) {
+        const hm = await hmRes.json()
+        setHeatmapData({
+          total_clicks:        hm.total_clicks ?? 0,
+          total_scroll_events: hm.total_scroll_events ?? 0,
+          avg_scroll_depth:    hm.avg_scroll_depth ?? 0,
+          scroll_buckets:      hm.scroll_buckets ?? [],
+        })
+      }
+    } catch { /* heatmaps table may not exist yet */ }
 
     setAnalyticsLoading(false)
   }
@@ -1098,6 +1113,54 @@ export default function OwnerDashboard({ params }: PageProps) {
                   Based on {geoBreakdown.reduce((s, r) => s + r.count, 0)} page views with location data (last 14 days).
                   Run <code className="font-mono bg-gray-100 px-1 rounded">supabase/geo-analytics.sql</code> to enable.
                 </p>
+              </div>
+            )}
+
+            {/* Heatmap summary — scroll depth visualization */}
+            {heatmapData && (heatmapData.total_clicks > 0 || heatmapData.total_scroll_events > 0 || heatmapData.scroll_buckets?.some(b => b.count > 0)) && (
+              <div className="bg-white border border-gray-200 rounded-2xl p-5">
+                <h3 className="font-semibold text-gray-900 text-sm mb-1 flex items-center gap-2">
+                  🖱️ Behavioral Heatmap
+                  <span className="text-xs text-gray-400 font-normal">(last 30 days)</span>
+                </h3>
+                <p className="text-gray-400 text-xs mb-4">
+                  {heatmapData.total_clicks} clicks recorded · avg scroll depth {Math.round(heatmapData.avg_scroll_depth * 100)}%
+                </p>
+
+                {/* Scroll depth funnel */}
+                {heatmapData.scroll_buckets?.some(b => b.count > 0) && (
+                  <div>
+                    <p className="text-gray-500 text-xs font-medium mb-2">How far visitors scroll</p>
+                    <div className="space-y-1.5">
+                      {heatmapData.scroll_buckets.map(bucket => {
+                        const maxCount = Math.max(...heatmapData.scroll_buckets.map(b => b.count), 1)
+                        const pct      = Math.round((bucket.count / maxCount) * 100)
+                        const color    = bucket.depth <= 30 ? '#22c55e'
+                                       : bucket.depth <= 60 ? '#f59e0b'
+                                       : '#ef4444'
+                        return (
+                          <div key={bucket.depth} className="flex items-center gap-3 text-xs">
+                            <span className="text-gray-500 w-10 shrink-0 text-right">{bucket.depth}%</span>
+                            <div className="flex-1 bg-gray-100 rounded h-2">
+                              <div className="h-2 rounded transition-all" style={{ width: `${pct}%`, backgroundColor: color }} />
+                            </div>
+                            <span className="text-gray-500 w-8 text-right">{bucket.count}</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    <p className="text-gray-400 text-xs mt-3">
+                      🟢 Top 30% · 🟡 Middle · 🔴 Bottom — higher counts = more visitors reach that depth.
+                    </p>
+                  </div>
+                )}
+
+                {heatmapData.total_clicks === 0 && (
+                  <p className="text-gray-400 text-xs">
+                    Click tracking will appear here once visitors interact with your site.
+                    Run <code className="font-mono bg-gray-100 px-1 rounded">supabase/heatmaps.sql</code> to enable.
+                  </p>
+                )}
               </div>
             )}
 

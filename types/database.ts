@@ -470,3 +470,28 @@ export interface CampaignSend {
   started_at: string
   completed_at: string | null
 }
+
+// ── BEHAVIORAL HEATMAPS (Phase 13) ───────────────────────────
+
+export type HeatmapEventType = 'click' | 'scroll'
+
+export interface HeatmapEvent {
+  id: string
+  site_id: string
+  event_type: HeatmapEventType
+  click_x: number | null       // 0.0-1.0 (% of page width)
+  click_y: number | null       // 0.0-1.0 (% of page height)
+  scroll_depth: number | null  // 0.0-1.0 (% of page height)
+  path: string
+  session_id: string | null
+  recorded_at: string
+}
+
+// Aggregated result returned by /api/heatmap/[siteId]
+export interface HeatmapData {
+  clicks: { x: number; y: number; count: number }[]  // grid cells
+  scroll_buckets: { depth: number; count: number }[]  // 0-10%, 10-20%...
+  total_clicks: number
+  total_scroll_events: number
+  avg_scroll_depth: number  // 0.0-1.0
+}
