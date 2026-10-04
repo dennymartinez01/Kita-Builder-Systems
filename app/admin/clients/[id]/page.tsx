@@ -19,8 +19,9 @@ import {
   RefreshCw, Info, Timer, TrendingUp, DollarSign,
   BarChart2, Users, Activity, MessageSquare, Calendar,
   ArrowUpCircle, ArrowDownCircle, PauseCircle, XCircle,
-  Zap, RotateCcw, Clock, BookOpen, Tag, Eye,
+  Zap, RotateCcw, Clock, BookOpen, Tag, Eye, Brain, Link2,
 } from 'lucide-react'
+import type { CRMMatch, CRMSummary } from '@/app/api/crm/matches/[clientId]/route'
 
 // ── Constants ─────────────────────────────────────────────────
 const PLAN_OPTIONS   = ['trial', 'starter', 'growth', 'agency', 'custom']
@@ -44,16 +45,17 @@ const STATUS_COLORS: Record<string, string> = {
   paused:    'bg-yellow-900/50 text-yellow-400',
 }
 
-type Tab360 = 'overview' | 'profile' | 'bookings' | 'customers' | 'activity' | 'features' | 'notes'
+type Tab360 = 'overview' | 'profile' | 'bookings' | 'customers' | 'activity' | 'features' | 'notes' | 'intelligence'
 
 const TABS: { id: Tab360; label: string; icon: any }[] = [
-  { id: 'overview',   label: 'Overview',   icon: BarChart2 },
-  { id: 'profile',    label: 'Profile',    icon: User },
-  { id: 'bookings',   label: 'Bookings',   icon: Calendar },
-  { id: 'customers',  label: 'Customers',  icon: Users },
-  { id: 'activity',   label: 'Activity',   icon: Activity },
-  { id: 'features',   label: 'Features',   icon: ShieldCheck },
-  { id: 'notes',      label: 'Notes',      icon: MessageSquare },
+  { id: 'overview',      label: 'Overview',      icon: BarChart2 },
+  { id: 'profile',       label: 'Profile',       icon: User },
+  { id: 'bookings',      label: 'Bookings',      icon: Calendar },
+  { id: 'customers',     label: 'Customers',     icon: Users },
+  { id: 'activity',      label: 'Activity',      icon: Activity },
+  { id: 'features',      label: 'Features',      icon: ShieldCheck },
+  { id: 'notes',         label: 'Notes',         icon: MessageSquare },
+  { id: 'intelligence',  label: 'Intelligence',  icon: Brain },
 ]
 
 function timeAgo(iso: string) {
@@ -104,6 +106,12 @@ export default function Client360Page() {
   const [entLoading, setEntLoading]       = useState(false)
   const [togglingKey, setTogglingKey]     = useState<string | null>(null)
   const [overrideReason, setOverrideReason] = useState('')
+
+  // CRM Intelligence tab
+  const [intelMatches, setIntelMatches]     = useState<CRMMatch[]>([])
+  const [intelSummary, setIntelSummary]     = useState<CRMSummary | null>(null)
+  const [intelLoading, setIntelLoading]     = useState(false)
+  const [intelConfirming, setIntelConfirming] = useState<string | null>(null)
 
   // Subscription override
   const [subAction, setSubAction]         = useState<string | null>(null)
@@ -193,13 +201,23 @@ export default function Client360Page() {
     } finally { setEntLoading(false) }
   }, [id])
 
+  const loadIntelligence = useCallback(async () => {
+    setIntelLoading(true)
+    try {
+      const res  = await fetch(`/api/crm/matches/${id}`)
+      const data = await res.json()
+      if (res.ok) { setIntelMatches(data.matches ?? []); setIntelSummary(data.summary ?? null) }
+    } finally { setIntelLoading(false) }
+  }, [id])
+
   // Lazy-load tab data on first open
   useEffect(() => {
-    if (activeTab === 'overview'  && !overview)      loadOverview()
-    if (activeTab === 'bookings'  && bookings.length === 0) loadBookings()
-    if (activeTab === 'customers' && customers.length === 0) loadCustomers()
-    if (activeTab === 'activity'  && events.length === 0)   loadEvents()
-    if (activeTab === 'features'  && features.length === 0) loadEntitlements()
+    if (activeTab === 'overview'      && !overview)               loadOverview()
+    if (activeTab === 'bookings'      && bookings.length === 0)   loadBookings()
+    if (activeTab === 'customers'     && customers.length === 0)  loadCustomers()
+    if (activeTab === 'activity'      && events.length === 0)     loadEvents()
+    if (activeTab === 'features'      && features.length === 0)   loadEntitlements()
+    if (activeTab === 'intelligence'  && intelMatches.length === 0 && !intelSummary) loadIntelligence()
   }, [activeTab])
 
   // ── Profile actions ───────────────────────────────────────
@@ -1052,6 +1070,161 @@ export default function Client360Page() {
               ))}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════
+          TAB: CRM INTELLIGENCE
+          Shows leads matched to this client by email/phone,
+          their UTM attribution, and attribution agreement rate.
+      ═══════════════════════════════════════════════════════ */}
+      {activeTab === 'intelligence' && (
+        <div className="space-y-5">
+          {/* Header + refresh */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-white font-semibold text-sm flex items-center gap-2">
+              <Brain size={14} className="text-purple-400" /> CRM Intelligence
+            </h2>
+            <button
+              onClick={loadIntelligence}
+              disabled={intelLoading}
+              className="p-2 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded-lg transition"
+            >
+              <RefreshCw size={14} className={intelLoading ? 'animate-spin' : ''} />
+            </button>
+          </div>
+
+          {intelLoading ? (
+            <div className="text-center py-16 text-gray-600 text-sm flex items-center justify-center gap-2">
+              <Loader2 size={16} className="animate-spin" /> Analysing signals...
+            </div>
+          ) : (
+            <>
+              {/* ── Summary strip ─────────────────────────── */}
+              {intelSummary && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {[
+                    { label: 'Matched Leads',     value: intelSummary.total_matches,             color: 'text-purple-400' },
+                    { label: 'Converted',          value: intelSummary.converted_leads,           color: 'text-green-400' },
+                    { label: 'Attribution Match',  value: `${intelSummary.attribution_match_rate}%`, color: 'text-blue-400' },
+                    { label: 'Top Source',         value: intelSummary.top_source ?? '—',         color: 'text-yellow-400' },
+                  ].map(s => (
+                    <div key={s.label} className="bg-gray-900 border border-gray-800 rounded-xl px-3 py-2.5">
+                      <p className="text-gray-600 text-xs mb-0.5">{s.label}</p>
+                      <p className={`text-sm font-bold capitalize ${s.color}`}>{String(s.value)}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* ── Match list ───────────────────────────── */}
+              {intelMatches.length === 0 ? (
+                <div className="text-center py-16">
+                  <Brain size={32} className="text-gray-700 mx-auto mb-3" />
+                  <p className="text-gray-500 text-sm">No matched leads yet.</p>
+                  <p className="text-gray-600 text-xs mt-1">
+                    Leads are matched when a contact form inquiry shares an email or phone with this client.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {intelMatches.map(m => (
+                    <div
+                      key={m.lead_id}
+                      className="bg-gray-900 border border-gray-800 rounded-2xl p-4 space-y-3"
+                    >
+                      {/* Row 1 — identity + signal badge */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="text-white text-sm font-semibold">{m.lead_name}</p>
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${
+                              m.lead_status === 'converted' ? 'bg-green-900/50 text-green-400'
+                              : m.lead_status === 'new'     ? 'bg-blue-900/50 text-blue-400'
+                              : 'bg-gray-800 text-gray-400'
+                            }`}>
+                              {m.lead_status}
+                            </span>
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-purple-900/40 text-purple-400 font-medium">
+                              matched by {m.match_signal}
+                            </span>
+                            {m.attribution_agrees && (
+                              <span className="text-xs px-2 py-0.5 rounded-full bg-green-900/30 text-green-400 font-medium flex items-center gap-1">
+                                <CheckCircle size={10} /> source agrees
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-gray-500 text-xs mt-0.5">{m.lead_email}{m.lead_phone ? ` · ${m.lead_phone}` : ''}</p>
+                        </div>
+                        <p className="text-gray-600 text-xs shrink-0">{new Date(m.lead_created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                      </div>
+
+                      {/* Row 2 — attribution comparison */}
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-gray-800 rounded-xl px-3 py-2">
+                          <p className="text-gray-600 text-xs mb-1 flex items-center gap-1"><Mail size={10} /> Lead (enquiry)</p>
+                          <p className="text-xs text-white font-medium capitalize">{m.lead_utm_source ?? 'unknown'}</p>
+                          {m.lead_utm_campaign && <p className="text-xs text-gray-500">{m.lead_utm_campaign}</p>}
+                          {m.lead_referrer && <p className="text-xs text-gray-600 truncate">{m.lead_referrer}</p>}
+                        </div>
+                        <div className="bg-gray-800 rounded-xl px-3 py-2">
+                          <p className="text-gray-600 text-xs mb-1 flex items-center gap-1"><Calendar size={10} /> Booking</p>
+                          <p className="text-xs text-white font-medium capitalize">{m.customer_utm_source ?? 'unknown'}</p>
+                          {m.customer_utm_campaign && <p className="text-xs text-gray-500">{m.customer_utm_campaign}</p>}
+                          {m.customer_booking_count != null && (
+                            <p className="text-xs text-gray-500">{m.customer_booking_count} booking{m.customer_booking_count !== 1 ? 's' : ''} · ${Number(m.customer_total_spend ?? 0).toFixed(0)} spend</p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Row 3 — message + confirm button */}
+                      <div className="flex items-end justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          {m.lead_service_interest && (
+                            <p className="text-gray-500 text-xs"><span className="text-gray-600">Interested in:</span> {m.lead_service_interest}</p>
+                          )}
+                          {m.lead_message && (
+                            <p className="text-gray-600 text-xs mt-0.5 line-clamp-2 italic">"{m.lead_message}"</p>
+                          )}
+                        </div>
+                        {m.lead_status !== 'converted' && (
+                          <button
+                            onClick={async () => {
+                              setIntelConfirming(m.lead_id)
+                              try {
+                                const res = await fetch(`/api/crm/matches/${id}`, {
+                                  method: 'PATCH',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({ lead_id: m.lead_id }),
+                                })
+                                if (res.ok) {
+                                  setIntelMatches(prev => prev.map(x =>
+                                    x.lead_id === m.lead_id ? { ...x, lead_status: 'converted' } : x
+                                  ))
+                                  setIntelSummary(prev => prev ? {
+                                    ...prev,
+                                    converted_leads: prev.converted_leads + 1
+                                  } : prev)
+                                }
+                              } finally { setIntelConfirming(null) }
+                            }}
+                            disabled={intelConfirming === m.lead_id}
+                            className="shrink-0 flex items-center gap-1.5 bg-green-900/40 hover:bg-green-800/60 border border-green-800/50 text-green-400 text-xs font-medium px-3 py-1.5 rounded-lg transition disabled:opacity-50"
+                          >
+                            {intelConfirming === m.lead_id
+                              ? <Loader2 size={11} className="animate-spin" />
+                              : <Link2 size={11} />
+                            }
+                            Confirm Match
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
       )}
     </div>

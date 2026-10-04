@@ -116,6 +116,66 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // ── UPSERT SITE CUSTOMER WITH ATTRIBUTION ─────────────────────
+    // Writes the visitor's UTM attribution onto their site_customer record
+    // so CRM Intelligence can match leads → bookers by source.
+    // Only writes attribution once (first-touch) — does not overwrite existing values.
+    // Non-blocking: never fails the booking if this errors.
+    if (customer_email && site_id) {
+      try {
+        // Check if record already has attribution to respect first-touch model
+        const { data: existing } = await supabase
+          .from('site_customers')
+          .select('id, utm_source')
+          .eq('site_id', site_id)
+          .eq('email', customer_email)
+          .single()
+
+        if (existing && !existing.utm_source && utm_source) {
+          // Record exists but has no attribution yet — patch it
+          await supabase
+            .from('site_customers')
+            .update({
+              utm_source:   utm_source   || null,
+              utm_medium:   utm_medium   || null,
+              utm_campaign: utm_campaign || null,
+              utm_content:  utm_content  || null,
+              utm_term:     utm_term     || null,
+              referrer:     referrer     || null,
+              landing_page: landing_page || null,
+            })
+            .eq('id', existing.id)
+        } else if (!existing && utm_source) {
+          // No record yet — insert with attribution so it's there when the
+          // customer registration upsert fires later from BookingForm
+          await supabase
+            .from('site_customers')
+            .upsert(
+              {
+                site_id,
+                email:        customer_email,
+                name:         customer_name,
+                phone:        customer_phone || null,
+                utm_source:   utm_source   || null,
+                utm_medium:   utm_medium   || null,
+                utm_campaign: utm_campaign || null,
+                utm_content:  utm_content  || null,
+                utm_term:     utm_term     || null,
+                referrer:     referrer     || null,
+                landing_page: landing_page || null,
+                is_verified:  false,
+                booking_count: 0,
+                total_spend:  0,
+                status:       'active',
+              },
+              { onConflict: 'site_id,email', ignoreDuplicates: true }
+            )
+        }
+      } catch (attrErr: any) {
+        console.warn('[notify] site_customer attribution skipped:', attrErr?.message)
+      }
+    }
+
     // Save booking
     const { data: booking, error: bookingError } = await supabase
       .from('bookings')

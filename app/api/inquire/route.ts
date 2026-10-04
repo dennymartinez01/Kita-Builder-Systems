@@ -20,6 +20,14 @@ export async function POST(req: NextRequest) {
       message,
       service_interest,
       opt_in = false,
+      // Attribution (optional — sent by ContactForm via getStoredAttribution)
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_content,
+      utm_term,
+      referrer,
+      landing_page,
     } = body
 
     if (!site_id || !name || !email || !message) {
@@ -54,6 +62,14 @@ export async function POST(req: NextRequest) {
         business_type:    (site as any)?.business_type ?? null,
         opt_in:           !!opt_in,
         status:           'new',
+        // Attribution — first-touch UTM from ContactForm
+        utm_source:   utm_source   || null,
+        utm_medium:   utm_medium   || null,
+        utm_campaign: utm_campaign || null,
+        utm_content:  utm_content  || null,
+        utm_term:     utm_term     || null,
+        referrer:     referrer     || null,
+        landing_page: landing_page || null,
       } as any)
       .select()
       .single()
