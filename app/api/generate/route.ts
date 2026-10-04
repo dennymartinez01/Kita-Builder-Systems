@@ -8,6 +8,7 @@ import { petDefaultServices, petDefaultStaff } from '@/lib/templates/pet'
 import { cafeDefaultServices, cafeDefaultStaff } from '@/lib/templates/cafe'
 import { mechanicDefaultServices, mechanicDefaultStaff } from '@/lib/templates/mechanic'
 import type { BusinessType } from '@/types/database'
+import { seedOnboardingSteps, sendWelcomeEmail } from '@/lib/onboarding'
 
 const DEFAULT_SERVICES = {
   salon: salonDefaultServices,
@@ -27,7 +28,7 @@ const DEFAULT_STAFF = {
 
 export async function POST(req: NextRequest) {
   try {
-    const { business_name, business_type, location, owner_email, extra_notes, custom_services, currency = 'USD', timezone = 'UTC' } = await req.json()
+    const { business_name, business_type, location, owner_email, extra_notes, custom_services, currency = 'USD', timezone = 'UTC', client_id } = await req.json()
 
     if (!business_name || !business_type || !location) {
       return NextResponse.json(
@@ -196,6 +197,39 @@ ${!hasClientServices ? `- 3-5 services with realistic ${currency} pricing for ${
         role: s.role,
       }))
     )
+
+    // ── ONBOARDING: seed steps + link site to client ──────────────
+    // If a client_id was provided (9-step wizard), link the site and trigger onboarding.
+    // Non-blocking — never fails the generation if this errors.
+    if (client_id) {
+      try {
+        // Link site to client
+        await supabase
+          .from('sites')
+          .update({ client_id } as any)
+          .eq('id', site.id)
+
+        // Seed onboarding steps for this client
+        seedOnboardingSteps(client_id).catch(() => {})
+
+        // Fetch client name + email for welcome email (only send if not already onboarded)
+        const { data: clientRow } = await supabase
+          .from('clients')
+          .select('name, email, onboarding_complete')
+          .eq('id', client_id)
+          .single()
+
+        if (clientRow && !clientRow.onboarding_complete) {
+          sendWelcomeEmail({
+            clientName:  clientRow.name,
+            clientEmail: clientRow.email,
+            siteSlug:    slug,
+          }).catch(() => {})
+        }
+      } catch (onboardErr: any) {
+        console.warn('[generate] onboarding trigger skipped:', onboardErr?.message)
+      }
+    }
 
     return NextResponse.json({ slug, business_name, business_type, site_id: site.id })
 

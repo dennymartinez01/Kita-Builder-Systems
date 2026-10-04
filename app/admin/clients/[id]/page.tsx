@@ -113,6 +113,11 @@ export default function Client360Page() {
   const [intelLoading, setIntelLoading]     = useState(false)
   const [intelConfirming, setIntelConfirming] = useState<string | null>(null)
 
+  // Onboarding checklist (shown on Overview tab)
+  const [onboarding, setOnboarding]         = useState<any>(null)
+  const [onboardingLoading, setOnboardingLoading] = useState(false)
+  const [onboardingToggling, setOnboardingToggling] = useState<string | null>(null)
+
   // Subscription override
   const [subAction, setSubAction]         = useState<string | null>(null)
   const [subLoading, setSubLoading]       = useState(false)
@@ -210,9 +215,19 @@ export default function Client360Page() {
     } finally { setIntelLoading(false) }
   }, [id])
 
+  const loadOnboarding = useCallback(async () => {
+    setOnboardingLoading(true)
+    try {
+      const res  = await fetch(`/api/clients/${id}/onboarding`)
+      const data = await res.json()
+      if (res.ok) setOnboarding(data)
+    } finally { setOnboardingLoading(false) }
+  }, [id])
+
   // Lazy-load tab data on first open
   useEffect(() => {
     if (activeTab === 'overview'      && !overview)               loadOverview()
+    if (activeTab === 'overview'      && !onboarding)             loadOnboarding()
     if (activeTab === 'bookings'      && bookings.length === 0)   loadBookings()
     if (activeTab === 'customers'     && customers.length === 0)  loadCustomers()
     if (activeTab === 'activity'      && events.length === 0)     loadEvents()
@@ -511,6 +526,90 @@ export default function Client360Page() {
                   )}
                 </div>
               </div>
+
+              {/* Onboarding Checklist */}
+              {onboarding && (
+                <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
+                  <div className="px-4 py-3 border-b border-gray-800 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-white font-semibold text-sm flex items-center gap-2">
+                        <CheckCircle size={13} className="text-green-400" /> Onboarding
+                      </h3>
+                      {/* Progress pill */}
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                        onboarding.all_done
+                          ? 'bg-green-900/50 text-green-400'
+                          : 'bg-gray-800 text-gray-400'
+                      }`}>
+                        {onboarding.all_done ? '✅ Complete' : `${onboarding.percent}% · ${onboarding.completed_count}/${onboarding.total}`}
+                      </span>
+                    </div>
+                    <button
+                      onClick={loadOnboarding}
+                      disabled={onboardingLoading}
+                      className="p-1.5 text-gray-600 hover:text-gray-300 transition rounded-lg"
+                    >
+                      <RefreshCw size={12} className={onboardingLoading ? 'animate-spin' : ''} />
+                    </button>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="px-4 pt-3">
+                    <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-green-500 rounded-full transition-all duration-500"
+                        style={{ width: `${onboarding.percent}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Step list */}
+                  <div className="divide-y divide-gray-800/50 px-1 py-2">
+                    {(onboarding.steps as any[]).map((step: any) => (
+                      <div key={step.key} className="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800/30 rounded-xl transition">
+                        <button
+                          onClick={async () => {
+                            setOnboardingToggling(step.key)
+                            try {
+                              const res = await fetch(`/api/clients/${id}/onboarding`, {
+                                method:  'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body:    JSON.stringify({ step_key: step.key, completed: !step.completed }),
+                              })
+                              const data = await res.json()
+                              if (res.ok) setOnboarding(data)
+                            } finally { setOnboardingToggling(null) }
+                          }}
+                          disabled={onboardingToggling === step.key}
+                          className={`shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition ${
+                            step.completed
+                              ? 'bg-green-500 border-green-500 text-white'
+                              : 'border-gray-600 hover:border-green-500'
+                          }`}
+                          title={step.completed ? 'Mark incomplete' : 'Mark complete'}
+                        >
+                          {onboardingToggling === step.key
+                            ? <Loader2 size={10} className="animate-spin text-gray-400" />
+                            : step.completed
+                              ? <CheckCircle size={10} />
+                              : null
+                          }
+                        </button>
+                        <span className="text-lg shrink-0" aria-hidden>{step.icon}</span>
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-xs font-medium ${step.completed ? 'line-through text-gray-600' : 'text-gray-200'}`}>
+                            {step.label}
+                          </p>
+                          <p className="text-gray-600 text-xs">{step.description}</p>
+                        </div>
+                        {step.completed_at && (
+                          <span className="text-gray-700 text-xs shrink-0">{timeAgo(step.completed_at)}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Recent Events */}
               {overview.recent_events.length > 0 && (

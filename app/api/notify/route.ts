@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createServerClient } from '@/lib/supabase'
 import { generateCancelToken } from '@/lib/booking-utils'
 import { logEvent, ET } from '@/lib/events'
+import { seedOnboardingSteps, sendWelcomeEmail } from '@/lib/onboarding'
 
 // Helper — add/subtract minutes from HH:MM string
 function addMinutesToTime(time: string, minutes: number): string {
@@ -91,7 +92,7 @@ export async function POST(req: NextRequest) {
     // Non-blocking: never fails the booking if this errors.
     if (customer_email) {
       try {
-        await supabase
+        const { data: upsertedClients } = await supabase
           .from('clients')
           .upsert(
             {
@@ -108,9 +109,24 @@ export async function POST(req: NextRequest) {
             },
             {
               onConflict: 'email',
-              ignoreDuplicates: true, // don't overwrite existing client data
+              ignoreDuplicates: false, // need the returned row to check if newly created
             }
           )
+          .select('id, email, name, created_at')
+
+        // If this is a brand-new client (created in last 5s), seed onboarding + send welcome email
+        const newClient = Array.isArray(upsertedClients) ? upsertedClients[0] : null
+        if (newClient) {
+          const isNew = Date.now() - new Date(newClient.created_at).getTime() < 5000
+          if (isNew) {
+            // Non-blocking — never fails the booking
+            seedOnboardingSteps(newClient.id).catch(() => {})
+            sendWelcomeEmail({
+              clientName:  newClient.name,
+              clientEmail: newClient.email,
+            }).catch(() => {})
+          }
+        }
       } catch (clientErr: any) {
         console.warn('[notify] client upsert skipped:', clientErr?.message)
       }
