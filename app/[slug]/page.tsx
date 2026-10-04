@@ -5,6 +5,7 @@ import BookingContactSection from '@/components/BookingContactSection'
 import AttributionTracker from '@/components/AttributionTracker'
 import HeatmapTracker from '@/components/HeatmapTracker'
 import PageTracker from '@/components/PageTracker'
+import ConsentBanner from '@/components/ConsentBanner'
 import { getWhiteLabelConfig, getSiteWhiteLabel } from '@/lib/whitelabel'
 import type { ThemeJson, Service, Staff, HeroSection, AboutSection, BookingSection, TestimonialsSection } from '@/types/database'
 
@@ -74,6 +75,8 @@ export default async function PublicSitePage({ params }: PageProps) {
       <AttributionTracker />
       {/* Behavioral heatmap tracking — only fires when visitor consented */}
       <HeatmapTracker siteId={site.id} path={`/${slug}`} />
+      {/* Analytics consent banner — slides in after 1.2s, gated by localStorage */}
+      <ConsentBanner primaryColor={primary} businessName={site.business_name} />
 
       {/* ── MOBILE NAV ── */}
       <nav className="sticky top-0 z-50 flex items-center justify-between px-4 py-3 border-b border-white/10" style={{ backgroundColor: primary }}>

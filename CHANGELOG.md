@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-23 (session 28)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Phase 14 — Heatmap Consent Banner** — `ConsentBanner` component (`'use client'`, `primaryColor`+`businessName` props); slides in after 1.2s delay; reads `kita_heatmap_consent` + `kita_consent_dismissed` from localStorage to decide visibility; Accept calls `grantHeatmapConsent()` → activates HeatmapTracker live without reload; Decline calls `revokeHeatmapConsent()` + sets dismissed flag — banner never re-appears; both paths store dismissed flag permanently; `/{slug}/page.tsx` imports + renders `<ConsentBanner primaryColor={primary} businessName={site.business_name} />` alongside PageTracker/AttributionTracker/HeatmapTracker; banner styled in site's primary colour, white CTA button |
+
+---
+
 ## 2026-09-27 (session 27)
 
 | Commit | Area | What Changed |
