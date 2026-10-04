@@ -7,6 +7,14 @@ Each entry maps to a git commit. Run `git log --oneline` to cross-reference.
 
 ---
 
+## 2026-09-27 (session 26)
+
+| Commit | Area | What Changed |
+|---|---|---|
+| *(pending)* | ✅ Complete | **Outreach & Campaign Center** — `supabase/campaigns.sql` (campaigns + campaign_sends tables, status enums, aggregate stats, RLS, updated_at trigger); `Campaign`/`CampaignSend` types; `GET/POST/PATCH/DELETE /api/campaigns`; `POST /api/campaigns/[id]/send` (audience query, dedup, suppression check, batch Resend sends, send record, campaign stat update, event log); `/admin/campaigns` list page (filter tabs, expand row, send button with live result, pause/resume/archive/delete actions, setup note); `/admin/campaigns/new` compose form (identity, email content, audience filters with live preview); Campaigns added to admin sidebar (Megaphone icon) |
+
+---
+
 ## 2026-09-27 (session 25)
 
 | Commit | Area | What Changed |

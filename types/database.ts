@@ -431,3 +431,42 @@ export interface SuppressionEntry {
   notes: string | null
   added_at: string
 }
+
+// ── OUTREACH & CAMPAIGN CENTER (Phase 12) ────────────────────
+
+export type CampaignStatus     = 'draft' | 'active' | 'paused' | 'archived'
+export type CampaignSendStatus = 'pending' | 'sending' | 'sent' | 'failed'
+
+export interface Campaign {
+  id: string
+  name: string
+  description: string | null
+  subject: string
+  body_text: string
+  cta_url: string
+  cta_label: string
+  expires_at: string | null
+  filter_city: string | null
+  filter_business_type: string | null
+  filter_country: string | null
+  status: CampaignStatus
+  total_sends: number
+  total_sent: number
+  total_failed: number
+  created_at: string
+  updated_at: string
+}
+
+export interface CampaignSend {
+  id: string
+  campaign_id: string
+  recipients_count: number
+  sent_count: number
+  failed_count: number
+  suppressed_count: number
+  status: CampaignSendStatus
+  error_message: string | null
+  sent_by: string
+  started_at: string
+  completed_at: string | null
+}
