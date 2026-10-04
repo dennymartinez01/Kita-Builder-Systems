@@ -12,6 +12,7 @@ import CalendarTab from '@/components/CalendarTab'
 import ImpersonationBanner from '@/components/ImpersonationBanner'
 import { getImpersonationSession } from '@/lib/impersonation'
 import RankBadge from '@/components/RankBadge'
+import OnboardingChecklist from '@/components/OnboardingChecklist'
 import { getWhiteLabelConfig } from '@/lib/whitelabel'
 import {
   CalendarCheck, Wrench, ExternalLink, CheckCircle,
@@ -548,6 +549,11 @@ export default function OwnerDashboard({ params }: PageProps) {
           <div className="mb-5">
             <RankBadge siteId={site.id} compact={false} darkMode={false} primaryColor={primaryColor} />
           </div>
+        )}
+
+        {/* Onboarding checklist — shown until all steps complete */}
+        {site && (
+          <OnboardingChecklist siteId={site.id} primaryColor={primaryColor} />
         )}
 
         {/* Tabs — scrollable on mobile */}

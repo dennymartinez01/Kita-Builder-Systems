@@ -25,6 +25,7 @@ import {
   ShieldOff,
   Megaphone,
   BarChart2,
+  HeartPulse,
 } from 'lucide-react'
 import { CATEGORY_ICONS, SEVERITY_COLORS } from '@/lib/events'
 import type { AdminNotification } from '@/lib/notifications'
@@ -41,6 +42,7 @@ const NAV_ITEMS = [
   { href: '/admin/suppression',    label: 'Suppression List',  icon: ShieldOff },
   { href: '/admin/revenue',        label: 'Revenue',           icon: TrendingUp },
   { href: '/admin/analytics',      label: 'Analytics',         icon: BarChart2 },
+  { href: '/admin/health',         label: 'Health Monitor',    icon: HeartPulse },
   { href: '/admin/events',         label: 'Activity & Events', icon: Activity },
   { href: '/admin/notifications',  label: 'Notifications',     icon: Bell },
   { href: '/admin/templates', label: 'Templates', icon: Layers },

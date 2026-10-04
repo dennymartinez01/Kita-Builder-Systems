@@ -19,7 +19,7 @@ import {
   RefreshCw, Info, Timer, TrendingUp, DollarSign,
   BarChart2, Users, Activity, MessageSquare, Calendar,
   ArrowUpCircle, ArrowDownCircle, PauseCircle, XCircle,
-  Zap, RotateCcw, Clock, BookOpen, Tag, Eye, Brain, Link2,
+  Zap, RotateCcw, Clock, BookOpen, Tag, Eye, Brain, Link2, ArrowUpRight,
 } from 'lucide-react'
 import type { CRMMatch, CRMSummary } from '@/app/api/crm/matches/[clientId]/route'
 
@@ -1151,6 +1151,58 @@ export default function Client360Page() {
                 {client.notes || <span className="italic text-gray-600">No notes yet. Click Edit to add internal context about this client.</span>}
               </p>
             )}
+          </div>
+
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+            <h2 className="text-white font-semibold text-sm mb-3 flex items-center gap-2">
+              <ArrowUpRight size={14} className="text-orange-400" /> Source Attribution
+            </h2>
+            <div className="space-y-3">
+              {/* Channel selector */}
+              <div>
+                <label className="text-gray-500 text-xs mb-1 block">Acquisition Channel</label>
+                {editing ? (
+                  <select
+                    value={(form as any).source_channel || ''}
+                    onChange={e => setForm(p => ({ ...p, source_channel: e.target.value } as any))}
+                    className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="">— Not set —</option>
+                    {['organic','referral','outreach','audit','campaign','direct','other'].map(o => (
+                      <option key={o} value={o} className="capitalize">{o}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <p className="text-white text-sm capitalize">
+                    {(client as any).source_channel || <span className="text-gray-600 italic">Not set</span>}
+                  </p>
+                )}
+              </div>
+              {/* Detail */}
+              <div>
+                <label className="text-gray-500 text-xs mb-1 block">Source Detail</label>
+                {editing ? (
+                  <input
+                    type="text"
+                    value={(form as any).source_detail || ''}
+                    onChange={e => setForm(p => ({ ...p, source_detail: e.target.value } as any))}
+                    placeholder="Campaign name, referrer, audit URL..."
+                    className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                  />
+                ) : (
+                  <p className="text-white text-sm">
+                    {(client as any).source_detail || <span className="text-gray-600 italic">Not set</span>}
+                  </p>
+                )}
+              </div>
+              {/* Legacy source field read-only */}
+              {client.source && (
+                <div>
+                  <label className="text-gray-500 text-xs mb-1 block">Legacy Source</label>
+                  <p className="text-gray-400 text-sm">{client.source}</p>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
